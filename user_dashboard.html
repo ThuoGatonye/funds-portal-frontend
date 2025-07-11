@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - FUNDS GROUP</title>
+    <title>Member Dashboard - FUNDS GROUP</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <header>
-        <div class="logo-text">FUNDS GROUP</div>
-        <div>
-            <span class="user-info" id="userInfo"></span>
-            <a href="index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <div class="main-content">
         <aside class="sidebar">
@@ -23,7 +17,13 @@
                 <li><a href="user_dashboard.html" class="active">My Dashboard</a></li>
                 <li><a href="#">My Contributions</a></li>
                 <li><a href="#">Request Payout</a></li>
-                <li><a href="#">View Statements</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">My Reports</a>
+                    <ul class="submenu">
+                        <li><a href="#">Contribution Statement</a></li>
+                        <li><a href="#">Payout Statement</a></li>
+                    </ul>
+                </li>
             </ul>
         </aside>
 
@@ -32,43 +32,90 @@
             <div class="card-grid">
                 <div class="card">
                     <h3>My Total Contributions</h3>
-                    <p><strong>$1,200.00</strong></p>
+                    <p><strong>$1,200.00</strong> to date</p>
+                </div>
+                <div class="card">
+                    <h3>Current Plan</h3>
+                    <p><strong>Monthly Saver ($100)</strong></p>
                 </div>
                 <div class="card">
                     <h3>Next Contribution Due</h3>
                     <p><strong>$100.00</strong> on July 20, 2025</p>
                 </div>
                 <div class="card">
-                    <h3>Last Payout</h3>
-                    <p><strong>$250.00</strong> on June 15, 2025 (Medical Aid)</p>
+                    <h3>Last Payout Received</h3>
+                    <p><strong>$250.00</strong> on June 15, 2025</p>
                 </div>
-                <div class="card">
-                    <h3>Emergency Kitty</h3>
-                    <p>Current Balance: <strong>$3,500.00</strong></p>
-                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>My Contribution History</h3>
+                <p>  </p>
+                <p>A bar chart showing your monthly contributions over time.</p>
+            </div>
+
+            <div class="chart-container">
+                <h3>Fund Allocation</h3>
+                <p>  </p>
+                <p>A pie chart showing how your contributions are allocated across different fund categories.</p>
             </div>
         </main>
     </div>
 
     <script>
-        // Retrieve user info from localStorage and display
-        const username = localStorage.getItem('username');
-        const userRole = localStorage.getItem('userRole');
-        if (username && userRole) {
-            document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+        // Function to load common HTML parts (from includes/header.html)
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+
+                // After header is loaded, attach user info and logout functionality
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                if (username && userRole) {
+                    document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } catch (e) {
+                console.error("Failed to load header:", e);
+            }
         }
 
-        // Logout functionality
-        document.querySelector('.logout-btn').addEventListener('click', function(event) {
-            event.preventDefault();
-            localStorage.clear();
-            window.location.href = 'index.html';
+        // Script for sidebar submenu toggling
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+
+            // Submenu toggle logic
+            document.querySelectorAll('.toggle-submenu').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const submenu = this.nextElementSibling; // Get the next sibling (the ul.submenu)
+                    if (submenu && submenu.classList.contains('submenu')) {
+                        submenu.classList.toggle('show'); // Toggle 'show' class
+                    }
+                });
+            });
+
+            // Basic role-based access check
+            const userRole = localStorage.getItem('userRole');
+            const path = window.location.pathname;
+            if (path.includes('user_dashboard.html') && (!userRole || (userRole === 'admin' || userRole === 'treasurer'))) {
+                window.location.href = 'index.html';
+            }
         });
-
-        // Basic role-based access check
-        if (!userRole || userRole === 'admin' || userRole === 'treasurer') {
-            window.location.href = 'index.html'; // Redirect if not logged in or is admin/treasurer
-        }
     </script>
 </body>
 </html>
