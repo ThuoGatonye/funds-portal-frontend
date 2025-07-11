@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B.A. FUNDS GROUP - Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* General Body Styling */
         body {
@@ -13,8 +14,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* Updated: Multi-color green gradient */
-            background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Blend of medium sea green, sea green, forest green, and teal */
+            background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080);
             margin: 0;
             color: #333;
         }
@@ -59,25 +59,43 @@
         }
 
         /* Input Field Styling */
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+        .input-group { /* New: for password toggle */
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="password"] {
             width: 100%;
             padding: 12px 15px;
-            margin-bottom: 20px;
             border: 1px solid #c0c0c0;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
             color: #555;
             transition: border-color 0.3s;
+            padding-right: 40px; /* Make space for the icon */
         }
 
-        .login-container input[type="text"]:focus,
-        .login-container input[type="password"]:focus {
+        .input-group input[type="text"]:focus,
+        .input-group input[type="password"]:focus {
             border-color: #4CAF50;
             outline: none;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
         }
+
+        .toggle-password { /* New: for password toggle button */
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+        .toggle-password:hover {
+            color: #555;
+        }
+
 
         /* Button Styling */
         .login-container button {
@@ -110,6 +128,19 @@
             font-size: 14px;
             display: none;
         }
+
+        /* Forgot Password Link */
+        .forgot-password { /* New: for forgot password link */
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -119,16 +150,45 @@
             <h2>B.A. <span>FUNDS GROUP</span></h2>
         </div>
         <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="toggle-password" id="togglePassword">
+                    <i class="fas fa-eye"></i> </span>
+            </div>
             <button type="submit">Login</button>
             <p id="errorMessage" class="error-message"></p>
+            <div class="forgot-password">
+                <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+            </div>
         </form>
     </div>
 
     <script>
-        const BACKEND_URL = 'https://fundgroup.pythonanywhere.com/';
+        // Your backend URL
+        const BACKEND_URL = 'https://fundgroup.pythonanywhere.com';
 
+        // Password Toggle Functionality
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Forgot Password Link (for future functionality)
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior for now
+            alert("Forgot Password functionality coming soon!"); // Placeholder
+        });
+
+
+        // Login Form Submission Logic
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
