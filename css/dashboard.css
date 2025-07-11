@@ -106,11 +106,35 @@ header .logout-btn:hover {
     box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
 }
 
-/* Dashboard Content Area */
+/* Nested menu items for cascading */
+.sidebar ul li ul {
+    margin-top: 10px;
+    margin-left: 15px; /* Indent sub-items */
+    border-left: 2px solid #e6e6e6; /* Subtle line for visual hierarchy */
+    padding-left: 5px;
+    display: none; /* Hidden by default */
+}
+
+.sidebar ul li ul.show {
+    display: block; /* Show when active */
+}
+
+.sidebar ul li ul li {
+    margin-bottom: 8px; /* Smaller margin for sub-items */
+}
+
+.sidebar ul li ul li a {
+    padding: 8px 10px; /* Smaller padding for sub-items */
+    font-size: 0.9em; /* Smaller font size for sub-items */
+}
+
+/* Dashboard Content Area - Updated */
 .dashboard-content {
     flex: 1; /* Takes remaining horizontal space */
     padding: 30px;
-    background-color: #f8f8f8; /* Light gray background for content */
+    /* Updated background: slightly darker, subtle texture */
+    background-color: #F0F2F5; /* A light, soft gray */
+    /* background-image: url('data:image/svg+xml;base64,...'); (Optional: add subtle pattern) */
     overflow-y: auto; /* Enable scrolling for content if needed */
 }
 
@@ -153,6 +177,15 @@ header .logout-btn:hover {
     line-height: 1.6;
 }
 
+/* Chart Container Styling */
+.chart-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 25px; /* Space from cards above */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
@@ -178,6 +211,19 @@ header .logout-btn:hover {
 
     .sidebar ul li {
         margin: 5px 10px;
+    }
+
+    /* Adjust sub-menu for mobile */
+    .sidebar ul li ul {
+        margin-left: 0;
+        border-left: none;
+        width: 100%;
+        text-align: center;
+    }
+
+    .sidebar ul li ul li {
+        display: block;
+        width: 100%;
     }
 
     .dashboard-content {
