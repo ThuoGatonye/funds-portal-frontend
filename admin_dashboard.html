@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - FUNDS GROUP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <header>
+        <div class="logo-text">FUNDS GROUP</div>
+        <div>
+            <span class="user-info" id="userInfo"></span>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <aside class="sidebar">
+            <h2>Admin Menu</h2>
+            <ul>
+                <li><a href="admin_dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Manage Users</a></li>
+                <li><a href="#">Audit Logs</a></li>
+                <li><a href="#">System Settings</a></li>
+                <li><a href="#">Reports</a></li>
+            </ul>
+        </aside>
+
+        <main class="dashboard-content">
+            <h1>Admin Overview</h1>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Total Members</h3>
+                    <p><strong>150</strong> active members</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Approvals</h3>
+                    <p><strong>5</strong> new user registrations</p>
+                </div>
+                <div class="card">
+                    <h3>Recent Activity</h3>
+                    <p>Last login: John Doe (Treasuer) - 10/07/2025</p>
+                </div>
+                <div class="card">
+                    <h3>System Health</h3>
+                    <p>All services operational.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Retrieve user info from localStorage and display
+        const username = localStorage.getItem('username');
+        const userRole = localStorage.getItem('userRole');
+        if (username && userRole) {
+            document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+        }
+
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            localStorage.clear(); // Clear all stored user data
+            window.location.href = 'index.html'; // Redirect to login page
+        });
+
+        // Basic role-based access check
+        if (!userRole || userRole !== 'admin') {
+            window.location.href = 'index.html'; // Redirect to login if not logged in or not admin
+        }
+    </script>
+</body>
+</html>
