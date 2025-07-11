@@ -8,13 +8,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <header>
-        <div class="logo-text">FUNDS GROUP</div>
-        <div>
-            <span class="user-info" id="userInfo"></span>
-            <a href="index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <div class="main-content">
         <aside class="sidebar">
@@ -23,8 +17,21 @@
                 <li><a href="treasurer_dashboard.html" class="active">Dashboard</a></li>
                 <li><a href="#">Record Contributions</a></li>
                 <li><a href="#">Manage Payouts</a></li>
-                <li><a href="#">View Financial Reports</a></li>
-                <li><a href="#">Manage Kitty Funds</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Financial Reports</a>
+                    <ul class="submenu">
+                        <li><a href="#">Summary Report</a></li>
+                        <li><a href="#">Detailed Transactions</a></li>
+                        <li><a href="#">Member Balances</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Kitty Management</a>
+                    <ul class="submenu">
+                        <li><a href="#">View Kitty Breakdown</a></li>
+                        <li><a href="#">Deposit/Withdraw Funds</a></li>
+                    </ul>
+                </li>
             </ul>
         </aside>
 
@@ -32,44 +39,91 @@
             <h1>Treasurer Overview</h1>
             <div class="card-grid">
                 <div class="card">
-                    <h3>Current Balance</h3>
+                    <h3>Current Funds Balance</h3>
                     <p><strong>$15,250.00</strong></p>
                 </div>
                 <div class="card">
-                    <h3>Total Contributions (Month)</h3>
-                    <p><strong>$1,800.00</strong> from 25 transactions</p>
+                    <h3>Monthly Contributions</h3>
+                    <p><strong>$1,800.00</strong> (This Month)</p>
                 </div>
                 <div class="card">
-                    <h3>Pending Payouts</h3>
-                    <p><strong>2</strong> requests awaiting approval</p>
-                </div>
-                <div class="card">
-                    <h3>Kitty Balance</h3>
+                    <h3>Emergency Kitty Balance</h3>
                     <p><strong>$3,500.00</strong></p>
                 </div>
+                <div class="card">
+                    <h3>Outstanding Payouts</h3>
+                    <p><strong>2</strong> requests pending</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Contributions Trend (Last 12 Months)</h3>
+                <p>  </p>
+                <p>A line chart illustrating monthly contribution trends over the past year.</p>
+            </div>
+
+            <div class="chart-container">
+                <h3>Financial Distribution</h3>
+                <p>  </p>
+                <p>A donut chart showing the breakdown of funds across different categories (e.g., General Fund, Kitty).</p>
             </div>
         </main>
     </div>
 
     <script>
-        // Retrieve user info from localStorage and display
-        const username = localStorage.getItem('username');
-        const userRole = localStorage.getItem('userRole');
-        if (username && userRole) {
-            document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+        // Function to load common HTML parts (from includes/header.html)
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+
+                // After header is loaded, attach user info and logout functionality
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                if (username && userRole) {
+                    document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } catch (e) {
+                console.error("Failed to load header:", e);
+            }
         }
 
-        // Logout functionality
-        document.querySelector('.logout-btn').addEventListener('click', function(event) {
-            event.preventDefault();
-            localStorage.clear();
-            window.location.href = 'index.html';
+        // Script for sidebar submenu toggling
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+
+            // Submenu toggle logic
+            document.querySelectorAll('.toggle-submenu').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const submenu = this.nextElementSibling; // Get the next sibling (the ul.submenu)
+                    if (submenu && submenu.classList.contains('submenu')) {
+                        submenu.classList.toggle('show'); // Toggle 'show' class
+                    }
+                });
+            });
+
+            // Basic role-based access check
+            const userRole = localStorage.getItem('userRole');
+            const path = window.location.pathname;
+            if (path.includes('treasurer_dashboard.html') && (!userRole || userRole !== 'treasurer')) {
+                window.location.href = 'index.html';
+            }
         });
-
-        // Basic role-based access check
-        if (!userRole || userRole !== 'treasurer') {
-            window.location.href = 'index.html';
-        }
     </script>
 </body>
 </html>
