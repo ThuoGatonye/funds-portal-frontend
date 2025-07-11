@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs - FUNDS GROUP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Specific styles for the Audit Logs page */
+        .controls-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        .filter-group, .export-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: #555;
+        }
+        .filter-group input[type="date"],
+        .filter-group select,
+        .filter-group input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            min-width: 150px;
+        }
+        .filter-group button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .filter-group button:hover {
+            background-color: #45a049;
+        }
+
+        .export-buttons .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .export-buttons .btn-pdf {
+            background-color: #dc3545; /* Red for PDF */
+            color: white;
+        }
+        .export-buttons .btn-pdf:hover {
+            background-color: #c82333;
+        }
+        .export-buttons .btn-excel {
+            background-color: #28a745; /* Green for Excel */
+            color: white;
+        }
+        .export-buttons .btn-excel:hover {
+            background-color: #218838;
+        }
+
+        .data-table-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow-x: auto; /* Ensures table is scrollable on small screens */
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: 600;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .pagination-search {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .pagination-search .search-input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            min-width: 200px;
+        }
+        .pagination-search .pagination-controls button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pagination-search .pagination-controls button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        .pagination-search .pagination-controls button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <aside class="sidebar">
+            <h2>Admin Menu</h2>
+            <ul>
+                <li><a href="admin_dashboard.html">Dashboard</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">User Management</a>
+                    <ul class="submenu">
+                        <li><a href="#">Roles</a></li>
+                        <li><a href="#">Users</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Group Management</a>
+                    <ul class="submenu">
+                        <li><a href="#">Plans</a></li>
+                        <li><a href="#">Member Profiles</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Reports</a>
+                    <ul class="submenu">
+                        <li><a href="#">Login History</a></li>
+                        <li><a href="#">Contribution Breakdown</a></li>
+                        <li><a href="#">Payout History</a></li>
+                        <li><a href="#">Kitty Breakdown</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Main Settings</a>
+                    <ul class="submenu">
+                        <li><a href="#">Account Management</a></li>
+                        <li><a href="#">SMTP Settings</a></li>
+                    </ul>
+                </li>
+                <li><a href="audit_logs.html" class="active">Audit Logs</a></li> </ul>
+        </aside>
+
+        <main class="dashboard-content">
+            <h1>Audit Logs</h1>
+
+            <section class="controls-section">
+                <h3>Filters</h3>
+                <div class="filter-group">
+                    <label for="startDate">From:</label>
+                    <input type="date" id="startDate">
+                    <label for="endDate">To:</label>
+                    <input type="date" id="endDate">
+                    <label for="eventType">Event Type:</label>
+                    <select id="eventType">
+                        <option value="">All</option>
+                        <option value="login">Login</option>
+                        <option value="logout">Logout</option>
+                        <option value="create_user">Create User</option>
+                        <option value="update_profile">Update Profile</option>
+                        <option value="contribution_record">Contribution Record</option>
+                        <option value="payout_request">Payout Request</option>
+                        <option value="system_setting">System Setting Change</option>
+                    </select>
+                    <label for="userName">User:</label>
+                    <input type="text" id="userName" placeholder="Search by username">
+                    <button>Apply Filters</button>
+                </div>
+
+                <h3>Export Data</h3>
+                <div class="export-buttons">
+                    <button class="btn btn-pdf">Export to PDF</button>
+                    <button class="btn btn-excel">Export to Excel</button>
+                </div>
+            </section>
+
+            <section class="data-table-container">
+                <h2>Recent Audit Events</h2>
+                <div class="pagination-search">
+                    <input type="text" class="search-input" placeholder="Search table data...">
+                    <div class="pagination-controls">
+                        <button disabled>Previous</button>
+                        <span>Page 1 of 10</span>
+                        <button>Next</button>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Event Type</th>
+                            <th>Description</th>
+                            <th>IP Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-07-11 14:30:15</td>
+                            <td>admin</td>
+                            <td>Admin</td>
+                            <td>Login Success</td>
+                            <td>Administrator logged in</td>
+                            <td>192.168.1.100</td>
+                        </tr>
+                        <tr>
+                            <td>2025-07-11 14:25:00</td>
+                            <td>treasurer_jane</td>
+                            <td>Treasurer</td>
+                            <td>Contribution Record</td>
+                            <td>Recorded $500 contribution for Member ID 001</td>
+                            <td>192.168.1.105</td>
+                        </tr>
+                        <tr>
+                            <td>2025-07-11 14:20:45</td>
+                            <td>user_mike</td>
+                            <td>Member</td>
+                            <td>Payout Request</td>
+                            <td>Requested $200 for medical aid (ID: Payout-003)</td>
+                            <td>192.168.1.110</td>
+                        </tr>
+                        <tr>
+                            <td>2025-07-11 14:15:30</td>
+                            <td>admin</td>
+                            <td>Admin</td>
+                            <td>Update User</td>
+                            <td>Changed role of 'user_john' to 'treasurer'</td>
+                            <td>192.168.1.100</td>
+                        </tr>
+                        <tr>
+                            <td>2025-07-11 14:10:00</td>
+                            <td>user_sara</td>
+                            <td>Member</td>
+                            <td>Login Failed</td>
+                            <td>Incorrect password attempt</td>
+                            <td>192.168.1.115</td>
+                        </tr>
+                        <tr>
+                            <td>2025-07-11 14:05:00</td>
+                            <td>treasurer_jane</td>
+                            <td>Treasurer</td>
+                            <td>Logout</td>
+                            <td>User logged out</td>
+                            <td>192.168.1.105</td>
+                        </tr>
+                        </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Function to load common HTML parts (from includes/header.html)
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+
+                // After header is loaded, attach user info and logout functionality
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                if (username && userRole) {
+                    document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } catch (e) {
+                console.error("Failed to load header:", e);
+            }
+        }
+
+        // Script for sidebar submenu toggling and header loading
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+
+            // Submenu toggle logic
+            document.querySelectorAll('.toggle-submenu').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const submenu = this.nextElementSibling; // Get the next sibling (the ul.submenu)
+                    if (submenu && submenu.classList.contains('submenu')) {
+                        submenu.classList.toggle('show'); // Toggle 'show' class
+                    }
+                });
+            });
+
+            // Basic role-based access check - specific for Audit Logs (Admin only)
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                window.location.href = 'index.html'; // Redirect if not logged in or not admin
+            }
+        });
+    </script>
+</body>
+</html>
