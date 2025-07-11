@@ -6,132 +6,6 @@
     <title>Audit Logs - FUNDS GROUP</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
-    <style>
-        /* Specific styles for the Audit Logs page */
-        .controls-section {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
-        }
-        .filter-group, .export-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .filter-group label {
-            font-weight: 500;
-            color: #555;
-        }
-        .filter-group input[type="date"],
-        .filter-group select,
-        .filter-group input[type="text"] {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.95em;
-            min-width: 150px;
-        }
-        .filter-group button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-        .filter-group button:hover {
-            background-color: #45a049;
-        }
-
-        .export-buttons .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        .export-buttons .btn-pdf {
-            background-color: #dc3545; /* Red for PDF */
-            color: white;
-        }
-        .export-buttons .btn-pdf:hover {
-            background-color: #c82333;
-        }
-        .export-buttons .btn-excel {
-            background-color: #28a745; /* Green for Excel */
-            color: white;
-        }
-        .export-buttons .btn-excel:hover {
-            background-color: #218838;
-        }
-
-        .data-table-container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            overflow-x: auto; /* Ensures table is scrollable on small screens */
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .data-table th {
-            background-color: #f2f2f2;
-            color: #333;
-            font-weight: 600;
-        }
-        .data-table tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .pagination-search {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .pagination-search .search-input {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.95em;
-            min-width: 200px;
-        }
-        .pagination-search .pagination-controls button {
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 5px;
-            transition: background-color 0.3s ease;
-        }
-        .pagination-search .pagination-controls button:hover:not(:disabled) {
-            background-color: #0056b3;
-        }
-        .pagination-search .pagination-controls button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-    </style>
 </head>
 <body>
     <div id="header-placeholder"></div>
@@ -171,53 +45,70 @@
                         <li><a href="#">SMTP Settings</a></li>
                     </ul>
                 </li>
-                <li><a href="audit_logs.html" class="active">Audit Logs</a></li> </ul>
+                <li><a href="audit_logs.html" class="active">Audit Logs</a></li>
+            </ul>
         </aside>
 
         <main class="dashboard-content">
             <h1>Audit Logs</h1>
 
-            <section class="controls-section">
-                <h3>Filters</h3>
-                <div class="filter-group">
-                    <label for="startDate">From:</label>
-                    <input type="date" id="startDate">
-                    <label for="endDate">To:</label>
-                    <input type="date" id="endDate">
-                    <label for="eventType">Event Type:</label>
-                    <select id="eventType">
-                        <option value="">All</option>
-                        <option value="login">Login</option>
-                        <option value="logout">Logout</option>
-                        <option value="create_user">Create User</option>
-                        <option value="update_profile">Update Profile</option>
-                        <option value="contribution_record">Contribution Record</option>
-                        <option value="payout_request">Payout Request</option>
-                        <option value="system_setting">System Setting Change</option>
-                    </select>
-                    <label for="userName">User:</label>
-                    <input type="text" id="userName" placeholder="Search by username">
-                    <button>Apply Filters</button>
-                </div>
-
-                <h3>Export Data</h3>
-                <div class="export-buttons">
-                    <button class="btn btn-pdf">Export to PDF</button>
-                    <button class="btn btn-excel">Export to Excel</button>
+            <section class="filters-section">
+                <div class="filters-header" id="filtersHeader">
+                    <h3>Filters</h3>
+                    <span class="filter-toggle-icon">▼</span> </div>
+                <div class="filters-content" id="filtersContent">
+                    <div class="filter-group">
+                        <div>
+                            <label for="startDate">From:</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div>
+                            <label for="endDate">To:</label>
+                            <input type="date" id="endDate">
+                        </div>
+                        <div>
+                            <label for="eventType">Event Type:</label>
+                            <select id="eventType">
+                                <option value="">All</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="create_user">Create User</option>
+                                <option value="update_profile">Update Profile</option>
+                                <option value="contribution_record">Contribution Record</option>
+                                <option value="payout_request">Payout Request</option>
+                                <option value="system_setting">System Setting Change</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="userName">User:</label>
+                            <input type="text" id="userName" placeholder="Search by username">
+                        </div>
+                        <button>Submit</button>
+                        <button class="clear-btn">Clear</button>
+                    </div>
                 </div>
             </section>
 
-            <section class="data-table-container">
-                <h2>Recent Audit Events</h2>
-                <div class="pagination-search">
-                    <input type="text" class="search-input" placeholder="Search table data...">
-                    <div class="pagination-controls">
-                        <button disabled>Previous</button>
-                        <span>Page 1 of 10</span>
-                        <button>Next</button>
-                    </div>
-                </div>
+            <div class="export-buttons-top">
+                <button class="btn btn-pdf">Export PDF</button>
+                <button class="btn btn-excel">Export Excel</button>
+            </div>
 
+            <div class="data-info-bar">
+                <div>
+                    Show
+                    <select id="entriesPerPage">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    entries
+                </div>
+                <div id="totalEntries">Total 102719 entries</div>
+            </div>
+
+            <section class="data-table-container">
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -281,6 +172,15 @@
                         </tbody>
                 </table>
             </section>
+
+            <div class="table-footer-controls">
+                <input type="text" class="search-input" placeholder="Search...">
+                <div class="pagination-controls">
+                    <button disabled>‹ Previous</button>
+                    <span>Page 1 of 10</span>
+                    <button>Next ›</button>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -329,6 +229,24 @@
                         submenu.classList.toggle('show'); // Toggle 'show' class
                     }
                 });
+            });
+
+            // Filter collapse/expand logic
+            const filtersHeader = document.getElementById('filtersHeader');
+            const filtersContent = document.getElementById('filtersContent');
+            const filterToggleIcon = filtersHeader.querySelector('.filter-toggle-icon');
+
+            // Start collapsed by default as per requirement
+            filtersContent.classList.remove('show');
+            filterToggleIcon.style.transform = 'rotate(-90deg)'; // Point left/down when collapsed
+
+            filtersHeader.addEventListener('click', () => {
+                filtersContent.classList.toggle('show');
+                if (filtersContent.classList.contains('show')) {
+                    filterToggleIcon.style.transform = 'rotate(0deg)'; // Point down/up when expanded
+                } else {
+                    filterToggleIcon.style.transform = 'rotate(-90deg)'; // Point left/down when collapsed
+                }
             });
 
             // Basic role-based access check - specific for Audit Logs (Admin only)
