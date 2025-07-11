@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasurer Dashboard - FUNDS GROUP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <header>
+        <div class="logo-text">FUNDS GROUP</div>
+        <div>
+            <span class="user-info" id="userInfo"></span>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <aside class="sidebar">
+            <h2>Treasurer Menu</h2>
+            <ul>
+                <li><a href="treasurer_dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Record Contributions</a></li>
+                <li><a href="#">Manage Payouts</a></li>
+                <li><a href="#">View Financial Reports</a></li>
+                <li><a href="#">Manage Kitty Funds</a></li>
+            </ul>
+        </aside>
+
+        <main class="dashboard-content">
+            <h1>Treasurer Overview</h1>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Current Balance</h3>
+                    <p><strong>$15,250.00</strong></p>
+                </div>
+                <div class="card">
+                    <h3>Total Contributions (Month)</h3>
+                    <p><strong>$1,800.00</strong> from 25 transactions</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Payouts</h3>
+                    <p><strong>2</strong> requests awaiting approval</p>
+                </div>
+                <div class="card">
+                    <h3>Kitty Balance</h3>
+                    <p><strong>$3,500.00</strong></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Retrieve user info from localStorage and display
+        const username = localStorage.getItem('username');
+        const userRole = localStorage.getItem('userRole');
+        if (username && userRole) {
+            document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+        }
+
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+
+        // Basic role-based access check
+        if (!userRole || userRole !== 'treasurer') {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
