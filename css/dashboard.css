@@ -1,0 +1,195 @@
+/* General Body & Layout */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Same as login */
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #2E8B57; /* Darker green */
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure header is on top */
+}
+
+header .logo-text {
+    font-size: 1.8em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+}
+
+header .user-info {
+    font-size: 1.1em;
+    margin-right: 20px;
+}
+
+header .logout-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+header .logout-btn:hover {
+    background-color: #d32f2f; /* Darker red */
+}
+
+/* Main Content Area */
+.main-content {
+    display: flex;
+    flex: 1; /* Takes remaining vertical space */
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    background-color: #ffffff; /* White background for sidebar */
+    width: 250px;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    z-index: 900;
+}
+
+.sidebar h2 {
+    color: #2E8B57;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #e6f5e6; /* Light green hover */
+    color: #2E8B57;
+}
+
+.sidebar ul li a.active { /* For active page indication */
+    background-color: #4CAF50; /* Primary green for active */
+    color: white;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Dashboard Content Area */
+.dashboard-content {
+    flex: 1; /* Takes remaining horizontal space */
+    padding: 30px;
+    background-color: #f8f8f8; /* Light gray background for content */
+    overflow-y: auto; /* Enable scrolling for content if needed */
+}
+
+.dashboard-content h1 {
+    color: #2E8B57;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+/* Content Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 15px;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 15px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .sidebar ul li {
+        margin: 5px 10px;
+    }
+
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    header {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+    header .user-info {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+}
