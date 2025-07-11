@@ -8,26 +8,27 @@
     <style>
         /* General Body Styling */
         body {
-            font-family: 'Roboto', sans-serif; /* Using a modern font */
+            font-family: 'Roboto', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(to right, #4CAF50, #2E8B57); /* Green gradient background */
+            /* Updated: Multi-color green gradient */
+            background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Blend of medium sea green, sea green, forest green, and teal */
             margin: 0;
             color: #333;
         }
 
         /* Login Container Styling */
         .login-container {
-            background-color: #ffffff; /* White background for the form box */
+            background-color: #ffffff;
             padding: 40px;
-            border-radius: 15px; /* Slightly more rounded container */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 350px; /* Slightly wider */
-            max-width: 90%; /* Responsive width */
-            box-sizing: border-box; /* Include padding in width */
+            width: 350px;
+            max-width: 90%;
+            box-sizing: border-box;
         }
 
         /* Header and Title Styling */
@@ -36,40 +37,36 @@
         }
 
         .login-header .logo-placeholder {
-            font-size: 50px; /* Large icon placeholder */
-            color: #4CAF50; /* Green icon */
+            font-size: 50px;
+            color: #4CAF50;
             margin-bottom: 10px;
-            /* You can replace this with an actual SVG or FontAwesome icon */
-            /* For a group of people icon, consider using a library like Font Awesome: */
-            /* <i class="fas fa-users"></i> */
         }
 
         .login-header h2 {
-            font-size: 28px; /* Larger title */
-            color: #2E8B57; /* Darker green for the title */
+            font-size: 28px;
+            color: #2E8B57;
             margin: 0;
-            letter-spacing: 1.5px; /* Spaced out letters */
-            font-weight: 700; /* Bolder font */
-            text-transform: uppercase; /* All caps */
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .login-header h2 span {
-            font-weight: 400; /* Lighter weight for "FUNDS GROUP" */
-            font-size: 24px; /* Slightly smaller for 'FUNDS GROUP' */
-            display: block; /* New line for "FUNDS GROUP" */
-            color: #666; /* Slightly muted color for "FUNDS GROUP" */
+            font-weight: 400;
+            font-size: 24px;
+            display: block;
+            color: #666;
         }
-
 
         /* Input Field Styling */
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 100%; /* Full width */
-            padding: 12px 15px; /* More padding */
-            margin-bottom: 20px; /* More space below inputs */
-            border: 1px solid #c0c0c0; /* Softer border */
-            border-radius: 8px; /* Rounded input fields */
-            box-sizing: border-box; /* Include padding in width */
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #c0c0c0;
+            border-radius: 8px;
+            box-sizing: border-box;
             font-size: 16px;
             color: #555;
             transition: border-color 0.3s;
@@ -77,48 +74,49 @@
 
         .login-container input[type="text"]:focus,
         .login-container input[type="password"]:focus {
-            border-color: #4CAF50; /* Highlight on focus */
-            outline: none; /* Remove default outline */
+            border-color: #4CAF50;
+            outline: none;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
         }
 
         /* Button Styling */
         .login-container button {
             width: 100%;
-            padding: 12px 15px; /* More padding */
-            background-color: #4CAF50; /* Main button color */
+            padding: 12px 15px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 25px; /* Fully rounded button */
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 18px; /* Larger font */
-            font-weight: 700; /* Bolder text */
+            font-size: 18px;
+            font-weight: 700;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Button shadow */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         .login-container button:hover {
-            background-color: #45a049; /* Darker green on hover */
-            transform: translateY(-2px); /* Slight lift effect */
+            background-color: #45a049;
+            transform: translateY(-2px);
         }
 
         .login-container button:active {
-            transform: translateY(0); /* Press down effect */
+            transform: translateY(0);
         }
 
         /* Error Message Styling */
         .error-message {
-            color: #d32f2f; /* Darker red for error */
-            margin-top: 15px; /* More space above error */
+            color: #d32f2f;
+            margin-top: 15px;
             font-size: 14px;
-            display: none; /* Hidden by default */
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-header">
-            <div class="logo-placeholder">👥</div> <h2>B.A. <span>FUNDS GROUP</span></h2>
+            <div class="logo-placeholder">👥</div>
+            <h2>B.A. <span>FUNDS GROUP</span></h2>
         </div>
         <form id="loginForm">
             <input type="text" id="username" placeholder="Username" required>
@@ -129,8 +127,7 @@
     </div>
 
     <script>
-        // *** IMPORTANT: Replace with your actual PythonAnywhere domain ***
-        const BACKEND_URL = 'https://fundgroup.pythonanywhere.com/';
+        const BACKEND_URL = 'https://fundgroup.pythonanywhere.com/'; // REMEMBER TO UPDATE THIS!
 
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -139,8 +136,8 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
 
-            errorMessage.style.display = 'none'; // Hide any previous errors
-            errorMessage.textContent = ''; // Clear previous error text
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
 
             try {
                 const response = await fetch(`${BACKEND_URL}/login`, {
@@ -160,7 +157,6 @@
                     localStorage.setItem('userId', data.user_id);
                     localStorage.setItem('username', data.username);
 
-                    // Redirect based on user role (pages to be created)
                     if (data.role === 'admin') {
                         window.location.href = 'admin_dashboard.html';
                     } else if (data.role === 'treasurer') {
