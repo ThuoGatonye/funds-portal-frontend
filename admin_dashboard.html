@@ -8,23 +8,44 @@
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <header>
-        <div class="logo-text">FUNDS GROUP</div>
-        <div>
-            <span class="user-info" id="userInfo"></span>
-            <a href="index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <div class="main-content">
         <aside class="sidebar">
             <h2>Admin Menu</h2>
             <ul>
                 <li><a href="admin_dashboard.html" class="active">Dashboard</a></li>
-                <li><a href="#">Manage Users</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">User Management</a>
+                    <ul class="submenu">
+                        <li><a href="#">Roles</a></li>
+                        <li><a href="#">Users</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Group Management</a>
+                    <ul class="submenu">
+                        <li><a href="#">Plans</a></li>
+                        <li><a href="#">Member Profiles</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Reports</a>
+                    <ul class="submenu">
+                        <li><a href="#">Login History</a></li>
+                        <li><a href="#">Contribution Breakdown</a></li>
+                        <li><a href="#">Payout History</a></li>
+                        <li><a href="#">Kitty Breakdown</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">Main Settings</a>
+                    <ul class="submenu">
+                        <li><a href="#">Account Management</a></li>
+                        <li><a href="#">SMTP Settings</a></li>
+                    </ul>
+                </li>
                 <li><a href="#">Audit Logs</a></li>
-                <li><a href="#">System Settings</a></li>
-                <li><a href="#">Reports</a></li>
             </ul>
         </aside>
 
@@ -36,40 +57,87 @@
                     <p><strong>150</strong> active members</p>
                 </div>
                 <div class="card">
-                    <h3>Pending Approvals</h3>
+                    <h3>Active Plans</h3>
+                    <p><strong>7</strong> distinct plans</p>
+                </div>
+                <div class="card">
+                    <h3>Current Kitty Balance</h3>
+                    <p><strong>$3,500.00</strong></p>
+                </div>
+                <div class="card">
+                    <h3>Pending Actions</h3>
                     <p><strong>5</strong> new user registrations</p>
                 </div>
-                <div class="card">
-                    <h3>Recent Activity</h3>
-                    <p>Last login: John Doe (Treasuer) - 10/07/2025</p>
-                </div>
-                <div class="card">
-                    <h3>System Health</h3>
-                    <p>All services operational.</p>
-                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Financial Summary (Last 6 Months)</h3>
+                <p>  </p>
+                <p>A bar chart showing total contributions vs. payouts over the last 6 months.</p>
+            </div>
+
+            <div class="chart-container">
+                <h3>Member Activity</h3>
+                <p>  </p>
+                <p>A pie chart showing distribution of members across different contribution plans.</p>
             </div>
         </main>
     </div>
 
     <script>
-        // Retrieve user info from localStorage and display
-        const username = localStorage.getItem('username');
-        const userRole = localStorage.getItem('userRole');
-        if (username && userRole) {
-            document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+        // Function to load common HTML parts (from includes/header.html)
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+
+                // After header is loaded, attach user info and logout functionality
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                if (username && userRole) {
+                    document.getElementById('userInfo').textContent = `Logged in as ${username} (${userRole})`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } catch (e) {
+                console.error("Failed to load header:", e);
+            }
         }
 
-        // Logout functionality
-        document.querySelector('.logout-btn').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            localStorage.clear(); // Clear all stored user data
-            window.location.href = 'index.html'; // Redirect to login page
+        // Script for sidebar submenu toggling
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+
+            // Submenu toggle logic
+            document.querySelectorAll('.toggle-submenu').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const submenu = this.nextElementSibling; // Get the next sibling (the ul.submenu)
+                    if (submenu && submenu.classList.contains('submenu')) {
+                        submenu.classList.toggle('show'); // Toggle 'show' class
+                    }
+                });
+            });
+
+            // Basic role-based access check
+            const userRole = localStorage.getItem('userRole');
+            const path = window.location.pathname;
+            if (path.includes('admin_dashboard.html') && (!userRole || userRole !== 'admin')) {
+                window.location.href = 'index.html';
+            }
         });
-
-        // Basic role-based access check
-        if (!userRole || userRole !== 'admin') {
-            window.location.href = 'index.html'; // Redirect to login if not logged in or not admin
-        }
     </script>
 </body>
 </html>
