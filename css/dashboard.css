@@ -60,6 +60,18 @@ header .logout-btn:hover {
     background-color: #d32f2f; /* Darker red */
 }
 
+/* New: Mobile menu toggle button (hidden on desktop) */
+.mobile-menu-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 5px;
+}
+
+
 /* Main Content Area */
 .main-content {
     display: flex;
@@ -75,6 +87,8 @@ header .logout-btn:hover {
     display: flex;
     flex-direction: column;
     z-index: 900;
+    /* Transition for smooth show/hide */
+    transition: transform 0.3s ease-out; /* For sliding in/out */
 }
 
 .sidebar h2 {
@@ -442,34 +456,63 @@ table.dataTable thead .dt-orderable-desc:after {
 
     /* --- Header Adjustments --- */
     header {
-        flex-direction: column; /* Stack logo/user info vertically */
-        padding: 10px 20px;
-        text-align: center; /* Center header content */
+        flex-direction: row; /* Keep elements on a single row */
+        justify-content: space-between; /* Space out items */
+        align-items: center; /* Vertically center */
+        padding: 10px 15px; /* Adjust padding */
     }
+    header .logo-text {
+        font-size: 1.2em; /* Make FUNDS GROUP text smaller */
+    }
+    .mobile-menu-toggle {
+        display: block; /* Show hamburger menu button on mobile */
+        order: 1; /* Place it before logo-link to position it on the left */
+    }
+    header .logo-link {
+        order: 2; /* Place logo after toggle */
+        flex-grow: 1; /* Allow logo to take available space */
+        text-align: center; /* Center the logo text */
+    }
+
     header .header-right {
-        flex-direction: column; /* Stack user info and logout button */
-        gap: 10px; /* Reduce gap */
-        width: 100%; /* Take full width */
-        align-items: center; /* Center vertically */
-        justify-content: center; /* Center horizontally */
+        order: 3; /* Place user info/logout last */
+        flex-direction: row; /* Keep user info and logout on a single row */
+        gap: 10px; /* Smaller gap */
+        justify-content: flex-end; /* Push to the right */
+        width: auto; /* Allow width to shrink */
     }
     header .user-info {
-        margin-bottom: 5px; /* Reduce margin */
+        font-size: 0.9em; /* Smaller font for user info */
+        white-space: nowrap; /* Prevent wrapping */
+        margin-bottom: 0;
+    }
+    header .logout-btn {
+        padding: 5px 10px; /* Smaller button */
+        font-size: 0.8em;
     }
 
     /* --- Sidebar Adjustments --- */
     .sidebar {
         width: 100%; /* Full width */
-        height: auto; /* Auto height */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        padding: 15px;
-        order: -1; /* Move sidebar above main content on mobile */
+        position: fixed; /* Make it fixed so it can slide out/in */
+        height: 100vh; /* Full viewport height */
+        top: 0;
+        left: 0;
+        transform: translateX(-100%); /* HIDE BY DEFAULT: Slide off-screen to the left */
+        padding-top: 70px; /* Space for the header */
+        z-index: 999; /* Ensure it's above main content but below header */
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        display: block; /* Change from flex to block for simple slide */
     }
+
+    .sidebar.show-sidebar { /* Class added by JS to show sidebar */
+        transform: translateX(0); /* Slide into view */
+    }
+
     .sidebar h2 {
         margin-bottom: 15px;
     }
     .sidebar ul {
-        display: flex;
         flex-direction: column; /* FORCED VERTICAL STACKING for main menu items */
         align-items: center; /* Center them */
         padding: 0;
