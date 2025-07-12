@@ -660,7 +660,7 @@ table.dataTable thead .dt-orderable-desc:after {
         width: 100% !important;
     }
     table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr:first-child>th:first-child:before,
     table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,
     table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
         display: none !important;
@@ -668,5 +668,157 @@ table.dataTable thead .dt-orderable-desc:after {
     table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
     table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
         padding-left: 15px !important;
+    }
+}
+
+/* --- New Header Right Section Elements --- */
+
+/* Notification Button Styles */
+.notification-button {
+    background: none;
+    border: none;
+    color: white; /* Inherit header text color */
+    font-size: 1.2em; /* Size of the bell icon */
+    cursor: pointer;
+    position: relative;
+    padding: 0; /* Remove default button padding */
+    display: flex; /* For aligning icon and badge */
+    align-items: center;
+    line-height: 1; /* Helps vertical alignment of icon */
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px; /* Adjust vertical position */
+    right: -8px; /* Adjust horizontal position */
+    background-color: #f44336; /* Red for notifications, matches logout button hover */
+    color: white;
+    font-size: 0.6em; /* Smaller font for the number */
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 50%;
+    min-width: 18px; /* Ensures circular shape for single digits */
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1; /* Prevents extra line height */
+    box-shadow: 0 0 5px rgba(0,0,0,0.2); /* Slight shadow for visibility */
+}
+
+/* Profile Dropdown Container */
+.profile-dropdown {
+    position: relative;
+    display: inline-block; /* Essential for dropdown positioning */
+}
+
+/* Profile Toggle (clickable area) */
+.profile-toggle {
+    display: flex;
+    align-items: center;
+    color: white; /* Inherit header text color */
+    cursor: pointer;
+    font-size: 1.1em; /* Matches .user-info size */
+    padding: 5px 0; /* Add some padding for click area */
+    border-radius: 5px; /* Slight rounding for hover effect */
+    transition: background-color 0.2s ease;
+}
+
+.profile-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover background */
+}
+
+.profile-icon {
+    font-size: 28px; /* Size of the Font Awesome user icon */
+    margin-right: 8px;
+    color: white; /* Ensure icon is white */
+}
+
+.dropdown-arrow {
+    font-size: 0.8em; /* Smaller arrow icon */
+    margin-left: 5px;
+    color: white; /* Ensure arrow is white */
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none; /* Hidden until hover */
+    position: absolute;
+    top: 100%; /* Position right below the toggle */
+    right: 0; /* Align to the right edge of the profile-dropdown */
+    background-color: #fff; /* White background for dropdown */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1001; /* Ensure it's above everything else */
+    border-radius: 8px; /* Rounded corners for the dropdown box */
+    overflow: hidden; /* Ensures child elements respect border-radius */
+    padding: 5px 0; /* Padding inside the dropdown */
+    border: 1px solid #ddd; /* Light border around the dropdown */
+}
+
+/* Dropdown Menu Items */
+.dropdown-content a,
+.dropdown-content button.logout-btn {
+    color: #333; /* Darker text for dropdown items */
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    border: none; /* Remove button default border */
+    background: none; /* Remove button default background */
+    width: 100%; /* Make button span full width */
+    text-align: left; /* Align text to the left */
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.dropdown-content a:hover,
+.dropdown-content button.logout-btn:hover {
+    background-color: #f0f0f0; /* Light grey on hover */
+    color: #2E8B57; /* Highlight text on hover */
+}
+
+/* Dropdown Divider */
+.dropdown-divider {
+    border-top: 1px solid #eee; /* Light grey divider line */
+    margin: 5px 0;
+}
+
+/* Show the dropdown menu on hover */
+.profile-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Adjust .header-right gap slightly if needed for better spacing with new elements */
+header .header-right {
+    gap: 15px; /* Reduced from 20px if desired for tighter spacing */
+}
+
+/* Media query adjustments for new elements (copy to your @media (max-width: 768px) block) */
+@media (max-width: 768px) {
+    /* Adjust notification badge position for smaller screens if needed */
+    .notification-badge {
+        top: -5px; 
+        right: -5px;
+    }
+
+    .profile-toggle .profile-icon {
+        font-size: 24px; /* Slightly smaller icon on mobile */
+        margin-right: 5px;
+    }
+    .profile-toggle .user-info {
+        font-size: 0.8em; /* Consistent with existing mobile user-info */
+    }
+    .profile-toggle .dropdown-arrow {
+        font-size: 0.7em;
+    }
+    .dropdown-content {
+        min-width: 140px; /* Smaller dropdown width on mobile */
+    }
+    .dropdown-content a,
+    .dropdown-content button.logout-btn {
+        padding: 8px 12px; /* Smaller padding on mobile */
+        font-size: 0.9em;
     }
 }
