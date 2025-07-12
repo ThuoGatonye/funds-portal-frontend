@@ -252,9 +252,9 @@ header .logout-btn:hover {
     color: #555;
     white-space: nowrap;
 }
-.filter-group input[type="date"],
-.filter-group select,
-.filter-group input[type="text"] {
+/* Unified styling for inputs and selects within filter group */
+.filter-group input[type="text"], /* Catches Flatpickr inputs which are type="text" */
+.filter-group select {
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -262,6 +262,27 @@ header .logout-btn:hover {
     min-width: 150px;
     flex-grow: 1;
 }
+
+/* Specific adjustment for Flatpickr's calendar icon if it overlaps */
+/* Flatpickr inputs automatically get a calendar icon if `wrap: true` is used in JS config
+   or if it's the default behavior. This ensures it's spaced. */
+.flatpickr-calendar {
+    font-family: 'Roboto', sans-serif; /* Use theme font for calendar */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Slightly stronger shadow */
+    border-radius: 8px; /* Match other elements */
+    border: 1px solid #ddd; /* Subtle border */
+}
+
+.flatpickr-day.selected, .flatpickr-day.selected:hover {
+    background: #4CAF50; /* Primary green for selected date */
+    border-color: #4CAF50;
+    color: white;
+}
+.flatpickr-day.today {
+    border-color: #2E8B57; /* Darker green for today's date border */
+}
+
+
 .filter-group button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -486,7 +507,10 @@ table.dataTable thead .dt-orderable-desc:after {
         flex-direction: column; /* Stack filters vertically on small screens */
         align-items: stretch;
     }
-    .filter-group input, .filter-group select, .filter-group button {
+    /* Unified responsive sizing for inputs and selects */
+    .filter-group input[type="text"],
+    .filter-group select,
+    .filter-group button {
         width: 100%; /* Full width for filter inputs/buttons */
         min-width: unset;
     }
