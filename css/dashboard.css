@@ -28,7 +28,875 @@ header {
     box-sizing: border-box; /* Ensure consistent box model */
 }
 
+header .logo-link {/* General Body & Layout */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Same as login */
+    color: #333;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+/* Header Styling */
+header {
+    background-color: #2E8B57; /* Darker green */
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure header is on top */
+    position: fixed; /* Make header fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
 header .logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+header .logo-text {
+    font-size: 1.8em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+header .user-info {
+    font-size: 1.1em;
+}
+
+header .logout-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+header .logout-btn:hover {
+    background-color: #d32f2f;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Main Content Area */
+.main-content {
+    display: flex;
+    flex: 1; /* Takes remaining vertical space */
+    align-items: stretch; /* Ensures children stretch vertically */
+    padding-top: 60px; /* NEW: Add padding equal to header height to push content down */
+    min-height: calc(100vh - 60px); /* NEW: Ensure it takes full remaining viewport height */
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    background-color: #ffffff; /* White background for sidebar */
+    width: 300px; /* Adjusted width: Increased to 300px for more buffer */
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    z-index: 900;
+    transition: transform 0.3s ease-out;
+    position: sticky; /* Keeps it sticky within .main-content's flow */
+    top: 60px; /* Stick from below the header */
+    height: calc(100vh - 60px); /* Ensure it spans full height from below header */
+    overflow-y: auto; /* Allow vertical scrolling if sidebar content is too long */
+    overflow-x: hidden; /* CRITICAL: Hide horizontal overflow from sidebar itself */
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.sidebar h2 {
+    color: #2E8B57;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    max-width: 100%; /* Ensure H2 doesn't overflow */
+    box-sizing: border-box;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 100%; /* Ensure UL doesn't overflow */
+    box-sizing: border-box;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+    max-width: 100%; /* Ensure LI doesn't overflow */
+    box-sizing: border-box;
+}
+
+.sidebar ul li a {
+    display: flex; /* Changed to flex to align icon and text */
+    align-items: center; /* Vertically align icon and text */
+    padding: 12px 15px; /* Symmetrical padding */
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Ensures text stays on one line */
+    overflow: hidden; /* Hides overflowing content */
+    text-overflow: ellipsis; /* Adds "..." for overflowed text */
+    max-width: 100%; /* Important: Constrain link width to its parent */
+    box-sizing: border-box; /* Ensure padding/border is included in width */
+    flex-grow: 1; /* Allow text portion to grow and fill space */
+}
+
+.sidebar ul li a i { /* Style for Font Awesome icons within sidebar links */
+    margin-right: 10px; /* Space between icon and text */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.sidebar ul li a:hover {
+    background-color: #e6f5e6; /* Light green hover */
+    color: #2E8B57;
+}
+
+.sidebar ul li a.active {
+    background-color: #4CAF50; /* Primary green for active */
+    color: white;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Nested menu items for cascading */
+.sidebar ul li ul {
+    margin-top: 10px;
+    margin-left: 5px; /* Further reduced margin for nesting */
+    border-left: 2px solid #e6e6e6;
+    padding-left: 5px; /* Minimal padding for nesting line */
+    display: none;
+    max-width: calc(100% - 5px); /* Adjusted: Compensate for the margin-left */
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.sidebar ul li ul.show {
+    display: block;
+}
+
+/* Specific styling for nested links to handle overflow */
+.sidebar ul li ul li a {
+    padding: 8px 8px; /* Slightly more symmetrical padding for nested items */
+    font-size: 0.9em; /* Slightly smaller font for nested items */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Critical: Ensure nested links also respect parent width */
+    box-sizing: border-box; /* Ensure padding/border is included in width */
+}
+
+
+/* Dashboard Content Area */
+.dashboard-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #F0F2F5; /* A light, soft gray */
+    overflow-y: auto;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.dashboard-content h1 {
+    color: #2E8B57;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+/* Page Header Controls */
+.page-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.page-header-controls h1 {
+    margin: 0;
+}
+
+.page-header-controls .header-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Content Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Chart Container Styling */
+.chart-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 25px;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+/* Filters Section Styling */
+.filters-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, box-shadow 0.3s ease-out;
+    max-height: 500px;
+    overflow: hidden;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.filters-section.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.filters-content {
+    display: block;
+    padding-top: 10px;
+}
+
+.filters-content:not(.show) {
+    display: none;
+}
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+.filter-group label {
+    font-weight: 500;
+    color: #555;
+    white-space: nowrap;
+}
+.filter-group input[type="text"],
+.filter-group select {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.95em;
+    min-width: 150px;
+    flex-grow: 1;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.flatpickr-calendar {
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.flatpickr-day.selected, .flatpickr-day.selected:hover {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+.flatpickr-day.today {
+    border-color: #2E8B57;
+}
+
+.filter-group button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+.filter-group button:hover {
+    background-color: #45a049;
+}
+.filter-group button.clear-btn {
+    background-color: #6c757d;
+}
+.filter-group button.clear-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Data Table Container */
+.data-table-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+table.dataTable {
+    margin-top: 15px;
+}
+table.dataTable thead th,
+table.dataTable tbody td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+table.dataTable thead th {
+    background-color: #E6EBE6;
+    color: #333;
+    font-weight: 600;
+    white-space: nowrap;
+    padding-right: 30px;
+    position: relative;
+    border-bottom: 2px solid #D1D8D1;
+}
+
+table.dataTable thead .dt-orderable-asc:before,
+table.dataTable thead .dt-orderable-desc:after {
+    vertical-align: middle;
+}
+table.dataTable thead .dt-orderable-asc:before {
+    bottom: 0.8em !important;
+}
+table.dataTable thead .dt-orderable-desc:after {
+    top: 0.8em !important;
+}
+
+.dataTables_scrollBody {
+    overflow-x: auto;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.dataTables_wrapper .dataTables_filter label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 0;
+}
+
+.dataTables_wrapper .dataTables_filter input[type="search"] {
+    width: auto;
+    flex-grow: 1;
+    max-width: 200px;
+}
+
+.header-buttons .dt-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: 0;
+}
+
+.header-buttons .dt-buttons .btn.dropdown-toggle .fas {
+    font-size: 1.2em;
+    margin-right: 0;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fas {
+    margin-right: 8px;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-excel {
+    color: #28a745;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-pdf {
+    color: #dc3545;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-csv {
+    color: #4CAF50;
+}
+
+.dataTables_wrapper .dataTables_info {
+    float: left;
+    padding: 10px 0;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    padding: 10px 0;
+}
+
+.dataTables_wrapper:after { content: ""; display: table; clear: both; }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* --- General Layout Adjustments --- */
+    .main-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 60px; /* Keep for mobile too if header is fixed */
+        min-height: calc(100vh - 60px); /* Ensure it covers full height */
+    }
+
+    /* --- Header Adjustments --- */
+    header {
+        /* On mobile, header is fixed, so keep its full width and positioning */
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        padding: 10px 15px; /* Adjust padding for mobile */
+        justify-content: space-between;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        order: unset;
+        z-index: 1001;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    header .logo-link {
+        order: unset;
+        flex-grow: 1;
+        text-align: center;
+        font-size: 1.2em;
+        margin-left: 0;
+        margin-right: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    header .logo-text {
+        font-size: 1em;
+    }
+
+    header .header-right {
+        order: unset;
+        flex-direction: row;
+        gap: 8px;
+        justify-content: flex-end;
+        width: auto;
+        flex-shrink: 0;
+    }
+    header .user-info {
+        font-size: 0.8em;
+        white-space: nowrap;
+        margin-bottom: 0;
+    }
+    header .logout-btn {
+        padding: 5px 10px;
+        font-size: 0.75em;
+    }
+
+    /* --- Sidebar Adjustments --- */
+    .sidebar {
+        width: 100%;
+        position: fixed; /* Keep fixed for mobile overlay */
+        height: 100vh;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        padding-top: 70px; /* Adjust padding for mobile header */
+        z-index: 999;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        display: block;
+        /* Remove sticky for mobile as fixed is better for overlay */
+        /* Also remove calc height for mobile as 100vh is fine */
+    }
+
+    .sidebar.show-sidebar {
+        transform: translateX(0);
+    }
+
+    .sidebar h2 {
+        margin-bottom: 15px;
+    }
+    .sidebar ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+    .sidebar ul li {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .sidebar ul li a {
+        display: block;
+        padding: 8px 12px;
+        font-size: 0.9em;
+        white-space: normal;
+    }
+    .sidebar ul li ul {
+        margin-left: 0;
+        border-left: none;
+        width: 100%;
+        text-align: center;
+        flex-direction: column;
+        display: none;
+        align-items: center;
+    }
+    .sidebar ul li ul.show {
+        display: flex;
+    }
+    .sidebar ul li ul li {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* --- Dashboard Content Adjustments --- */
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    /* --- Page Header Controls (H1 and buttons) Adjustments --- */
+    .page-header-controls {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        padding: 0 5px;
+    }
+    .page-header-controls h1 {
+        font-size: 1.3em;
+        margin: 0;
+        flex-shrink: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .page-header-controls .header-buttons {
+        flex-wrap: nowrap;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+    .page-header-controls .header-buttons .btn {
+        padding: 7px 10px;
+        font-size: 0.85em;
+        white-space: nowrap;
+    }
+    .header-buttons .dt-buttons .btn.dropdown-toggle .fas {
+        font-size: 1em;
+        margin-right: 0;
+    }
+
+    /* --- Filters Section Adjustments --- */
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-group input[type="text"],
+    .filter-group select,
+    .filter-group button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* --- DataTables Specific Responsive Adjustments --- */
+    .dataTables_wrapper .row:first-of-type {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 0 5px;
+    }
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none;
+        width: 48%;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 5px;
+    }
+    .dataTables_wrapper .dataTables_length label,
+    .dataTables_wrapper .dataTables_filter label {
+        font-size: 0.85em;
+        white-space: nowrap;
+        margin-bottom: 0;
+    }
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input[type="search"] {
+        max-width: 100px;
+        font-size: 0.8em;
+        padding: 5px 8px;
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        display: block;
+    }
+    .dataTables_wrapper .dataTables_paginate .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .data-table-container {
+        overflow-x: auto;
+    }
+    table.dataTable {
+        min-width: 700px;
+        width: 100% !important;
+    }
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr:first-child>th:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
+        display: none !important;
+    }
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
+        padding-left: 15px !important;
+    }
+}
+
+/* --- New Header Right Section Elements --- */
+
+/* Notification Button Styles */
+.notification-button {
+    background: none;
+    border: none;
+    color: white; /* Inherit header text color */
+    font-size: 1.2em; /* Size of the bell icon */
+    cursor: pointer;
+    position: relative;
+    padding: 0; /* Remove default button padding */
+    display: flex; /* For aligning icon and badge */
+    align-items: center;
+    line-height: 1; /* Helps vertical alignment of icon */
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px; /* Adjust vertical position */
+    right: -8px; /* Adjust horizontal position */
+    background-color: #f44336; /* Red for notifications, matches logout button hover */
+    color: white;
+    font-size: 0.6em; /* Smaller font for the number */
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 50%;
+    min-width: 18px; /* Ensures circular shape for single digits */
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1; /* Prevents extra line height */
+    box-shadow: 0 0 5px rgba(0,0,0,0.2); /* Slight shadow for visibility */
+}
+
+/* Profile Dropdown Container */
+.profile-dropdown {
+    position: relative;
+    display: inline-block; /* Essential for dropdown positioning */
+}
+
+/* Profile Toggle (clickable area) */
+.profile-toggle {
+    display: flex;
+    align-items: center;
+    color: white; /* Inherit header text color */
+    cursor: pointer;
+    font-size: 1.1em; /* Matches .user-info size */
+    padding: 5px 0; /* Add some padding for click area */
+    border-radius: 5px; /* Slight rounding for hover effect */
+    transition: background-color 0.2s ease;
+}
+
+.profile-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover background */
+}
+
+.profile-icon {
+    font-size: 28px; /* Size of the Font Awesome user icon */
+    margin-right: 8px;
+    color: white; /* Ensure icon is white */
+}
+
+.dropdown-arrow {
+    font-size: 0.8em; /* Smaller arrow icon */
+    margin-left: 5px;
+    color: white; /* Ensure arrow is white */
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none; /* Hidden until hover */
+    position: absolute;
+    top: 100%; /* Position right below the toggle */
+    right: 0; /* Align to the right edge of the profile-dropdown */
+    background-color: #fff; /* White background for dropdown */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1001; /* Ensure it's above everything else */
+    border-radius: 8px; /* Rounded corners for the dropdown box */
+    overflow: hidden; /* Ensures child elements respect border-radius */
+    padding: 5px 0; /* Padding inside the dropdown */
+    border: 1px solid #ddd; /* Light border around the dropdown */
+}
+
+/* Dropdown Menu Items */
+.dropdown-content a,
+.dropdown-content button.logout-btn {
+    color: #333; /* Darker text for dropdown items */
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    border: none; /* Remove button default border */
+    background: none; /* Remove button default background */
+    width: 100%; /* Make button span full width */
+    text-align: left; /* Align text to the left */
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.dropdown-content a:hover,
+.dropdown-content button.logout-btn:hover {
+    background-color: #f0f0f0; /* Light grey on hover */
+    color: #2E8B57; /* Highlight text on hover */
+}
+
+/* Dropdown Divider */
+.dropdown-divider {
+    border-top: 1px solid #eee; /* Light grey divider line */
+    margin: 5px 0;
+}
+
+/* Show the dropdown menu on hover */
+.profile-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Adjust .header-right gap slightly if needed for better spacing with new elements */
+header .header-right {
+    gap: 15px; /* Reduced from 20px if desired for tighter spacing */
+}
+
+/* Media query adjustments for new elements (copy to your @media (max-width: 768px) block) */
+@media (max-width: 768px) {
+    /* Adjust notification badge position for smaller screens if needed */
+    .notification-badge {
+        top: -5px;
+        right: -5px;
+    }
+
+    .profile-toggle .profile-icon {
+        font-size: 24px; /* Slightly smaller icon on mobile */
+        margin-right: 5px;
+    }
+    .profile-toggle .user-info {
+        font-size: 0.8em; /* Consistent with existing mobile user-info */
+    }
+    .profile-toggle .dropdown-arrow {
+        font-size: 0.7em;
+    }
+    .dropdown-content {
+        min-width: 140px; /* Smaller dropdown width on mobile */
+    }
+    .dropdown-content a,
+    .dropdown-content button.logout-btn {
+        padding: 8px 12px; /* Smaller padding on mobile */
+        font-size: 0.9em;
+    }
+}
     text-decoration: none;
     color: inherit;
 }
