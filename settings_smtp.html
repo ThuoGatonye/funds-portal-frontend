@@ -15,29 +15,40 @@
     <style>
         .card {
             margin-bottom: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 10px; /* Slightly more rounded corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* More pronounced shadow */
+            border: none; /* Remove default border */
         }
         .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            font-weight: bold;
-            color: #343a40;
+            background-color: #e9f5ff; /* Lighter blue background for header */
+            border-bottom: 1px solid #cce5ff; /* Lighter border */
+            font-weight: 700; /* Bolder font for headers */
+            color: #0056b3; /* Darker blue color for text */
             padding: 15px 20px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.15em; /* Slightly larger font size */
         }
         .form-label {
-            font-weight: 500;
+            font-weight: 500; /* Medium weight for labels */
+            color: #333;
         }
         .btn-group-actions {
             margin-top: 20px;
             text-align: right;
         }
+        .btn {
+            font-weight: 500; /* Ensure button text isn't too thin */
+        }
+        /* Improve form control focus */
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
         .test-email-section {
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #eee; /* Separator for test section */
         }
         .alert-message {
             margin-top: 15px;
@@ -58,8 +69,7 @@
 
             <section class="settings-section">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-10">
-                        <div class="card">
+                    <div class="col-lg-7 col-md-9"> <div class="card">
                             <div class="card-header">
                                 SMTP Server Configuration
                             </div>
@@ -111,25 +121,19 @@
                                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save SMTP Settings</button>
                                         <button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                Test SMTP Configuration
-                            </div>
-                            <div class="card-body">
-                                <div class="test-email-section">
-                                    <div class="mb-3">
-                                        <label for="testEmailRecipient" class="form-label">Send Test Email To</label>
-                                        <input type="email" class="form-control" id="testEmailRecipient" placeholder="e.g., your_email@example.com" required>
-                                    </div>
-                                    <button type="button" class="btn btn-info" id="sendTestEmailBtn"><i class="fas fa-paper-plane"></i> Send Test Email</button>
-
-                                    <div id="testEmailStatus" class="alert-message mt-3" role="alert">
+                                    <div class="test-email-section">
+                                        <h5 class="mb-3">Test SMTP Configuration</h5>
+                                        <div class="mb-3">
+                                            <label for="testEmailRecipient" class="form-label">Send Test Email To</label>
+                                            <input type="email" class="form-control" id="testEmailRecipient" placeholder="e.g., your_email@example.com" required>
                                         </div>
-                                </div>
+                                        <button type="button" class="btn btn-info" id="sendTestEmailBtn"><i class="fas fa-paper-plane"></i> Send Test Email</button>
+
+                                        <div id="testEmailStatus" class="alert-message mt-3" role="alert">
+                                            </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
