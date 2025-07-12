@@ -112,51 +112,8 @@
     <div id="header-placeholder"></div>
 
     <div class="main-content">
-        <aside class="sidebar">
-            <h2>Admin Menu</h2>
-            <ul>
-                <li><a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="has-submenu">
-                    <a href="#" class="toggle-submenu">
-                        <i class="fas fa-users-cog"></i> User Management <i class="fas fa-chevron-down submenu-icon"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="roles.html">Roles</a></li>
-                        <li><a href="users.html">Users</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#" class="toggle-submenu">
-                        <i class="fas fa-layer-group"></i> Group Management <i class="fas fa-chevron-down submenu-icon"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="plans.html">Plans</a></li>
-                        <li><a href="member_profiles.html">Member Profiles</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#" class="toggle-submenu">
-                        <i class="fas fa-chart-line"></i> Reports <i class="fas fa-chevron-down submenu-icon"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="report_login_history.html">Login History</a></li>
-                        <li><a href="report_contribution_breakdown.html">Contribution Breakdown</a></li>
-                        <li><a href="report_payout_history.html">Payout History</a></li>
-                        <li><a href="report_kitty_breakdown.html">Kitty Breakdown</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#" class="toggle-submenu">
-                        <i class="fas fa-cogs"></i> Main Settings <i class="fas fa-chevron-down submenu-icon"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="settings_account_management.html">Account Management</a></li>
-                        <li><a href="settings_smtp.html">SMTP Settings</a></li>
-                    </ul>
-                </li>
-                <li><a href="audit_logs.html"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
-            </ul>
-        </aside>
+        <aside class="sidebar" id="sidebar-placeholder">
+            </aside>
 
         <main class="dashboard-content">
             <div class="page-header-controls">
@@ -335,7 +292,20 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        // DataTables and Filters Initialization (No changes here from your shared version)
+        // Function to set the active link in the sidebar
+        function setActiveSidebarLink() {
+            const currentPath = window.location.pathname.split('/').pop();
+            $('.sidebar a').each(function() {
+                const linkPath = $(this).attr('href');
+                if (linkPath === currentPath) {
+                    $(this).addClass('active');
+                    // Also expand parent submenu if it's a sub-item
+                    $(this).closest('.submenu').addClass('show');
+                    $(this).closest('.has-submenu').find('.toggle-submenu .submenu-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
+            });
+        }
+
         $(document).ready(function() {
             console.log('Document ready. Initializing DataTables...');
             var auditLogsTable = $('#auditLogsTable').DataTable({
@@ -410,9 +380,9 @@
             });
 
             // Dropdown menu toggle for sidebar - Unified Logic (THE FIX)
-            $('.sidebar .has-submenu > .toggle-submenu').on('click', function(e) {
+            // This will now apply to the dynamically loaded sidebar content
+            $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
                 e.preventDefault();
-                // No e.stopPropagation() needed here if we manage classes correctly
 
                 var $this = $(this);
                 var $submenu = $this.next('.submenu');
@@ -427,15 +397,9 @@
                 $('.sidebar .submenu').not($submenu).removeClass('show');
                 $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
             });
-
-            // No need for a separate document click handler for closing submenus as
-            // the above logic ensures only one is open at a time, and clicking outside
-            // the sidebar should close the entire sidebar if it's open (handled by mobile menu toggle logic).
-            // If you still want specific submenu closing on outside click, you'd need to re-implement
-            // it carefully without conflicting with the above.
         }); // End of DataTables and Filters Initialization $(document).ready()
 
-        // Function to load common HTML parts (from includes/header.html)
+        // Function to load common HTML parts (from includes/header.html and sidebar.html)
         async function loadHTML(elementId, filePath) {
             try {
                 const response = await fetch(filePath);
@@ -485,9 +449,9 @@
 
                 } else {
                     console.warn('Elements for mobile menu toggle, sidebar, or main content not found after header load. Debugging details:');
-                    if (!mobileMenuToggle) console.warn('  - .mobile-menu-toggle was null.');
-                    if (!sidebar) console.warn('  - .sidebar was null.');
-                    if (!mainContent) console.warn('  - .main-content was null.');
+                    if (!mobileMenuToggle) console.warn(' - .mobile-menu-toggle was null.');
+                    if (!sidebar) console.warn(' - .sidebar was null.');
+                    if (!mainContent) console.warn(' - .main-content was null.');
                 }
                 // --- END OF MOBILE-SPECIFIC JS MOVED HERE --- 🔥
 
@@ -509,19 +473,21 @@
                 }
 
             } catch (e) {
-                console.error("Failed to load header:", e);
+                console.error(`Failed to load ${filePath}:`, e);
             }
         }
 
-        // DOMContentLoaded for header loading and role-based access
-        document.addEventListener('DOMContentLoaded', () => {
-            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+        // DOMContentLoaded for header and sidebar loading and role-based access
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+            await loadHTML('sidebar-placeholder', 'includes/sidebar.html'); // Load the sidebar
+            setActiveSidebarLink(); // Set active link after sidebar is loaded
 
             // Basic role-based access check - specific for Audit Logs (Admin only)
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
                 // Commenting out for testing purposes if you don't have a login flow
-                // window.location.href = 'index.html'; 
+                // window.location.href = 'index.html';  
             }
         });
     </script>
