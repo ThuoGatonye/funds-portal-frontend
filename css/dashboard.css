@@ -175,7 +175,7 @@ header .logout-btn:hover {
     margin-top: 25px; /* Space from cards above */
 }
 
-/* Filters Section Styling - NEW */
+/* Filters Section Styling */
 .filters-section {
     background-color: #ffffff;
     padding: 20px;
@@ -259,52 +259,30 @@ header .logout-btn:hover {
     background-color: #5a6268;
 }
 
-/* Export Buttons Styling - NEW */
-.export-buttons-top {
-    display: flex;
-    justify-content: flex-end; /* Align to the right, similar to snippet */
-    gap: 10px;
-    margin-bottom: 15px; /* Space between filters and data info */
-}
-.export-buttons-top .btn {
-    padding: 8px 15px;
+/* Export Buttons within filters */
+.filter-group .btn {
+    padding: 10px 20px; /* Match filter button padding */
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 1em;
     font-weight: 500;
     transition: background-color 0.3s ease;
 }
-.export-buttons-top .btn-pdf {
+.filter-group .btn-pdf {
     background-color: #dc3545; /* Red for PDF */
     color: white;
 }
-.export-buttons-top .btn-pdf:hover {
+.filter-group .btn-pdf:hover {
     background-color: #c82333;
 }
-.export-buttons-top .btn-excel {
+.filter-group .btn-excel {
     background-color: #28a745; /* Green for Excel */
     color: white;
 }
-.export-buttons-top .btn-excel:hover {
+.filter-group .btn-excel:hover {
     background-color: #218838;
 }
-
-/* Data Info Bar - NEW */
-.data-info-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    font-size: 0.95em;
-    color: #555;
-}
-.data-info-bar select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
 
 /* Data Table Container */
 .data-table-container {
@@ -312,73 +290,31 @@ header .logout-btn:hover {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow-x: auto; /* Ensures table is scrollable on small screens */
+    /* DataTables handles its own overflow-x, margin-top */
 }
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px; /* Adjust as per new layout, may not need this margin */
-}
-.data-table th, .data-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-.data-table th {
-    background-color: #f2f2f2;
-    color: #333;
-    font-weight: 600;
-    white-space: nowrap; /* Prevent headers from wrapping too much */
-}
-.data-table tbody tr:hover {
-    background-color: #f9f9f9;
+/* Override DataTables default table styling for better fit with dashboard.css */
+#auditTable.table {
+    width: 100% !important; /* Ensure table uses full width */
+    margin-top: 15px; /* Add some space if needed below info bar */
 }
 
-/* Pagination & Search at Bottom - NEW */
-.table-footer-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-}
-.table-footer-controls .search-input {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 0.95em;
-    min-width: 200px;
-    flex-grow: 1;
-}
-.table-footer-controls .pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.table-footer-controls .pagination-controls button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.table-footer-controls .pagination-controls button:hover:not(:disabled) {
-    background-color: #0056b3;
-}
-.table-footer-controls .pagination-controls button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-.table-footer-controls .pagination-controls span {
-    font-size: 0.95em;
-    white-space: nowrap;
+/* Custom styling for DataTables generated elements to match snippet layout */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 10px 0;
+    margin-bottom: 5px;
 }
 
+/* Ensure search is top-right, info top-left */
+.dataTables_wrapper .dataTables_filter { float: right; margin-bottom: 10px; }
+.dataTables_wrapper .dataTables_length { float: left; margin-bottom: 10px; }
+.dataTables_wrapper:after { content: ""; display: table; clear: both; } /* Clear floats */
+
+/* Ensure info bottom-left, pagination bottom-right */
+.dataTables_wrapper .dataTables_info { float: left; }
+.dataTables_wrapper .dataTables_paginate { float: right; }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -442,18 +378,15 @@ header .logout-btn:hover {
         min-width: unset;
     }
 
-    .data-info-bar, .table-footer-controls {
-        flex-direction: column;
-        align-items: flex-start;
+    /* DataTables specific responsive adjustments */
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none; /* Remove floats on small screens */
+        text-align: center;
     }
-    .pagination-search .search-input {
-        width: 100%;
-    }
-    .pagination-search .pagination-controls {
-        width: 100%;
-        justify-content: center;
-    }
-    .export-buttons-top {
-        justify-content: center; /* Center export buttons on small screens */
+    .dataTables_wrapper .dataTables_filter input {
+        width: 100%; /* Make search input full width */
     }
 }
