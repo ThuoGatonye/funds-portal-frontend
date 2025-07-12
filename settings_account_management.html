@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management - Funds Group</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .profile-picture-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .profile-picture-upload-btn {
+            margin-top: 15px;
+        }
+        .card {
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: bold;
+            color: #343a40;
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-group-actions {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <aside class="sidebar" id="sidebar-placeholder"></aside>
+
+        <main class="dashboard-content">
+            <div class="page-header-controls">
+                <h1>Account Management</h1>
+            </div>
+
+            <section class="settings-section">
+                <div class="row">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="profile-picture-container">
+                                    <img src="images/default_profile.png" alt="Profile Picture" class="profile-picture" id="profileImage">
+                                    <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                                    <button class="btn btn-outline-primary profile-picture-upload-btn" id="uploadPictureBtn">
+                                        <i class="fas fa-camera"></i> Change Picture
+                                    </button>
+                                </div>
+                                <h5 class="text-center mb-3">John Doe</h5>
+                                <p class="text-center text-muted">john.doe@fundsgroup.com</p>
+                                <hr>
+                                <p><i class="fas fa-user-tag me-2"></i> Role: Administrator</p>
+                                <p><i class="fas fa-id-badge me-2"></i> Member ID: M001</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <div class="card">
+                            <div class="card-header">
+                                Personal Information
+                            </div>
+                            <div class="card-body">
+                                <form id="personalInfoForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" value="John">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" value="Doe">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" value="john.doe@fundsgroup.com" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phoneNumber" value="+254712345678">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" value="123 Funds Lane, Nairobi">
+                                    </div>
+                                    <div class="btn-group-actions">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                                        <button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                Change Password
+                            </div>
+                            <div class="card-body">
+                                <form id="passwordChangeForm">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="confirmNewPassword" required>
+                                    </div>
+                                    <div class="btn-group-actions">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
+                                        <button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                Notification Preferences
+                            </div>
+                            <div class="card-body">
+                                <form id="notificationPreferencesForm">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                        <label class="form-check-label" for="emailNotifications">Email Notifications for Contributions</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="smsNotifications">
+                                        <label class="form-check-label" for="smsNotifications">SMS Alerts for Withdrawals</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="newsletter" checked>
+                                        <label class="form-check-label" for="newsletter">Receive Newsletter</label>
+                                    </div>
+                                    <div class="btn-group-actions">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Preferences</button>
+                                        <button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                Two-Factor Authentication (2FA)
+                            </div>
+                            <div class="card-body">
+                                <p>Enhance your account security by enabling Two-Factor Authentication.</p>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="2faToggle" checked>
+                                    <label class="form-check-label" for="2faToggle">2FA Enabled</label>
+                                </div>
+                                <button type="button" class="btn btn-info" id="manage2FABtn"><i class="fas fa-shield-alt"></i> Manage 2FA</button>
+                                <small class="text-muted d-block mt-2">Manage your 2FA settings, including recovery codes and authenticator apps.</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+                return true;
+            } catch (e) {
+                console.error(`Failed to load ${filePath}:`, e);
+                return false;
+            }
+        }
+
+        function setActiveSidebarLink() {
+            const currentPathname = window.location.pathname;
+            const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                    let parentSubmenu = link.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        let parentToggle = parentSubmenu.previousElementSibling;
+                        if (parentToggle && parentToggle.classList.contains('toggle-submenu')) {
+                            parentToggle.querySelector('.submenu-icon').classList.remove('fa-chevron-down');
+                            parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadAllHTMLComponents() {
+            const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
+            const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
+            if (headerLoaded && sidebarLoaded) {
+                setActiveSidebarLink();
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+                if (mobileMenuToggle && sidebar && mainContent) {
+                    mobileMenuToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('show-sidebar');
+                        mainContent.classList.toggle('pushed-aside');
+                    });
+                    mainContent.addEventListener('click', function(event) {
+                        if (sidebar.classList.contains('show-sidebar') &&
+                            !sidebar.contains(event.target) &&
+                            !mobileMenuToggle.contains(event.target)) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                }
+                $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $submenu = $this.next('.submenu');
+                    var $icon = $this.find('.submenu-icon');
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('fa-chevron-down fa-chevron-up');
+                    $('.sidebar .submenu').not($submenu).removeClass('show');
+                    $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                });
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                const userInfoElement = document.getElementById('userInfo');
+                if (username && userRole && userInfoElement) {
+                    userInfoElement.textContent = `Welcome, ${username} (${userRole})`;
+                } else {
+                    userInfoElement.textContent = `Welcome, Guest`;
+                }
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                console.error("One or more core HTML components failed to load.");
+            }
+        }
+
+        $(document).ready(function() {
+            // Profile Picture Upload Handler
+            $('#uploadPictureBtn').on('click', function() {
+                $('#profilePictureInput').click();
+            });
+
+            $('#profilePictureInput').on('change', function(event) {
+                if (event.target.files && event.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#profileImage').attr('src', e.target.result);
+                        alert('Profile picture updated successfully! (Demo)');
+                        // In a real application, upload the file to the server
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+
+            // Form submission handlers (placeholders)
+            $('#personalInfoForm').on('submit', function(e) {
+                e.preventDefault();
+                alert('Personal Information saved successfully! (Demo)');
+            });
+
+            $('#passwordChangeForm').on('submit', function(e) {
+                e.preventDefault();
+                const newPassword = $('#newPassword').val();
+                const confirmNewPassword = $('#confirmNewPassword').val();
+                if (newPassword !== confirmNewPassword) {
+                    alert('New password and confirm password do not match.');
+                    return;
+                }
+                alert('Password updated successfully! (Demo)');
+                $(this)[0].reset(); // Clear form
+            });
+
+            $('#notificationPreferencesForm').on('submit', function(e) {
+                e.preventDefault();
+                alert('Notification preferences saved! (Demo)');
+            });
+
+            // Cancel button functionality
+            $('.cancel-btn').on('click', function() {
+                // In a real application, you might reload the original data or simply close a modal
+                alert('Changes cancelled. (Demo)');
+                $(this).closest('form')[0].reset(); // Reset the form fields
+            });
+
+            // 2FA Toggle and Manage button
+            $('#2faToggle').on('change', function() {
+                if ($(this).is(':checked')) {
+                    alert('Two-Factor Authentication Enabled! (Demo)');
+                } else {
+                    alert('Two-Factor Authentication Disabled! (Demo)');
+                }
+            });
+
+            $('#manage2FABtn').on('click', function() {
+                alert('Redirecting to 2FA management page/modal... (Demo)');
+                // In a real application, this would redirect to a dedicated 2FA setup/management page
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllHTMLComponents();
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
+            }
+        });
+    </script>
+</body>
+</html>
