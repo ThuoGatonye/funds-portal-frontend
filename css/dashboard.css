@@ -119,12 +119,15 @@ header .logout-btn:hover {
 
 .sidebar ul li a {
     display: block;
-    padding: 12px 10px; /* Changed from 15px to 10px here */
+    padding: 12px 15px; /* Reverted to original padding */
     text-decoration: none;
     color: #555;
     font-weight: 500;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Added: Keeps text on a single line */
+    overflow: hidden; /* Added: Hides overflowing content */
+    text-overflow: ellipsis; /* Added: Adds "..." for overflowed text */
 }
 
 .sidebar ul li a:hover {
