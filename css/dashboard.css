@@ -1,685 +1,530 @@
-/* General Body & Layout */
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Same as login */
-    color: #333;
+/* General Dashboard Styles (Desktop first, then mobile overrides) */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --text-color: #333;
+    --link-color: #0056b3;
+    --bg-color: #f4f7f6;
+    --header-bg-color: #ffffff;
+    --sidebar-bg-color: #ffffff;
+    --sidebar-link-color: #333;
+    --sidebar-link-hover-bg: #e9ecef;
+    --sidebar-link-active-bg: #007bff;
+    --sidebar-link-active-color: #ffffff;
+    --border-color: #dee2e6;
+    --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --sidebar-width: 250px; /* Default desktop sidebar width */
 }
 
-/* Header Styling */
-header {
-    background-color: #2E8B57; /* Darker green */
-    color: white;
-    padding: 15px 30px;
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex; /* Use flexbox for main layout */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    flex-direction: column; /* Stack header, main content, and footer vertically */
+}
+
+/* Layout Container */
+.dashboard-container {
+    display: flex;
+    flex-grow: 1; /* Allows it to take up remaining space after header */
+}
+
+/* Header Styles */
+.header {
+    background-color: var(--header-bg-color);
+    padding: 15px 20px;
+    box-shadow: var(--box-shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure header is on top */
+    width: 100%; /* Ensure header spans full width */
+    position: sticky; /* Sticky header */
+    top: 0;
+    z-index: 1020; /* Above sidebar */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
-header .logo-link { /* New: For clickable logo/title */
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Inherit color from parent (header) */
-}
-
-header .logo-text {
-    font-size: 1.8em;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: white;
-}
-
-.header-right { /* New rule to align user info and logout button */
+.header .left-section {
     display: flex;
-    align-items: center; /* Vertically align user info and logout button */
-    gap: 20px; /* Space between user info and logout button */
+    align-items: center;
 }
 
-header .user-info {
-    font-size: 1.1em;
+.header .logo img {
+    height: 40px; /* Adjust as needed */
+    margin-right: 15px;
 }
 
-header .logout-btn {
-    background-color: #f44336; /* Red */
-    color: white;
-    padding: 8px 18px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+.header .app-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.header .user-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+    overflow: hidden;
+}
+
+.header .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header .user-name {
     font-weight: 500;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
 }
 
-header .logout-btn:hover {
-    background-color: #d32f2f; /* Darker red */
-}
-
-/* New: Mobile menu toggle button (hidden on desktop) */
 .mobile-menu-toggle {
     display: none; /* Hidden by default on desktop */
     background: none;
     border: none;
-    color: white;
     font-size: 1.8em;
     cursor: pointer;
-    padding: 5px;
+    color: var(--text-color);
 }
 
-
-/* Main Content Area */
-.main-content {
-    display: flex;
-    flex: 1; /* Takes remaining vertical space */
-}
-
-/* Sidebar Navigation */
+/* Sidebar Styles */
 .sidebar {
-    background-color: #ffffff; /* White background for sidebar */
-    width: 250px;
-    padding: 20px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    z-index: 900;
-    /* Transition for smooth show/hide */
-    transition: transform 0.3s ease-out; /* For sliding in/out */
+    width: var(--sidebar-width, 250px); /* Uses CSS variable, fallback to 250px */
+    flex-shrink: 0; /* Prevents sidebar from shrinking */
+    background-color: var(--sidebar-bg-color);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: fixed; /* Fixed for desktop */
+    height: 100vh; /* Full viewport height */
+    left: 0;
+    top: 0;
+    z-index: 1000; /* Ensure it's on top */
+    transition: transform 0.3s ease-in-out, left 0.3s ease-in-out;
+    overflow-y: auto; /* Allows scrolling if menu content is long */
 }
 
-.sidebar h2 {
-    color: #2E8B57;
-    font-size: 1.5em;
-    margin-top: 0;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.sidebar ul {
+.sidebar nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.sidebar ul li {
-    margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-    display: block;
-    padding: 12px 15px;
+.sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--sidebar-link-color);
     text-decoration: none;
-    color: #555;
     font-weight: 500;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar ul li a:hover {
-    background-color: #e6f5e6; /* Light green hover */
-    color: #2E8B57;
+.sidebar nav ul li a i {
+    margin-right: 10px;
+    font-size: 1.1em;
 }
 
-.sidebar ul li a.active { /* For active page indication */
-    background-color: #4CAF50; /* Primary green for active */
-    color: white;
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+.sidebar nav ul li a:hover {
+    background-color: var(--sidebar-link-hover-bg);
 }
 
-/* Nested menu items for cascading */
-.sidebar ul li ul {
-    margin-top: 10px;
-    margin-left: 15px; /* Indent sub-items */
-    border-left: 2px solid #e6e6e6; /* Subtle line for visual hierarchy */
-    padding-left: 5px;
-    display: none; /* Hidden by default */
+.sidebar nav ul li a.active {
+    background-color: var(--sidebar-link-active-bg);
+    color: var(--sidebar-link-active-color);
 }
 
-.sidebar ul li ul.show {
-    display: block; /* Show when active */
+/* Main Content Area */
+.main-content {
+    margin-left: var(--sidebar-width, 250px); /* Desktop: Pushes content to make space for sidebar */
+    padding: 20px;
+    flex-grow: 1; /* Allows main content to take remaining space */
+    transition: margin-left 0.3s ease-in-out;
+    position: relative; /* Needed for any potential overlays within main content */
+    box-sizing: border-box;
+    width: calc(100% - var(--sidebar-width, 250px)); /* Ensure it fills remaining width */
 }
 
-/* Dashboard Content Area */
-.dashboard-content {
-    flex: 1; /* Takes remaining horizontal space */
-    padding: 30px;
-    background-color: #F0F2F5; /* A light, soft gray */
-    overflow-y: auto; /* Enable scrolling for content if needed */
-}
-
-.dashboard-content h1 {
-    color: #2E8B57;
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-}
-
-/* Page Header Controls (for title and advanced search button) */
+/* Page Header within Main Content */
 .page-header-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 15px;
-}
-.page-header-controls h1 {
-    margin: 0; /* Override default h1 margin */
-}
-
-.page-header-controls .header-buttons { /* New rule for button group next to H1 */
-    display: flex; /* Make it a flex container */
-    gap: 10px; /* Space between the buttons */
-    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
-    align-items: center; /* Vertically align items in the button group */
-}
-
-
-/* Content Cards */
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-.card {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.card h3 {
-    color: #4CAF50;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-}
-
-.card p {
-    color: #666;
-    line-height: 1.6;
-}
-
-/* Chart Container Styling */
-.chart-container {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    margin-top: 25px; /* Space from cards above */
-}
-
-/* Filters Section Styling */
-.filters-section {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-bottom: 25px;
-    /* Transition for smooth hide/show */
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, box-shadow 0.3s ease-out;
-    max-height: 500px; /* Max height when expanded - adjust if filter content is taller */
-    overflow: hidden; /* Hide overflow during transition */
+    flex-wrap: wrap; /* Allow wrapping on smaller desktop/tablet views */
+    gap: 15px; /* Space between elements */
 }
 
-.filters-section.collapsed {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border: none;
-    box-shadow: none;
+.page-header-controls h1 {
+    font-size: 2.2em;
+    color: var(--primary-color);
+    margin: 0;
+    flex-shrink: 0;
 }
 
-/* Filters content is displayed/hidden by JS, but this ensures parent hides completely */
-.filters-content {
-    display: block; /* Content is always 'block' within the visible section */
-    padding-top: 10px; /* Kept for spacing when content is visible */
-}
-
-.filters-content:not(.show) {
-    /* This rule hides the actual content, even if the parent section has a height.
-        The .filters-section.collapsed class handles the parent's collapse. */
-    display: none;
-}
-
-.filter-group {
+.header-buttons {
     display: flex;
+    gap: 10px;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    align-items: flex-end;
 }
-.filter-group label {
-    font-weight: 500;
-    color: #555;
-    white-space: nowrap;
-}
-/* Unified styling for inputs and selects within filter group */
-.filter-group input[type="text"], /* Catches Flatpickr inputs which are type="text" */
-.filter-group select {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
+
+.header-buttons .btn {
+    padding: 10px 15px;
     border-radius: 5px;
-    font-size: 0.95em;
-    min-width: 150px;
-    flex-grow: 1;
-}
-
-/* Specific adjustment for Flatpickr's calendar icon if it overlaps */
-/* Flatpickr inputs automatically get a calendar icon if `wrap: true` is used in JS config
-    or if it's the default behavior. This ensures it's spaced. */
-.flatpickr-calendar {
-    font-family: 'Roboto', sans-serif; /* Use theme font for calendar */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Slightly stronger shadow */
-    border-radius: 8px; /* Match other elements */
-    border: 1px solid #ddd; /* Subtle border */
-}
-
-.flatpickr-day.selected, .flatpickr-day.selected:hover {
-    background: #4CAF50; /* Primary green for selected date */
-    border-color: #4CAF50;
-    color: white;
-}
-.flatpickr-day.today {
-    border-color: #2E8B57; /* Darker green for today's date border */
-}
-
-
-.filter-group button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
+    text-decoration: none;
     font-weight: 500;
-    transition: background-color 0.3s ease;
-    white-space: nowrap;
-}
-.filter-group button:hover {
-    background-color: #45a049;
-}
-.filter-group button.clear-btn {
-    background-color: #6c757d;
-}
-.filter-group button.clear-btn:hover {
-    background-color: #5a6268;
-}
-
-/* Data Table Container */
-.data-table-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-/* Override DataTables default table styling for better fit with dashboard.css */
-table.dataTable { /* Target DataTables table directly */
-    margin-top: 15px; /* Add some space if needed below info bar */
-}
-table.dataTable thead th,
-table.dataTable tbody td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    vertical-align: middle; /* Ensure content is vertically aligned */
-}
-table.dataTable thead th {
-    background-color: #E6EBE6; /* Light, subtle green-grey from previous proposal */
-    color: #333; /* Keep text dark for contrast */
-    font-weight: 600;
-    white-space: nowrap;   /* Prevents header text from wrapping */
-    padding-right: 30px;   /* Ensures enough space for sort icons */
-    position: relative;    /* Needed for absolute positioning of icons if used */
-    border-bottom: 2px solid #D1D8D1; /* Add a subtle darker border for definition */
-}
-
-/* Fixes for DataTables visual issues at 100% zoom (continued) */
-/* Adjust position of DataTables Bootstrap 5 sort icons (up/down arrows) */
-table.dataTable thead .dt-orderable-asc:before,
-table.dataTable thead .dt-orderable-desc:after {
-    vertical-align: middle; /* Ensure arrows are middle-aligned with text */
-}
-table.dataTable thead .dt-orderable-asc:before {
-    bottom: 0.8em !important; /* Fine-tune vertical position for asc arrow */
-}
-table.dataTable thead .dt-orderable-desc:after {
-    top: 0.8em !important;     /* Fine-tune vertical position for desc arrow */
-}
-
-/* Ensure the total width of the DataTables container allows for scrolling */
-.dataTables_scrollBody {
-    overflow-x: auto; /* Re-enable horizontal scrolling for the table body */
-}
-
-/* DataTables: Top Row - Length and Filter (Buttons are now handled elsewhere) */
-.dataTables_wrapper .dataTables_length {
-    float: left; /* Keep length selector on left */
-    margin-bottom: 10px;
-}
-
-.dataTables_wrapper .dataTables_filter {
-    float: right; /* Keep filter container on right */
-    margin-bottom: 10px;
-    display: flex; /* Make it a flex container */
-    align-items: center; /* Vertically align items */
-    gap: 10px; /* Space between elements within this flex container */
-    justify-content: flex-end; /* Push content to the right */
-}
-
-.dataTables_wrapper .dataTables_filter label {
-    display: flex; /* Make the label itself a flex container */
-    align-items: center;
-    gap: 5px; /* Space between "Search:" text and input */
-    margin-bottom: 0; /* Remove default margin */
-}
-
-/* Ensure the search input doesn't take full width if not needed */
-.dataTables_wrapper .dataTables_filter input[type="search"] {
-    width: auto; /* Allow input to size based on content */
-    flex-grow: 1; /* Allow search input to grow, but not consume all space */
-    max-width: 200px; /* Set a max width for desktop for aesthetics */
-}
-
-/* DataTables Buttons Styling (now that they are in header-buttons) */
-/* Ensure the button group generated by DataTables is styled correctly when placed in header-buttons */
-.header-buttons .dt-buttons {
-    /* No float needed here, as the parent .header-buttons is already a flex container */
-    display: flex; /* Ensure buttons group nicely if multiple */
-    gap: 10px; /* Space between individual buttons in the group */
-    margin-left: 0; /* Remove any default DataTables margin */
-}
-
-
-/* Specific styling for the main Export button icon */
-.header-buttons .dt-buttons .btn.dropdown-toggle .fas {
-    font-size: 1.2em; /* Make the main icon slightly larger */
-    margin-right: 0; /* No margin on the main icon */
-}
-
-/* Styling for dropdown items and their icons */
-.dt-buttons .dropdown-menu .dropdown-item {
     display: flex;
     align-items: center;
+    justify-content: center;
+    border: 1px solid transparent; /* Default border */
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.dt-buttons .dropdown-menu .dropdown-item .fas {
-    margin-right: 8px; /* Space between icon and text in dropdown */
+.header-buttons .btn i {
+    margin-right: 8px;
 }
 
-.dt-buttons .dropdown-menu .dropdown-item .fa-file-excel {
-    color: #28a745; /* Darker green for Excel */
+.header-buttons .btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
 }
 
-.dt-buttons .dropdown-menu .dropdown-item .fa-file-pdf {
-    color: #dc3545; /* Red for PDF */
+.header-buttons .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
 }
 
-.dt-buttons .dropdown-menu .dropdown-item .fa-file-csv {
-    color: #4CAF50; /* Primary green (lighter) for CSV */
+.header-buttons .btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-/* DataTables: Bottom Row - Info and Pagination */
-.dataTables_wrapper .dataTables_info {
-    float: left; /* Info on the left */
-    padding: 10px 0; /* Added padding for consistency */
+.header-buttons .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
+/* Table Card Styles */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+}
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* DataTables specific styling (default theme override) */
+.dataTables_wrapper {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin: 0 2px;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_paginate {
-    float: right; /* **Pagination on the right** */
-    padding: 10px 0; /* Added padding for consistency */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-/* Clear floats for DataTables wrapper */
-.dataTables_wrapper:after { content: ""; display: table; clear: both; }
+/* Ensure DataTables elements are not excessively wide on desktop if default has issues */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    max-width: 200px;
+}
 
 
-/* Responsive Design */
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--header-bg-color);
+    color: var(--text-color);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* Mobile Specific Styles (within @media (max-width: 768px) block) */
+/* ---------------------------------------------------------------------- */
+
 @media (max-width: 768px) {
-    /* --- General Layout Adjustments --- */
-    .main-content {
-        flex-direction: column;
+    body {
+        /* No flex-direction: column here, managed by main-content and sidebar positioning */
     }
 
-    /* --- Header Adjustments (Optimized for Item 1 & 3 based on HTML change) --- */
-    header {
-        display: flex;
-        justify-content: space-between; /* Distributes items across the header */
+    .dashboard-container {
+        flex-direction: column; /* Stack header and main content */
+    }
+
+    .header {
+        justify-content: space-between;
         align-items: center;
-        padding: 10px 15px;
-        position: relative;
-        z-index: 1000;
-    }
-
-    /* Mobile menu toggle (now first in HTML) */
-    .mobile-menu-toggle {
-        display: block; /* Always visible on mobile */
-        order: unset; /* Remove explicit order, let HTML order define it (first) */
-        z-index: 1001; /* Ensure it's on top */
-        width: 40px; /* Ensure clickable area */
-        height: 40px; /* Ensure clickable area */
-        display: flex; /* Center icon */
-        justify-content: center;
-        align-items: center;
-        padding: 0; /* Remove default padding */
-        margin-right: 10px; /* Space from next item (logo) */
-        flex-shrink: 0; /* Prevent it from shrinking */
-    }
-
-    /* Logo link */
-    header .logo-link {
-        order: unset; /* Remove explicit order, let HTML order define it (second) */
-        flex-grow: 1; /* Allow logo to take available space */
-        text-align: center; /* Center the logo text */
-        font-size: 1.2em; /* Smaller font for FUNDS GROUP text */
-        margin-left: 0; /* Ensure no unwanted margin */
-        margin-right: 10px; /* Space from header-right */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Add ellipsis */
-    }
-    header .logo-text {
-        font-size: 1em; /* Further reduce font size of text inside logo-link for better fit */
-    }
-
-    /* User info & logout button group */
-    header .header-right {
-        order: unset; /* Remove explicit order, let HTML order define it (third) */
-        flex-direction: row;
-        gap: 8px; /* Smaller gap */
-        justify-content: flex-end; /* Push to the right */
-        width: auto;
-        flex-shrink: 0; /* Prevent from shrinking */
-    }
-    header .user-info {
-        font-size: 0.8em; /* Even smaller font for user info */
-        white-space: nowrap; /* Prevent wrapping */
-        margin-bottom: 0;
-    }
-    header .logout-btn {
-        padding: 5px 10px; /* Smaller button */
-        font-size: 0.75em; /* Smaller font for logout button */
-    }
-
-    /* --- Sidebar Adjustments --- */
-    .sidebar {
+        padding: 15px;
+        position: fixed; /* Keep header fixed at top on mobile */
         width: 100%;
-        position: fixed;
-        height: 100vh;
         top: 0;
         left: 0;
-        transform: translateX(-100%);
-        padding-top: 70px;
-        z-index: 999;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+        z-index: 1020;
+    }
+
+    .header .left-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .header .logo img {
+        height: 30px;
+    }
+
+    .header .app-name {
+        font-size: 1.2em; /* Smaller font size for app name on mobile */
+    }
+
+    .header .user-profile-info {
+        display: none; /* Hide user info to save space on mobile */
+    }
+
+    /* Mobile Menu Toggle button - Shown on mobile */
+    .mobile-menu-toggle {
         display: block;
+        font-size: 1.5em;
+        background: none;
+        border: none;
+        color: var(--text-color, #333);
+        cursor: pointer;
+        padding: 5px;
+        order: -1; /* Place it before logo in left section for better visibility */
+    }
+
+    /* Sidebar - Mobile Specific Adjustments (Overlay behavior) */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0; /* Position from top of viewport */
+        width: 65%; /* Adjusted: Sidebar covers 65% of screen */
+        max-width: 300px; /* Optional: Limit max width even if screen is large */
+        height: 100vh;
+        transform: translateX(-100%); /* Hidden completely off-screen */
+        z-index: 1001; /* Above overlay */
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+        background-color: var(--sidebar-bg-color, #f4f7f6);
+        padding-top: 70px; /* Adjust padding-top to avoid being hidden by fixed header */
     }
 
     .sidebar.show-sidebar {
-        transform: translateX(0);
+        transform: translateX(0); /* Slides into view */
     }
 
-    .sidebar h2 {
-        margin-bottom: 15px;
-    }
-    .sidebar ul {
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-        margin: 0;
-    }
-    .sidebar ul li {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .sidebar ul li a {
-        display: block;
-        padding: 8px 12px;
-        font-size: 0.9em;
-        white-space: normal;
-    }
-    .sidebar ul li ul {
-        margin-left: 0;
-        border-left: none;
-        width: 100%;
-        text-align: center;
-        flex-direction: column;
-        display: none;
-        align-items: center;
-    }
-    .sidebar ul li ul.show {
-        display: flex;
-    }
-    .sidebar ul li ul li {
-        display: block;
-        width: 100%;
-        margin-bottom: 5px;
+    /* Main Content for Mobile */
+    .main-content {
+        margin-left: 0; /* Reset margin for mobile */
+        width: 100%; /* Take full width */
+        padding-top: 70px; /* Adjust padding-top to account for fixed header */
+        transition: filter 0.3s ease-in-out; /* Smooth transition for dimming */
+        box-sizing: border-box;
     }
 
-    /* --- Dashboard Content Adjustments --- */
-    .dashboard-content {
-        padding: 20px;
+    /* State when sidebar is open */
+    body.sidebar-open .main-content {
+        filter: brightness(0.5) blur(2px); /* Dims and slightly blurs the content */
+        pointer-events: none; /* Crucial: Prevents interaction with content behind overlay */
+        user-select: none; /* Prevents text selection */
     }
 
-    /* --- Page Header Controls (H1 and buttons) Adjustments (Item 3) --- */
+    body:not(.sidebar-open) .main-content {
+        filter: brightness(1) blur(0); /* Resets when sidebar is closed */
+        pointer-events: auto; /* Allows interaction when sidebar is closed */
+        user-select: auto;
+    }
+
+    /* The Clickable Overlay for Mobile */
+    /* This creates a semi-transparent layer over the main content */
+    body.sidebar-open::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%; /* Covers full viewport width */
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        z-index: 1000; /* Below sidebar, above main content */
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    body:not(.sidebar-open)::after {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none; /* Important: do not block clicks when hidden */
+    }
+
+    /* --- Audit, Export, Advanced Search Alignment (Issue 3 Fix) --- */
     .page-header-controls {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px; /* Reduced gap */
-        padding: 0 5px;
+        flex-direction: column; /* Stack H1 and button group vertically */
+        align-items: flex-start; /* Align contents to the left */
+        gap: 10px; /* Space between the H1 and the button group */
+        margin-bottom: 20px; /* Space below this header section */
+        padding: 0; /* Reset padding as main-content has padding */
     }
+
     .page-header-controls h1 {
-        font-size: 1.3em;
-        margin: 0;
-        flex-shrink: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .page-header-controls .header-buttons {
-        flex-wrap: nowrap;
-        gap: 5px;
-        flex-shrink: 0;
-    }
-    .page-header-controls .header-buttons .btn {
-        padding: 7px 10px;
-        font-size: 0.85em;
-        white-space: nowrap;
-    }
-    .header-buttons .dt-buttons .btn.dropdown-toggle .fas {
-        font-size: 1em;
-        margin-right: 0;
+        font-size: 1.8em; /* Adjusted font size for mobile */
+        margin-bottom: 0; /* Remove default margin as gap handles spacing */
+        width: 100%; /* Ensure title takes full width */
+        text-align: left;
     }
 
-    /* --- Filters Section Adjustments --- */
-    .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .filter-group input[type="text"],
-    .filter-group select,
-    .filter-group button {
-        width: 100%;
-        min-width: unset;
+    .header-buttons {
+        flex-wrap: wrap; /* Allow buttons to wrap to next line */
+        gap: 10px; /* Space between individual buttons */
+        width: 100%; /* Button container takes full width */
+        justify-content: flex-start; /* Align buttons to the left */
+        align-items: center; /* Vertically align buttons */
     }
 
-    /* --- DataTables Specific Responsive Adjustments (Item 2) --- */
-    .dataTables_wrapper .row:first-of-type {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0;
-        padding: 0 5px;
+    /* Ensure uniform button appearance */
+    .header-buttons .btn {
+        height: 38px; /* Standardize height */
+        font-size: 0.9em; /* Slightly smaller text */
+        padding: 8px 12px;
     }
+
+    /* Specifically target DataTables export button container for alignment */
+    .header-buttons .dt-buttons {
+        display: flex; /* Make it a flex container */
+        align-items: center; /* Vertically align its contents */
+    }
+
+
+    /* --- "Show entries" Misalignment (Issue 2 Fix) --- */
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter {
-        float: none;
-        width: 48%;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        gap: 5px;
+        display: flex; /* Use flexbox for horizontal alignment of label and input */
+        align-items: center; /* Vertically center the items */
+        margin-bottom: 10px; /* Space below each control group */
+        flex-wrap: wrap; /* Allow items to wrap if very narrow */
+        justify-content: flex-start; /* Align to the start */
     }
+
     .dataTables_wrapper .dataTables_length label,
     .dataTables_wrapper .dataTables_filter label {
-        font-size: 0.85em;
-        white-space: nowrap;
-        margin-bottom: 0;
-    }
-    .dataTables_wrapper .dataTables_length select,
-    .dataTables_wrapper .dataTables_filter input[type="search"] {
-        max-width: 100px;
-        font-size: 0.8em;
-        padding: 5px 8px;
+        margin-right: 10px; /* Space between label and input/select */
+        white-space: nowrap; /* Prevent label text from wrapping */
+        font-weight: normal;
+        color: #555;
     }
 
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input {
+        flex-grow: 1; /* Allow input/select to take available space */
+        max-width: 180px; /* Limit their max width */
+        padding: 0.375rem 0.75rem; /* Standard Bootstrap form control padding */
+        height: calc(1.5em + 0.75rem + 2px); /* Standard Bootstrap form control height */
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        box-sizing: border-box;
+    }
+
+    /* DataTables Info and Pagination adjustments */
     .dataTables_wrapper .dataTables_info,
     .dataTables_wrapper .dataTables_paginate {
-        float: none;
-        text-align: center;
-        width: 100%;
+        text-align: center; /* Center these elements on mobile */
+        justify-content: center; /* Center items if they are flex */
+        margin-top: 15px;
         margin-bottom: 15px;
-        box-sizing: border-box;
-        display: block;
-    }
-    .dataTables_wrapper .dataTables_paginate .pagination {
-        justify-content: center;
-        flex-wrap: wrap;
     }
 
-    .data-table-container {
-        overflow-x: auto;
+    .dataTables_wrapper .paginate_button {
+        padding: 5px 10px;
+        font-size: 0.85em;
     }
-    table.dataTable {
-        min-width: 700px;
-        width: 100% !important;
-    }
-    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
-        display: none !important;
-    }
-    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
-    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
-        padding-left: 15px !important;
+
+    .footer {
+        padding: 15px; /* Adjust footer padding for mobile */
+        font-size: 0.85em;
     }
 }
