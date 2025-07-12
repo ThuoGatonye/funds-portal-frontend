@@ -24,11 +24,11 @@
             <div class="page-header-controls">
                 <h1>Role Management</h1>
                 <div class="header-buttons">
-                    <button id="addNewRoleBtn" class="btn btn-success">
-                        <i class="fas fa-plus"></i> Add New Role
-                    </button>
                     <button id="advancedSearchToggle" class="btn btn-primary">
                         Advanced Search <i class="fas fa-search"></i>
+                    </button>
+                    <button id="addNewRoleBtn" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add New Role
                     </button>
                 </div>
             </div>
@@ -38,7 +38,13 @@
                     <div class="row g-3">
                         <div class="col-md-4 col-sm-6">
                             <label for="filterRoleName" class="form-label">Role Name</label>
-                            <input type="text" class="form-control" id="filterRoleName" placeholder="Enter role name">
+                            <select class="form-select" id="filterRoleName">
+                                <option value="">Select Role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                                <option value="Member">Member</option>
+                                <option value="Treasurer">Treasurer</option>
+                            </select>
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <label for="filterStatus" class="form-label">Status</label>
@@ -272,7 +278,7 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: '<i class="fas fa-file-export"></i>', // Icon only, no label
+                        text: '<i class="fas fa-file-export"></i>', // Icon only, no label as per audit_logs
                         titleAttr: 'Export Data',
                         className: 'btn btn-info dropdown-toggle',
                         buttons: [
