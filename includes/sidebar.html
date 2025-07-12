@@ -1,45 +1,407 @@
-<aside class="sidebar">
-    <h2>Admin Menu</h2>
-    <ul>
-        <li><a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li class="has-submenu">
-            <a href="#" class="toggle-submenu">
-                <i class="fas fa-users-cog"></i> User Management <i class="fas fa-chevron-down submenu-icon"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="roles.html">Roles</a></li>
-                <li><a href="users.html">Users</a></li>
-            </ul>
-        </li>
-        <li class="has-submenu">
-            <a href="#" class="toggle-submenu">
-                <i class="fas fa-layer-group"></i> Group Management <i class="fas fa-chevron-down submenu-icon"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="plans.html">Plans</a></li>
-                <li><a href="member_profiles.html">Member Profiles</a></li>
-            </ul>
-        </li>
-        <li class="has-submenu">
-            <a href="#" class="toggle-submenu">
-                <i class="fas fa-chart-line"></i> Reports <i class="fas fa-chevron-down submenu-icon"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="report_login_history.html">Login History</a></li>
-                <li><a href="report_contribution_breakdown.html">Contribution Breakdown</a></li>
-                <li><a href="report_payout_history.html">Payout History</a></li>
-                <li><a href="report_kitty_breakdown.html">Kitty Breakdown</a></li>
-            </ul>
-        </li>
-        <li class="has-submenu">
-            <a href="#" class="toggle-submenu">
-                <i class="fas fa-cogs"></i> Main Settings <i class="fas fa-chevron-down submenu-icon"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="settings_account_management.html">Account Management</a></li>
-                <li><a href="settings_smtp.html">SMTP Settings</a></li>
-            </ul>
-        </li>
-        <li><a href="audit_logs.html"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
-    </ul>
-</aside>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roles Management - Funds Group</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
+
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <style>
+        /* Specific styles for the Filters section - same as Audit Logs */
+        .filters-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+        .filters-section.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+        .filters-section:not(.collapsed) {
+            max-height: 300px; /* Adjust as needed to fit content when open */
+            padding-top: 20px;
+            padding-bottom: 20px;
+            opacity: 1;
+        }
+
+        .filters-content {
+            display: none; /* Collapsed by default */
+            padding-top: 10px;
+        }
+
+        .filters-content.show {
+            display: block; /* Show when expanded */
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: #555;
+            white-space: nowrap;
+        }
+        .filter-group input[type="text"].flatpickr-input,
+        .filter-group input[type="text"],
+        .filter-group select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            min-width: 150px;
+            flex-grow: 1;
+        }
+        .filter-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+        .filter-group .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .filter-group .btn-success:hover {
+            background-color: #45a049;
+        }
+        .filter-group .btn-secondary.clear-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .filter-group .btn-secondary.clear-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div id="sidebar-placeholder"></div>
+
+        <main class="dashboard-content">
+            <div class="page-header-controls">
+                <h1>Roles Management</h1>
+                <div class="header-buttons">
+                    <button id="advancedSearchToggle" class="btn btn-primary">
+                        Advanced Search <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-success"><i class="fas fa-plus"></i> Add New Role</button>
+                </div>
+            </div>
+
+            <section class="filters-section">
+                <div class="filters-content" id="filtersContent">
+                    <div class="filter-group">
+                        <div>
+                            <label for="roleNameFilter">Role Name:</label>
+                            <input type="text" id="roleNameFilter" placeholder="e.g., Admin, Treasurer">
+                        </div>
+                        <div>
+                            <label for="permissionFilter">Permission:</label>
+                            <select id="permissionFilter">
+                                <option value="">All Permissions</option>
+                                <option value="User Management">User Management</option>
+                                <option value="Financial Reports">Financial Reports</option>
+                                <option value="System Settings">System Settings</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success filter-submit-btn">Apply Filters</button>
+                        <button class="btn btn-secondary clear-btn">Clear</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-table-container">
+                <table id="rolesTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Role Name</th>
+                            <th>Description</th>
+                            <th>Permissions</th>
+                            <th>Last Modified</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Admin</td>
+                            <td>Full administrative control over the system.</td>
+                            <td>User Management, Group Management, All Reports, System Settings, Audit Logs</td>
+                            <td>2025-06-01</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Treasurer</td>
+                            <td>Manages financial transactions, contributions, and payouts.</td>
+                            <td>Record Contributions, Manage Payouts, Financial Reports</td>
+                            <td>2025-06-15</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Member</td>
+                            <td>Standard access to view personal profile and contributions.</td>
+                            <td>View Own Profile, View Own Contributions</td>
+                            <td>2025-07-01</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Auditor</td>
+                            <td>View-only access to all reports and audit logs.</td>
+                            <td>All Reports, Audit Logs</td>
+                            <td>2025-07-05</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+        // Function to load HTML content into a placeholder
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+                return true;
+            } catch (e) {
+                console.error(`Failed to load ${filePath}:`, e);
+                return false;
+            }
+        }
+
+        // Function to set the active sidebar link based on the current URL
+        function setActiveSidebarLink() {
+            const currentPathname = window.location.pathname;
+            const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
+
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+
+                    let parentSubmenu = link.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        let parentToggle = parentSubmenu.previousElementSibling;
+                        if (parentToggle && parentToggle.classList.contains('toggle-submenu')) {
+                            parentToggle.querySelector('.submenu-icon').classList.remove('fa-chevron-down');
+                            parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to load all necessary HTML components and then initialize their JS
+        async function loadAllHTMLComponents() {
+            const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
+            const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
+
+            if (headerLoaded && sidebarLoaded) {
+                setActiveSidebarLink(); // Call after sidebar is loaded
+
+                // Mobile Menu Toggle JS
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+
+                if (mobileMenuToggle && sidebar && mainContent) {
+                    mobileMenuToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('show-sidebar');
+                        mainContent.classList.toggle('pushed-aside');
+                    });
+
+                    mainContent.addEventListener('click', function(event) {
+                        if (sidebar.classList.contains('show-sidebar') &&
+                            !sidebar.contains(event.target) &&
+                            !mobileMenuToggle.contains(event.target)) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                }
+
+                // Submenu Toggle Logic
+                $('.sidebar .has-submenu > .toggle-submenu').on('click', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $submenu = $this.next('.submenu');
+                    var $icon = $this.find('.submenu-icon');
+
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('fa-chevron-down fa-chevron-up');
+
+                    $('.sidebar .submenu').not($submenu).removeClass('show');
+                    $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                });
+
+                // User info and logout button listener
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                const userInfoElement = document.getElementById('userInfo');
+                if (username && userRole && userInfoElement) {
+                    userInfoElement.textContent = `Welcome, ${username} (${userRole})`;
+                } else {
+                     userInfoElement.textContent = `Welcome, Guest`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } else {
+                console.error("One or more core HTML components failed to load.");
+            }
+        }
+
+        // Page-specific JavaScript for Roles Management (runs when roles.html's DOM is ready)
+        $(document).ready(function() {
+            var rolesTable = $('#rolesTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                responsive: false,
+                scrollX: true,
+                dom: 'lfrtip',
+            });
+
+            new $.fn.dataTable.Buttons(rolesTable, {
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: '<i class="fas fa-file-export"></i>',
+                        titleAttr: 'Export Data',
+                        className: 'btn btn-info dropdown-toggle',
+                        buttons: [
+                            { extend: 'excelHtml5', text: '<i class="fas fa-file-excel"></i> Export to Excel', className: 'dropdown-item' },
+                            { extend: 'pdfHtml5', text: '<i class="fas fa-file-pdf"></i> Export to PDF', className: 'dropdown-item' },
+                            { extend: 'csvHtml5', text: '<i class="fas fa-file-csv"></i> Export to CSV', className: 'dropdown-item' }
+                        ]
+                    }
+                ]
+            });
+            rolesTable.buttons().container().prependTo($('.header-buttons'));
+
+            const advancedSearchToggle = document.getElementById('advancedSearchToggle');
+            const filtersContent = document.getElementById('filtersContent');
+            const filtersSection = document.querySelector('.filters-section'); 
+
+            if (filtersContent) filtersContent.classList.remove('show');
+            if (filtersSection) filtersSection.classList.add('collapsed');
+
+            if (advancedSearchToggle) {
+                advancedSearchToggle.addEventListener('click', () => {
+                    if (filtersContent) filtersContent.classList.toggle('show');
+                    if (filtersSection) filtersSection.classList.toggle('collapsed');
+                });
+            }
+
+            $('.filter-submit-btn').on('click', function() {
+                var roleName = $('#roleNameFilter').val();
+                var permission = $('#permissionFilter').val();
+
+                rolesTable.search('').columns().search('');
+                if (roleName) {
+                    rolesTable.column(1).search(roleName);
+                }
+                if (permission) {
+                    rolesTable.column(3).search(permission);
+                }
+                rolesTable.draw();
+            });
+
+            $('.clear-btn').on('click', function() {
+                $('#roleNameFilter').val('');
+                $('#permissionFilter').val('');
+                rolesTable.search('').columns().search('').draw();
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllHTMLComponents();
+
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                 // window.location.href = 'index.html'; // Uncomment in production
+            }
+        });
+    </script>
+</body>
+</html>
