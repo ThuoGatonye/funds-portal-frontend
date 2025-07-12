@@ -13,7 +13,33 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
-        /* Specific styles for User Management page */
+        /* Status styling */
+        .status-badge {
+            padding: .35em .65em;
+            border-radius: .25rem;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            display: inline-block;
+        }
+
+        .status-badge.active {
+            color: #fff;
+            background-color: #28a745; /* Bootstrap green */
+        }
+
+        .status-badge.inactive {
+            color: #fff;
+            background-color: #dc3545; /* Bootstrap red */
+        }
+
+        .status-badge.pending {
+            color: #212529;
+            background-color: #ffc107; /* Bootstrap yellow */
+        }
     </style>
 </head>
 <body>
@@ -67,6 +93,10 @@
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-6">
+                            <label for="filterPersonnel" class="form-label">Created By Personnel</label>
+                            <input type="text" class="form-control" id="filterPersonnel" placeholder="Enter personnel name">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
                             <label for="filterJoinedDate" class="form-label">Joined Date Range</label>
                             <input type="text" class="form-control" id="filterJoinedDate" placeholder="Select date range">
                         </div>
@@ -83,12 +113,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>User Name</th>
-                            <th>Email</th>
+                            <th>User Name</th> <th>Email</th>
                             <th>Role</th>
-                            <th>Status</th>
                             <th>Last Login</th>
-                            <th>Actions</th>
+                            <th>Status</th>
+                            <th>Personnel</th> <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,9 +126,9 @@
                             <td>john.doe</td>
                             <td>john@example.com</td>
                             <td>Admin</td>
-                            <td>Active</td>
                             <td>2025-07-12 10:30:00</td>
-                            <td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>Admin User</td> <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
@@ -109,9 +138,9 @@
                             <td>jane.smith</td>
                             <td>jane@example.com</td>
                             <td>Member</td>
-                            <td>Active</td>
                             <td>2025-07-11 14:00:00</td>
-                            <td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>Admin User</td> <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
@@ -121,9 +150,9 @@
                             <td>admin.user</td>
                             <td>admin@example.com</td>
                             <td>Admin</td>
-                            <td>Active</td>
                             <td>2025-07-12 11:00:00</td>
-                            <td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>System</td> <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
@@ -133,9 +162,9 @@
                             <td>peter.jones</td>
                             <td>peter@example.com</td>
                             <td>Treasurer</td>
-                            <td>Inactive</td>
                             <td>2025-07-10 09:00:00</td>
-                            <td>
+                            <td><span class="status-badge inactive">Inactive</span></td>
+                            <td>Admin User</td> <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
@@ -154,7 +183,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        // Function to load HTML content into a placeholder
         async function loadHTML(elementId, filePath) {
             try {
                 const response = await fetch(filePath);
@@ -170,13 +198,10 @@
             }
         }
 
-        // Function to set the active sidebar link based on the current URL
         function setActiveSidebarLink() {
             const currentPathname = window.location.pathname;
             const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
-
             const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
-
             sidebarLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === currentPage) {
@@ -194,25 +219,19 @@
             });
         }
 
-        // Function to load all necessary HTML components and then initialize their JS
         async function loadAllHTMLComponents() {
             const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
             const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
-
             if (headerLoaded && sidebarLoaded) {
-                setActiveSidebarLink(); // Call after sidebar is loaded
-
-                // Mobile Menu Toggle JS
+                setActiveSidebarLink();
                 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
                 const sidebar = document.querySelector('.sidebar');
                 const mainContent = document.querySelector('.main-content');
-
                 if (mobileMenuToggle && sidebar && mainContent) {
                     mobileMenuToggle.addEventListener('click', function() {
                         sidebar.classList.toggle('show-sidebar');
                         mainContent.classList.toggle('pushed-aside');
                     });
-
                     mainContent.addEventListener('click', function(event) {
                         if (sidebar.classList.contains('show-sidebar') &&
                             !sidebar.contains(event.target) &&
@@ -221,7 +240,6 @@
                             mainContent.classList.remove('pushed-aside');
                         }
                     });
-
                     window.addEventListener('resize', function() {
                         if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
                             sidebar.classList.remove('show-sidebar');
@@ -229,22 +247,16 @@
                         }
                     });
                 }
-
-                // Submenu Toggle Logic
                 $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
                     e.preventDefault();
                     var $this = $(this);
                     var $submenu = $this.next('.submenu');
                     var $icon = $this.find('.submenu-icon');
-
                     $submenu.toggleClass('show');
                     $icon.toggleClass('fa-chevron-down fa-chevron-up');
-
                     $('.sidebar .submenu').not($submenu).removeClass('show');
                     $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
                 });
-
-                // User info and logout button listener
                 const username = localStorage.getItem('username');
                 const userRole = localStorage.getItem('userRole');
                 const userInfoElement = document.getElementById('userInfo');
@@ -253,7 +265,6 @@
                 } else {
                      userInfoElement.textContent = `Welcome, Guest`;
                 }
-
                 const logoutBtn = document.querySelector('.logout-btn');
                 if (logoutBtn) {
                     logoutBtn.addEventListener('click', function(event) {
@@ -262,15 +273,12 @@
                         window.location.href = 'index.html';
                     });
                 }
-
             } else {
                 console.error("One or more core HTML components failed to load.");
             }
         }
 
-        // Page-specific JavaScript (runs when this page's DOM is ready)
         $(document).ready(function() {
-            // Initialize DataTables
             var usersTable = $('#usersTable').DataTable({
                 paging: true,
                 searching: true,
@@ -286,7 +294,7 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: '<i class="fas fa-file-export"></i>', // Icon only, no label as per audit_logs
+                        text: '<i class="fas fa-file-export"></i>',
                         titleAttr: 'Export Data',
                         className: 'btn btn-info dropdown-toggle',
                         buttons: [
@@ -299,7 +307,6 @@
             });
             usersTable.buttons().container().prependTo($('.header-buttons'));
 
-            // Filters section toggle
             const advancedSearchToggle = document.getElementById('advancedSearchToggle');
             const filtersContent = document.getElementById('filtersContent');
             const filtersSection = document.querySelector('.filters-section'); 
@@ -314,48 +321,34 @@
                 });
             }
 
-            // Flatpickr initialization for date range
             flatpickr("#filterJoinedDate", { 
                 mode: "range", 
                 dateFormat: "Y-m-d" 
             });
 
-            // Filter submission/clear logic
             $('.filter-submit-btn').on('click', function() {
-                // Implement your filter logic here based on input values
-                // Example:
-                // usersTable.column(1).search($('#filterUserName').val()).draw();
-                // usersTable.column(2).search($('#filterEmail').val()).draw();
-                // usersTable.column(3).search($('#filterRole').val()).draw();
-                // usersTable.column(4).search($('#filterStatus').val()).draw();
-                
-                // For date range, you'd parse the range and apply custom filtering
-                // For now, this is just a placeholder for future backend integration
                 console.log("Submit Filters clicked for Users.");
-                usersTable.draw(); // Redraw table with current (or future custom) filters
+                usersTable.draw();
             });
 
             $('.clear-btn').on('click', function() {
-                // Clear all filter inputs
                 $('#filterUserName').val('');
                 $('#filterEmail').val('');
                 $('#filterRole').val('');
                 $('#filterStatus').val('');
-                $('#filterJoinedDate').val(''); // Clear flatpickr input
+                $('#filterPersonnel').val(''); // This is for "Created By Personnel"
+                $('#filterJoinedDate').val('');
 
-                // Clear DataTables search and redraw
                 usersTable.search('').columns().search('').draw();
                 console.log("Filters cleared for Users.");
             });
         });
 
-        // Ensure loadAllHTMLComponents runs once the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
             loadAllHTMLComponents();
-
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // window.location.href = 'index.html'; // Uncomment in production for role-based access
+                // window.location.href = 'index.html';
             }
         });
     </script>
