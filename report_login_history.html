@@ -94,13 +94,9 @@
             background-color: #c82333;
             border-color: #c82333;
         }
+        /* Hidden from screenshot */
         .report-section-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #34495e;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
-            padding-bottom: 10px;
+            display: none; /* Hide the first "Report Results" heading */
         }
         .table-responsive {
             margin-top: 0;
@@ -223,8 +219,9 @@
             }
         }
 
+        /* Adjustment for report results section to move higher */
         .report-results-section {
-            margin-top: 30px !important;
+            margin-top: -15px !important; /* Move the table higher by reducing margin */
         }
     </style>
 </head>
@@ -283,11 +280,9 @@
             </section>
 
             <section class="report-results-section" id="reportResultsSection" style="display: none;">
-                <h2 class="report-section-title">Report Results</h2>
-                <div class="card">
+                <h2 class="report-section-title">Report Results</h2> <div class="card">
                     <div class="card-header" id="reportResultHeader">
-                        Report Results
-                    </div>
+                        Report Results </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="reportTable" class="table table-striped table-bordered" style="width:100%">
@@ -439,7 +434,7 @@
                 console.log(`Generating Login History Report: Date Range: ${dateRange}, User: ${userFilter}, Status: ${statusFilter}`);
 
                 $('#reportResultsSection').show();
-                // Set the static header text as requested
+                // Ensure the visible card header is set correctly
                 $('#reportResultHeader').text('Report Results');
 
                 // Destroy existing DataTable if it exists
@@ -470,7 +465,6 @@
                     columns: columns,
                     dom: 'Bfrtip',
                     buttons: [
-                        // Only CSV, Excel, and PDF as requested
                         { extend: 'csv', exportOptions: { columns: ':visible' } },
                         { extend: 'excel', exportOptions: { columns: ':visible' } },
                         { extend: 'pdf', exportOptions: { columns: ':visible' } }
@@ -492,7 +486,6 @@
                             "csv": "CSV",
                             "excel": "Excel",
                             "pdf": "PDF"
-                            // No "copy" or "print" in language customization as they are removed
                         }
                     }
                 });
