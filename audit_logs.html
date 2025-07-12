@@ -312,7 +312,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        // DataTables and Filters Initialization
+        // DataTables and Filters Initialization (No changes here from your shared version)
         $(document).ready(function() {
             console.log('Document ready. Initializing DataTables...');
             var auditLogsTable = $('#auditLogsTable').DataTable({
@@ -322,14 +322,14 @@
                 info: true,
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 responsive: false, // Explicitly set to false to prevent row collapsing
-                scrollX: true,      // Enable horizontal scrolling for the table
+                scrollX: true,     // Enable horizontal scrolling for the table
                 dom: 'lfrtip', // Updated DOM to remove 'B' (buttons) from default DataTables placement
 
                 // Removed buttons config from here as we're injecting them separately
             });
             console.log('DataTables initialization attempt complete.');
 
-            // Initialize and place DataTables Export Buttons (UPDATED as per desired)
+            // Initialize and place DataTables Export Buttons (No changes here from your shared version)
             new $.fn.dataTable.Buttons(auditLogsTable, {
                 buttons: [
                     {
@@ -341,17 +341,17 @@
                             { 
                                 extend: 'excelHtml5', 
                                 text: '<i class="fas fa-file-excel"></i> Export to Excel', // **Text + Icon for sub-button**
-                                className: 'dropdown-item' 
+                                className: 'dropdown-item'  
                             },
                             { 
                                 extend: 'pdfHtml5', 
                                 text: '<i class="fas fa-file-pdf"></i> Export to PDF', // **Text + Icon for sub-button**
-                                className: 'dropdown-item' 
+                                className: 'dropdown-item'  
                             },
                             { 
                                 extend: 'csvHtml5', // CSV export option
                                 text: '<i class="fas fa-file-csv"></i> Export to CSV', // **Text + Icon for sub-button**
-                                className: 'dropdown-item' 
+                                className: 'dropdown-item'  
                             }
                         ]
                     }
@@ -361,7 +361,7 @@
             auditLogsTable.buttons().container().prependTo($('.header-buttons'));
 
 
-            // --- Advanced Search Button & Filters Logic (UPDATED as per desired) ---
+            // --- Advanced Search Button & Filters Logic (No changes here from your shared version) ---
             const advancedSearchToggle = document.getElementById('advancedSearchToggle');
             const filtersContent = document.getElementById('filtersContent');
             const filtersSection = document.querySelector('.filters-section'); 
@@ -378,34 +378,15 @@
                 });
             }
 
-            // Flatpickr initialization for separate start and end dates (UPDATED as per desired)
+            // Flatpickr initialization for separate start and end dates (No changes here from your shared version)
             flatpickr("#startDate", {
                 dateFormat: "Y-m-d",
             });
             flatpickr("#endDate", {
                 dateFormat: "Y-m-d",
             });
-        });
 
-        // Mobile menu toggle (existing functionality)
-        $(document).ready(function() { // Wrapped in $(document).ready to ensure elements are loaded
-            $('.mobile-menu-toggle').on('click', function() {
-                console.log('Mobile menu toggle clicked');
-                $('.sidebar').toggleClass('show-sidebar');
-            });
-
-            // Optional: Hide sidebar if clicking outside when active (for mobile)
-            $(document).on('click', function(e) {
-                if ($(window).width() <= 768) {
-                    if (!$('.sidebar').is(e.target) && $('.sidebar').has(e.target).length === 0 &&
-                        !$('.mobile-menu-toggle').is(e.target) && $('.mobile-menu-toggle').has(e.target).length === 0 &&
-                        $('.sidebar').hasClass('show-sidebar')) {
-                        $('.sidebar').removeClass('show-sidebar');
-                    }
-                }
-            });
-
-            // Dropdown menu toggle for sidebar (Existing functionality)
+            // Dropdown menu toggle for sidebar (Existing functionality - No changes)
             $('.sidebar .dropdown-toggle').on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -416,7 +397,7 @@
                 $('.sidebar .submenu').not($submenu).removeClass('show');
             });
 
-            // Close submenus if clicking outside them, but not on their toggles
+            // Close submenus if clicking outside them, but not on their toggles (Existing functionality - No changes)
             $(document).on('click', function(e) {
                 $('.sidebar .submenu.show').each(function() {
                     var $submenu = $(this);
@@ -426,9 +407,9 @@
                     }
                 });
             });
-        });
+        }); // End of DataTables and Filters Initialization $(document).ready()
 
-        // Function to load common HTML parts (from includes/header.html) (Existing functionality)
+        // Function to load common HTML parts (from includes/header.html)
         async function loadHTML(elementId, filePath) {
             try {
                 const response = await fetch(filePath);
@@ -437,6 +418,52 @@
                 }
                 const html = await response.text();
                 document.getElementById(elementId).innerHTML = html;
+
+                // --- START OF MOBILE-SPECIFIC JS MOVED HERE --- 🔥
+                // This code runs *AFTER* includes/header.html has been inserted into the DOM.
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content'); // Used to push content aside
+
+                if (mobileMenuToggle && sidebar && mainContent) {
+                    console.log('Mobile menu toggle and sidebar elements found AFTER header load!');
+                    
+                    // Event listener for the hamburger menu click
+                    mobileMenuToggle.addEventListener('click', function() {
+                        console.log('Mobile menu toggle clicked!'); // <<< THIS SHOULD NOW APPEAR!
+                        sidebar.classList.toggle('show-sidebar');
+                        mainContent.classList.toggle('pushed-aside'); // Apply class to main content
+                    });
+
+                    // Close sidebar when clicking outside (on main content or backdrop)
+                    mainContent.addEventListener('click', function(event) {
+                        // Check if sidebar is open AND if the click was not inside the sidebar itself
+                        // AND not on the toggle button (to prevent immediate re-closing after opening)
+                        if (sidebar.classList.contains('show-sidebar') &&
+                            !sidebar.contains(event.target) &&
+                            !mobileMenuToggle.contains(event.target)) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside'); // Remove class from main content
+                            console.log('Clicked outside, sidebar closed.');
+                        }
+                    });
+
+                    // Close sidebar if user resizes window to desktop view while open
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside'); // Remove class from main content
+                            console.log('Resized to desktop, sidebar closed.');
+                        }
+                    });
+
+                } else {
+                    console.warn('Elements for mobile menu toggle, sidebar, or main content not found after header load. Debugging details:');
+                    if (!mobileMenuToggle) console.warn('  - .mobile-menu-toggle was null.');
+                    if (!sidebar) console.warn('  - .sidebar was null.');
+                    if (!mainContent) console.warn('  - .main-content was null.');
+                }
+                // --- END OF MOBILE-SPECIFIC JS MOVED HERE --- 🔥
 
                 // After header is loaded, attach user info and logout functionality
                 const username = localStorage.getItem('username');
@@ -460,7 +487,7 @@
             }
         }
 
-        // DOMContentLoaded for header loading and role-based access (Existing functionality)
+        // DOMContentLoaded for header loading and role-based access
         document.addEventListener('DOMContentLoaded', () => {
             loadHTML('header-placeholder', 'includes/header.html'); // Load the header
 
@@ -470,14 +497,6 @@
                 // Commenting out for testing purposes if you don't have a login flow
                 // window.location.href = 'index.html'; 
             }
-
-            // Adjust DataTables columns on window resize (including zoom changes) - Existing functionality
-            // This is already being called within the first $(document).ready block, no need for duplicate
-            // $(window).on('resize', function () {
-            //     if ($.fn.DataTable.isDataTable('#auditLogsTable')) {
-            //         $('#auditLogsTable').DataTable().columns.adjust().draw();
-            //     }
-            // });
         });
     </script>
 </body>
