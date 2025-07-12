@@ -17,22 +17,99 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
 
     <link rel="stylesheet" href="css/dashboard.css">
+
+    <style>
+        /* Specific styles for the Audit Logs page - adjusted for DataTables (from your "1 hour ago" version) */
+        .filters-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            /* Added for initial collapsed state control via JS */
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+        .filters-section.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+        .filters-section:not(.collapsed) {
+            max-height: 300px; /* Adjust as needed to fit content when open */
+            padding-top: 20px;
+            padding-bottom: 20px;
+            opacity: 1;
+        }
+
+        .filters-content {
+            display: none; /* Collapsed by default */
+            padding-top: 10px;
+        }
+
+        .filters-content.show {
+            display: block; /* Show when expanded */
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: #555;
+            white-space: nowrap;
+        }
+        /* Adjusted styles for Flatpickr input */
+        .filter-group input[type="text"].flatpickr-input, /* Flatpickr uses type="text" */
+        .filter-group select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+            min-width: 150px;
+            flex-grow: 1;
+        }
+        .filter-group button {
+            padding: 10px 20px;
+            /* Background color set by Bootstrap classes in HTML, or custom if not using Bootstrap defaults */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+        /* Custom button styles for 'Submit' and 'Clear' from desired version */
+        .filter-group .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .filter-group .btn-success:hover {
+            background-color: #45a049;
+        }
+        .filter-group .btn-secondary.clear-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .filter-group .btn-secondary.clear-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
-            <i class="fas fa-bars"></i>
-        </button>
-        <a href="index.html" class="logo-link">
-            <span class="logo-text">FUNDS GROUP</span>
-        </a>
-        <div class="header-right">
-            <div class="user-info">
-                Welcome, John Doe
-            </div>
-            <a href="login.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <div class="main-content">
         <aside class="sidebar">
@@ -62,39 +139,50 @@
             <div class="page-header-controls">
                 <h1>Audit Logs</h1>
                 <div class="header-buttons">
-                    <button id="toggleFiltersBtn" class="btn btn-primary"><i class="fas fa-filter"></i> Advanced Search</button>
+                    <button id="advancedSearchToggle" class="btn btn-primary">
+                        Advanced Search <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
 
-            <section class="filters-section collapsed">
-                <div class="filters-content">
+            <section class="filters-section">
+                <div class="filters-content" id="filtersContent">
                     <div class="filter-group">
-                        <label for="filterUser">User:</label>
-                        <input type="text" id="filterUser" placeholder="e.g., John Doe">
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterAction">Action:</label>
-                        <select id="filterAction">
-                            <option value="">All Actions</option>
-                            <option value="Login">Login</option>
-                            <option value="Logout">Logout</option>
-                            <option value="Create Client">Create Client</option>
-                            <option value="Update Client">Update Client</option>
-                            <option value="Delete Client">Delete Client</option>
-                            <option value="Process Transaction">Process Transaction</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterDateRange">Date Range:</label>
-                        <input type="text" id="filterDateRange" placeholder="Select Date Range">
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterIPAddress">IP Address:</label>
-                        <input type="text" id="filterIPAddress" placeholder="e.g., 192.168.1.1">
-                    </div>
-                    <div class="filter-group">
-                        <button id="applyFiltersBtn" class="btn btn-primary"><i class="fas fa-check"></i> Apply Filters</button>
-                        <button id="clearFiltersBtn" class="btn btn-secondary clear-btn"><i class="fas fa-times"></i> Clear Filters</button>
+                        <div>
+                            <label for="startDate">From:</label>
+                            <input type="text" id="startDate" placeholder="Select Start Date">
+                        </div>
+                        <div>
+                            <label for="endDate">To:</label>
+                            <input type="text" id="endDate" placeholder="Select End Date">
+                        </div>
+                        <div>
+                            <label for="eventType">Event Type:</label>
+                            <select id="eventType">
+                                <option value="">All</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="create_user">Create User</option>
+                                <option value="update_profile">Update Profile</option>
+                                <option value="contribution_record">Contribution Record</option>
+                                <option value="payout_request">Payout Request</option>
+                                <option value="system_setting">System Setting Change</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="userName">User:</label>
+                            <select id="userName">
+                                <option value="">All Users</option>
+                                <option value="admin">admin</option>
+                                <option value="treasurer_jane">treasurer_jane</option>
+                                <option value="user_mike">user_mike</option>
+                                <option value="user_sara">user_sara</option>
+                                <option value="user_john">user_john</option>
+                                <option value="system">system</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success">Submit</button>
+                        <button class="btn btn-secondary clear-btn">Clear</button>
                     </div>
                 </div>
             </section>
@@ -168,7 +256,7 @@
                             <td>Accessed financial summary report</td>
                             <td>192.168.1.1</td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td>8</td>
                             <td>2025-07-10 09:30:00</td>
                             <td>System Bot</td>
@@ -226,7 +314,7 @@
     <script>
         // DataTables and Filters Initialization
         $(document).ready(function() {
-            console.log('Document ready. Initializing DataTables...'); // Added for debugging
+            console.log('Document ready. Initializing DataTables...');
             var auditLogsTable = $('#auditLogsTable').DataTable({
                 paging: true,
                 searching: true,
@@ -234,51 +322,81 @@
                 info: true,
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 responsive: false, // Explicitly set to false to prevent row collapsing
-                scrollX: true,     // Enable horizontal scrolling for the table
+                scrollX: true,      // Enable horizontal scrolling for the table
                 dom: 'lfrtip', // Updated DOM to remove 'B' (buttons) from default DataTables placement
 
                 // Removed buttons config from here as we're injecting them separately
             });
-            console.log('DataTables initialization attempt complete.'); // Added for debugging
+            console.log('DataTables initialization attempt complete.');
 
-            // Initialize and place DataTables Export Buttons
-            // This is done separately to place them exactly where we want (in .header-buttons)
+            // Initialize and place DataTables Export Buttons (UPDATED as per desired)
             new $.fn.dataTable.Buttons(auditLogsTable, {
                 buttons: [
                     {
                         extend: 'collection',
-                        text: '<i class="fas fa-file-export"></i> Export',
-                        className: 'btn btn-primary', // Apply Bootstrap button styling
+                        text: '<i class="fas fa-file-export"></i>', // **Icon only for main button**
+                        titleAttr: 'Export Data',
+                        className: 'btn btn-info dropdown-toggle', // **Updated class**
                         buttons: [
-                            { extend: 'csv', text: '<i class="fas fa-file-csv"></i> CSV' },
-                            { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel' },
-                            { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF' }
+                            { 
+                                extend: 'excelHtml5', 
+                                text: '<i class="fas fa-file-excel"></i> Export to Excel', // **Text + Icon for sub-button**
+                                className: 'dropdown-item' 
+                            },
+                            { 
+                                extend: 'pdfHtml5', 
+                                text: '<i class="fas fa-file-pdf"></i> Export to PDF', // **Text + Icon for sub-button**
+                                className: 'dropdown-item' 
+                            },
+                            { 
+                                extend: 'csvHtml5', // CSV export option
+                                text: '<i class="fas fa-file-csv"></i> Export to CSV', // **Text + Icon for sub-button**
+                                className: 'dropdown-item' 
+                            }
                         ]
                     }
                 ]
             });
             // Append the generated DataTables buttons to our desired div
-            auditLogsTable.buttons().container().appendTo($('.header-buttons'));
+            auditLogsTable.buttons().container().prependTo($('.header-buttons'));
 
-            // Toggle Advanced Filters
-            $('#toggleFiltersBtn').on('click', function() {
-                $('.filters-section').toggleClass('collapsed');
-                $('.filters-content').toggleClass('show');
-                $(this).text(function(i, text) {
-                    return text === 'Advanced Search' ? 'Hide Advanced Search' : 'Advanced Search';
+
+            // --- Advanced Search Button & Filters Logic (UPDATED as per desired) ---
+            const advancedSearchToggle = document.getElementById('advancedSearchToggle');
+            const filtersContent = document.getElementById('filtersContent');
+            const filtersSection = document.querySelector('.filters-section'); 
+
+            // Ensure filters start collapsed on load (Explicitly added from desired)
+            if (filtersContent) filtersContent.classList.remove('show');
+            if (filtersSection) filtersSection.classList.add('collapsed');
+
+            if (advancedSearchToggle) {
+                advancedSearchToggle.addEventListener('click', () => {
+                    if (filtersContent) filtersContent.classList.toggle('show');
+                    if (filtersSection) filtersSection.classList.toggle('collapsed');
+                    // Removed dynamic text change for Advanced Search button as per desired
                 });
-            });
+            }
 
-            // Mobile menu toggle
+            // Flatpickr initialization for separate start and end dates (UPDATED as per desired)
+            flatpickr("#startDate", {
+                dateFormat: "Y-m-d",
+            });
+            flatpickr("#endDate", {
+                dateFormat: "Y-m-d",
+            });
+        });
+
+        // Mobile menu toggle (existing functionality)
+        $(document).ready(function() { // Wrapped in $(document).ready to ensure elements are loaded
             $('.mobile-menu-toggle').on('click', function() {
-                console.log('Mobile menu toggle clicked'); // Debug log
+                console.log('Mobile menu toggle clicked');
                 $('.sidebar').toggleClass('show-sidebar');
             });
 
             // Optional: Hide sidebar if clicking outside when active (for mobile)
             $(document).on('click', function(e) {
-                if ($(window).width() <= 768) { // Only apply for mobile screen sizes
-                    // Check if the click was outside the sidebar and the toggle button
+                if ($(window).width() <= 768) {
                     if (!$('.sidebar').is(e.target) && $('.sidebar').has(e.target).length === 0 &&
                         !$('.mobile-menu-toggle').is(e.target) && $('.mobile-menu-toggle').has(e.target).length === 0 &&
                         $('.sidebar').hasClass('show-sidebar')) {
@@ -287,26 +405,14 @@
                 }
             });
 
-            // Flatpickr initialization for date range filters
-            flatpickr("#filterDateRange", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                wrap: true // Enable wrapper for calendar icon
-            });
-        });
-
-        // Dropdown menu toggle for sidebar (Existing functionality)
-        $(document).ready(function() {
+            // Dropdown menu toggle for sidebar (Existing functionality)
             $('.sidebar .dropdown-toggle').on('click', function(e) {
-                e.preventDefault(); // Prevent default link behavior
-                e.stopPropagation(); // Stop event bubbling to document click
+                e.preventDefault();
+                e.stopPropagation();
                 var $this = $(this);
                 var $submenu = $this.next('.submenu');
 
-                // Toggle visibility of the next submenu
                 $submenu.toggleClass('show');
-
-                // If this submenu is shown, hide other open submenus at the same level
                 $('.sidebar .submenu').not($submenu).removeClass('show');
             });
 
@@ -314,13 +420,64 @@
             $(document).on('click', function(e) {
                 $('.sidebar .submenu.show').each(function() {
                     var $submenu = $(this);
-                    // Check if click is outside the submenu and its direct toggle
                     if (!$submenu.is(e.target) && $submenu.has(e.target).length === 0 &&
                         !$submenu.prev('.dropdown-toggle').is(e.target)) {
                         $submenu.removeClass('show');
                     }
                 });
             });
+        });
+
+        // Function to load common HTML parts (from includes/header.html) (Existing functionality)
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+
+                // After header is loaded, attach user info and logout functionality
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                const userInfoElement = document.getElementById('userInfo'); // Get element AFTER loading header
+                if (username && userRole && userInfoElement) {
+                    userInfoElement.textContent = `Logged in as ${username} (${userRole})`;
+                }
+
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+
+            } catch (e) {
+                console.error("Failed to load header:", e);
+            }
+        }
+
+        // DOMContentLoaded for header loading and role-based access (Existing functionality)
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-placeholder', 'includes/header.html'); // Load the header
+
+            // Basic role-based access check - specific for Audit Logs (Admin only)
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                // Commenting out for testing purposes if you don't have a login flow
+                // window.location.href = 'index.html'; 
+            }
+
+            // Adjust DataTables columns on window resize (including zoom changes) - Existing functionality
+            // This is already being called within the first $(document).ready block, no need for duplicate
+            // $(window).on('resize', function () {
+            //     if ($.fn.DataTable.isDataTable('#auditLogsTable')) {
+            //         $('#auditLogsTable').DataTable().columns.adjust().draw();
+            //     }
+            // });
         });
     </script>
 </body>
