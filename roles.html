@@ -75,27 +75,6 @@
                 </div>
             </div>
 
-            <section class="filters-section">
-                <div class="filters-content" id="filtersContent">
-                    <div class="filter-group">
-                        <div>
-                            <label for="roleName">Role Name:</label>
-                            <input type="text" id="roleName" placeholder="Search by role name">
-                        </div>
-                        <div>
-                            <label for="status">Status:</label>
-                            <select id="status">
-                                <option value="">All</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary">Apply Filters</button>
-                        <button class="btn btn-secondary clear-btn">Clear</button>
-                    </div>
-                </div>
-            </section>
-
             <section class="data-table-container">
                 <h2>Defined Roles</h2>
                 <div class="role-cards">
@@ -151,11 +130,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
     <script>
         // Function to load HTML content into a placeholder
         async function loadHTML(elementId, filePath) {
@@ -252,27 +226,8 @@
 
         // --- Page-specific JavaScript (runs when roles.html's DOM is ready) ---
         $(document).ready(function() {
-            // Placeholder for any DataTables initialization for roles, if you add a table later.
-            // Or any other specific JS for roles.html.
-            // Example:
-            // $('#rolesTable').DataTable({ /* ...options... */ });
-
-            // Filters section toggle (if applicable, ensure elements exist on the page)
-            const advancedSearchToggle = document.getElementById('advancedSearchToggle');
-            const filtersContent = document.getElementById('filtersContent');
-            const filtersSection = document.querySelector('.filters-section'); 
-
-            // Ensure filters start collapsed on load (Explicitly added from dashboard.css/audit_logs.html)
-            if (filtersContent) filtersContent.classList.remove('show');
-            if (filtersSection) filtersSection.classList.add('collapsed');
-
-            if (advancedSearchToggle) {
-                advancedSearchToggle.addEventListener('click', () => {
-                    if (filtersContent) filtersContent.classList.toggle('show');
-                    if (filtersSection) filtersSection.classList.toggle('collapsed');
-                });
-            }
-            // No Flatpickr needed on this page by default, but you can add if filters change.
+            // No DataTables, Flatpickr, or Advanced Search toggle needed for roles.html's current design.
+            // Any specific JS for the role cards or other elements can go here.
         });
 
 
