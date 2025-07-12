@@ -21,11 +21,6 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Ensure header is on top */
 }
-.header-right { /* New rule */
-    display: flex;
-    align-items: center; /* Vertically align user info and logout button */
-    gap: 20px; /* Space between user info and logout button */
-}
 
 header .logo-text {
     font-size: 1.8em;
@@ -34,9 +29,14 @@ header .logo-text {
     color: white;
 }
 
+.header-right { /* New rule to align user info and logout button */
+    display: flex;
+    align-items: center; /* Vertically align user info and logout button */
+    gap: 20px; /* Space between user info and logout button */
+}
+
 header .user-info {
     font-size: 1.1em;
-    margin-right: 20px;
 }
 
 header .logout-btn {
@@ -277,31 +277,6 @@ header .logout-btn:hover {
     background-color: #5a6268;
 }
 
-/* Export Buttons within filters */
-.filter-group .btn {
-    padding: 10px 20px; /* Match filter button padding */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-}
-.filter-group .btn-pdf {
-    background-color: #dc3545; /* Red for PDF */
-    color: white;
-}
-.filter-group .btn-pdf:hover {
-    background-color: #c82333;
-}
-.filter-group .btn-excel {
-    background-color: #28a745; /* Green for Excel */
-    color: white;
-}
-.filter-group .btn-excel:hover {
-    background-color: #218838;
-}
-
 /* Data Table Container */
 .data-table-container {
     background-color: #ffffff;
@@ -312,7 +287,7 @@ header .logout-btn:hover {
 /* Override DataTables default table styling for better fit with dashboard.css */
 table.dataTable { /* Target DataTables table directly */
     margin-top: 15px; /* Add some space if needed below info bar */
-    width: 100% !important; /* Ensure table uses full width within its container */
+    /* width: 100% !important; -- REMOVED: Let DataTables Responsive manage width */
 }
 table.dataTable thead th,
 table.dataTable tbody td {
