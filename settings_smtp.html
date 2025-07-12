@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
         .card {
-            margin-bottom: 25px; /* Standard margin between cards */
+            margin-bottom: 25px; /* Standard margin between cards within their column */
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border: 1px solid #e9ecef;
@@ -49,8 +49,10 @@
             align-items: stretch; /* Makes columns stretch to match height in a row */
         }
         /* Remove bottom margin for the last card within its column */
-        .col-lg-8 > .card:last-child,
-        .col-lg-6 > .card:last-child {
+        .col-lg-10 > .card:last-child, /* Updated for the new main column */
+        .col-lg-6 > .card:last-child,
+        .col-lg-5 > .card:last-child /* Added for potential 5-5-2 or 5-5 split */
+        .col-lg-4 > .card:last-child { /* Still applicable if using col-lg-4 */
              margin-bottom: 0;
         }
     </style>
@@ -68,7 +70,7 @@
 
             <section class="settings-section">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-10 d-flex"> <div class="card flex-grow-1">
+                    <div class="col-lg-10 col-md-12 d-flex"> <div class="card flex-grow-1">
                             <div class="card-header">
                                 SMTP Server Configuration
                             </div>
@@ -113,8 +115,7 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-6 d-flex"> <div class="card flex-grow-1">
+                <div class="row justify-content-center mt-5"> <div class="col-lg-5 col-md-6 d-flex"> <div class="card flex-grow-1">
                             <div class="card-header">
                                 Sender Information
                             </div>
@@ -137,7 +138,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 col-md-6 d-flex"> <div class="card flex-grow-1">
+                    <div class="col-lg-5 col-md-6 d-flex"> <div class="card flex-grow-1">
                             <div class="card-header">
                                 Test SMTP Configuration
                             </div>
