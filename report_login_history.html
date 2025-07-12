@@ -15,7 +15,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5; /* Light grey background for the whole page */
+            background-color: #f0f2f5;
         }
         .main-content {
             display: flex;
@@ -24,7 +24,7 @@
         .dashboard-content {
             flex-grow: 1;
             padding: 30px;
-            background-color: #f0f2f5; /* Match body background */
+            background-color: #f0f2f5;
         }
         .page-header-controls h1 {
             color: #2c3e50;
@@ -41,10 +41,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            background-color: #ffffff; /* White card background */
+            background-color: #ffffff;
         }
         .card-header {
-            background-color: #e9f5ff; /* Light blue header */
+            background-color: #e9f5ff;
             border-bottom: 1px solid #cce5ff;
             font-weight: 700;
             color: #0056b3;
@@ -131,10 +131,71 @@
         .dataTables_filter, .dataTables_length, .dataTables_info, .dataTables_paginate {
             padding: 0 15px;
         }
-        /* Specific Report Card layout */
-        .report-filter-card {
-            max-width: 800px; /* Limit width for cleaner look */
-            margin: 0 auto 25px auto; /* Center the card and add bottom margin */
+
+        /* --- Custom Styles for Login History Report --- */
+        .filter-header {
+            background-image: linear-gradient(to right, #007bff, #0056b3); /* Blue gradient */
+            color: white;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* Stronger shadow */
+            margin-bottom: 30px; /* Space before results */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .filter-header h2 {
+            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+        .filter-header p {
+            font-size: 1.05em;
+            opacity: 0.9;
+        }
+        .filter-header .icon-circle {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2em;
+            margin-right: 15px;
+        }
+        .filter-header .header-content {
+            flex-grow: 1;
+        }
+        .filter-controls-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: -20px; /* Pull it up slightly over the header */
+            position: relative;
+            z-index: 2; /* Ensure it's above the header's shadow */
+        }
+        .filter-controls-container .form-label {
+            font-size: 0.9em; /* Smaller labels */
+            margin-bottom: 5px;
+        }
+        .filter-controls-container .form-control,
+        .filter-controls-container .form-select {
+            height: calc(2.25rem + 2px); /* Standard Bootstrap input height */
+            padding: .375rem .75rem; /* Match standard Bootstrap padding */
+            font-size: .875rem; /* Slightly smaller font for inputs */
+        }
+        .filter-controls-container .btn-primary {
+            width: 100%; /* Full width button in small columns */
+        }
+        @media (min-width: 992px) { /* Adjust for larger screens */
+            .filter-controls-container .col-lg-3 {
+                padding-right: 10px;
+                padding-left: 10px;
+            }
         }
     </style>
 </head>
@@ -150,38 +211,45 @@
             </div>
 
             <section class="report-filter-section mb-5">
-                <div class="card report-filter-card">
-                    <div class="card-header">
-                        <i class="fas fa-history me-2"></i> Filter Login History
+                <div class="filter-header d-flex align-items-center">
+                    <div class="icon-circle">
+                        <i class="fas fa-fingerprint"></i>
                     </div>
-                    <div class="card-body">
-                        <form id="loginHistoryFilterForm">
-                            <div class="mb-3">
+                    <div class="header-content">
+                        <h2>Monitor User Activity</h2>
+                        <p>Track all login attempts, successful or failed, to enhance security and auditing.</p>
+                    </div>
+                </div>
+
+                <div class="filter-controls-container">
+                    <form id="loginHistoryFilterForm">
+                        <div class="row align-items-end">
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <label for="loginDateRange" class="form-label">Date Range</label>
                                 <input type="text" class="form-control flatpickr" id="loginDateRange" placeholder="Select date range">
                             </div>
-                            <div class="mb-3">
-                                <label for="loginUser" class="form-label">Filter by User (Optional)</label>
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <label for="loginUser" class="form-label">User</label>
                                 <select class="form-select" id="loginUser">
                                     <option value="">All Users</option>
                                     <option value="user1">Admin User A</option>
                                     <option value="user2">John Doe (Member)</option>
                                     <option value="user3">Jane Smith (Member)</option>
-                                    </select>
+                                </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="loginStatus" class="form-label">Login Status</label>
+                            <div class="col-lg-3 col-md-6 mb-3">
+                                <label for="loginStatus" class="form-label">Status</label>
                                 <select class="form-select" id="loginStatus">
-                                    <option value="">All Statuses</option>
+                                    <option value="">All</option>
                                     <option value="success">Success</option>
                                     <option value="failure">Failure</option>
                                 </select>
                             </div>
-                            <div class="d-flex justify-content-end align-items-center mt-4">
-                                <button type="button" class="btn btn-primary" id="generateReportBtn"><i class="fas fa-search"></i> Generate Report</button>
+                            <div class="col-lg-2 col-md-6 mb-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary" id="generateReportBtn"><i class="fas fa-search me-1"></i> Search</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </section>
 
@@ -340,7 +408,7 @@
                 console.log(`Generating Login History Report: Date Range: ${dateRange}, User: ${userFilter}, Status: ${statusFilter}`);
 
                 $('#reportResultsSection').show();
-                $('#reportResultHeader').text(`Login History for ${userFilter || 'All Users'} (${dateRange || 'All Time'})`);
+                $('#reportResultHeader').text(`Login History for ${userFilter ? $('option:selected', $('#loginUser')).text() : 'All Users'} (${dateRange || 'All Time'})`);
 
                 if ($.fn.DataTable.isDataTable('#reportTable')) {
                     $('#reportTable').DataTable().destroy();
@@ -386,7 +454,7 @@
             loadAllHTMLComponents();
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
+                // window.location.href = 'index.html'; // Uncomment in production to enforce admin access
             }
         });
     </script>
