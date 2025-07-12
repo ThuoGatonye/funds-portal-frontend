@@ -44,6 +44,14 @@
             color: #fff;
             background-color: #343a40; /* Dark gray for banned */
         }
+
+        /* Filter section toggle */
+        .filters-section.collapsed .filters-content {
+            display: none;
+        }
+        .filters-section .filters-content.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -66,8 +74,7 @@
                 </div>
             </div>
 
-            <section class="filters-section">
-                <div class="filters-content" id="filtersContent">
+            <section class="filters-section collapsed"> <div class="filters-content" id="filtersContent">
                     <div class="row g-3">
                         <div class="col-md-4 col-sm-6">
                             <label for="filterMemberId" class="form-label">Member ID</label>
@@ -85,10 +92,10 @@
                             <label for="filterStatus" class="form-label">Status</label>
                             <select class="form-select" id="filterStatus">
                                 <option value="">Select Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="suspended">Suspended</option>
-                                <option value="banned">Banned</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Suspended">Suspended</option>
+                                <option value="Banned">Banned</option>
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-6">
@@ -97,13 +104,13 @@
                         </div>
                     </div>
                     <div class="filter-actions mt-3">
-                        <button class="btn btn-primary filter-submit-btn"><i class="fas fa-filter"></i> Submit</button>
-                        <button class="btn btn-secondary clear-btn"><i class="fas fa-undo"></i> Clear</button>
+                        <button class="btn btn-primary filter-submit-btn"><i class="fas fa-filter"></i> Apply Filters</button>
+                        <button class="btn btn-secondary clear-btn"><i class="fas fa-undo"></i> Clear Filters</button>
                     </div>
                 </div>
             </section>
 
-            <section class="data-table-container">
+            <section class="data-table-container mt-4">
                 <table id="membersTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -125,7 +132,6 @@
                             <td>2024-01-10</td>
                             <td><span class="status-badge active">Active</span></td>
                             <td>
-                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M001" data-member-name="Alice Johnson"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
@@ -139,7 +145,6 @@
                             <td>2023-07-20</td>
                             <td><span class="status-badge active">Active</span></td>
                             <td>
-                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M002" data-member-name="Bob Williams"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
@@ -153,7 +158,6 @@
                             <td>2024-03-05</td>
                             <td><span class="status-badge inactive">Inactive</span></td>
                             <td>
-                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M003" data-member-name="Charlie Brown"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
@@ -167,9 +171,34 @@
                             <td>2025-01-15</td>
                             <td><span class="status-badge active">Active</span></td>
                             <td>
-                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M004" data-member-name="Diana Prince"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
+                                <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>M005</td>
+                            <td>Eve Adams</td>
+                            <td>eve@example.com</td>
+                            <td>+1-222-333-4444</td>
+                            <td>2023-11-22</td>
+                            <td><span class="status-badge suspended">Suspended</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M005" data-member-name="Eve Adams"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
+                                <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>M006</td>
+                            <td>Frank Miller</td>
+                            <td>frank@example.com</td>
+                            <td>+1-888-999-0000</td>
+                            <td>2022-09-01</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M006" data-member-name="Frank Miller"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                             </td>
                         </tr>
@@ -256,7 +285,64 @@
                             parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
                         }
                     }
+                }
+            });
+        }
+
+        async function loadAllHTMLComponents() {
+            const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
+            const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
+            if (headerLoaded && sidebarLoaded) {
+                setActiveSidebarLink();
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+                if (mobileMenuToggle && sidebar && mainContent) {
+                    mobileMenuToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('show-sidebar');
+                        mainContent.classList.toggle('pushed-aside');
+                    });
+                    mainContent.addEventListener('click', function(event) {
+                        if (sidebar.classList.contains('show-sidebar') &&
+                            !sidebar.contains(event.target) &&
+                            !mobileMenuToggle.contains(event.target)) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                }
+                $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $submenu = $this.next('.submenu');
+                    var $icon = $this.find('.submenu-icon');
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('fa-chevron-down fa-chevron-up');
+                    $('.sidebar .submenu').not($submenu).removeClass('show');
+                    $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
                 });
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                const userInfoElement = document.getElementById('userInfo');
+                if (username && userRole && userInfoElement) {
+                    userInfoElement.textContent = `Welcome, ${username} (${userRole})`;
+                } else {
+                     userInfoElement.textContent = `Welcome, Guest`;
+                }
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
             } else {
                 console.error("One or more core HTML components failed to load.");
             }
@@ -265,20 +351,27 @@
         // Dummy data for member plans (simulating data from an API)
         const dummyMemberPlansData = {
             'M001': [
-                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' },
-                { id: 'P005', name: 'Fixed Deposit Account', type: 'Investment', amount: '$1000.00', status: 'active' }
+                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'Active' },
+                { id: 'P005', name: 'Fixed Deposit Account', type: 'Investment', amount: '$1000.00', status: 'Active' }
             ],
             'M002': [
-                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' },
-                { id: 'P003', name: 'Emergency Loan Pool', type: 'Loan', amount: '$50.00', status: 'inactive' }
+                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'Active' },
+                { id: 'P003', name: 'Emergency Loan Pool', type: 'Loan', amount: '$50.00', status: 'Inactive' }
             ],
             'M003': [
                 // No plans for inactive member
             ],
             'M004': [
-                { id: 'P002', name: 'Growth Investment Plan', type: 'Investment', amount: '$500.00', status: 'active' },
-                { id: 'P004', name: 'Holiday Kitty', type: 'Kitty', amount: '$20.00', status: 'active' },
-                { id: 'P006', name: 'Emergency Cash Access', type: 'Loan', amount: '$500.00', status: 'active' }
+                { id: 'P002', name: 'Growth Investment Plan', type: 'Investment', amount: '$500.00', status: 'Active' },
+                { id: 'P004', name: 'Holiday Kitty', type: 'Kitty', amount: '$20.00', status: 'Active' },
+                { id: 'P006', name: 'Emergency Cash Access', type: 'Loan', amount: '$500.00', status: 'Active' }
+            ],
+            'M005': [
+                { id: 'P007', name: 'Suspension Recovery Plan', type: 'Recovery', amount: '$200.00', status: 'Inactive' }
+            ],
+            'M006': [
+                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'Active' },
+                { id: 'P002', name: 'Growth Investment Plan', type: 'Investment', amount: '$500.00', status: 'Active' }
             ]
         };
 
@@ -287,12 +380,12 @@
         $(document).ready(function() {
             var membersTable = $('#membersTable').DataTable({
                 paging: true,
-                searching: true,
+                searching: true, // Enable default search, but we'll use custom filters
                 ordering: true,
                 info: true,
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: false,
-                scrollX: true,
+                responsive: false, // Set to false to prevent layout issues with scrollX
+                scrollX: true, // Enable horizontal scrolling
                 dom: 'lfrtip',
             });
 
@@ -317,13 +410,14 @@
             const filtersContent = document.getElementById('filtersContent');
             const filtersSection = document.querySelector('.filters-section'); 
 
+            // Initialize filters section as collapsed
             if (filtersContent) filtersContent.classList.remove('show');
             if (filtersSection) filtersSection.classList.add('collapsed');
 
             if (advancedSearchToggle) {
                 advancedSearchToggle.addEventListener('click', () => {
-                    if (filtersContent) filtersContent.classList.toggle('show');
-                    if (filtersSection) filtersSection.classList.toggle('collapsed');
+                    filtersSection.classList.toggle('collapsed');
+                    filtersContent.classList.toggle('show');
                 });
             }
 
@@ -332,11 +426,58 @@
                 dateFormat: "Y-m-d" 
             });
 
+            // --- Advanced Search Filtering Logic ---
             $('.filter-submit-btn').on('click', function() {
-                console.log("Submit Filters clicked for Members.");
-                membersTable.draw();
+                const memberId = $('#filterMemberId').val().trim();
+                const fullName = $('#filterFullName').val().trim();
+                const email = $('#filterEmail').val().trim();
+                const status = $('#filterStatus').val();
+                const joinDateRange = $('#filterJoinDate').val(); // "YYYY-MM-DD to YYYY-MM-DD" or ""
+
+                // Apply filters directly to DataTables columns
+                // Using regex: true for exact match or begins-with match
+                // Using escapeRegex: false for literal string matching, true for regex patterns
+                
+                membersTable.column(0).search(memberId ? `^${memberId}` : '', true, false).draw(); // Member ID (column 0) - starts with
+                membersTable.column(1).search(fullName, true, false).draw(); // Full Name (column 1)
+                membersTable.column(2).search(email, true, false).draw(); // Email (column 2)
+                membersTable.column(5).search(status).draw(); // Status (column 5) - exact match
+
+                // Date Range Filtering (Column 4 - Join Date)
+                if (joinDateRange) {
+                    const dates = joinDateRange.split(' to ');
+                    const startDate = dates[0];
+                    const endDate = dates[1];
+
+                    $.fn.dataTable.ext.search.push(
+                        function(settings, data, dataIndex) {
+                            const columnDate = data[4]; // Join Date column
+                            const date = new Date(columnDate);
+                            const start = new Date(startDate);
+                            const end = new Date(endDate);
+
+                            if ((isNaN(start.getTime()) && isNaN(end.getTime())) ||
+                                (isNaN(start.getTime()) && date <= end) ||
+                                (start <= date && isNaN(end.getTime())) ||
+                                (start <= date && date <= end)) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    );
+                } else {
+                    // Clear previous date filter
+                    $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(
+                        (func, index) => func.name !== "DataTables_filter_custom" // Remove only our custom date filter
+                    );
+                }
+                
+                membersTable.draw(); // Redraw the table with all applied filters
+
+                console.log("Filters applied for Members.");
             });
 
+            // Clear Filters
             $('.clear-btn').on('click', function() {
                 $('#filterMemberId').val('');
                 $('#filterFullName').val('');
@@ -344,19 +485,21 @@
                 $('#filterStatus').val('');
                 $('#filterJoinDate').val('');
 
+                // Clear DataTables search for all columns
                 membersTable.search('').columns().search('').draw();
+
+                // Clear custom date filter
+                $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(
+                    (func, index) => func.name !== "DataTables_filter_custom"
+                );
+                membersTable.draw();
+
                 console.log("Filters cleared for Members.");
             });
 
             // Handle Add New Member (placeholder)
             $('#addNewMemberBtn').on('click', function() {
                 alert('Add New Member functionality would go here.');
-            });
-
-            // Handle View Details (navigate to member_details.html)
-            $(document).on('click', '.view-details-btn', function() {
-                const memberId = $(this).closest('tr').find('td:first').text();
-                window.location.href = `member_details.html?memberId=${memberId}`;
             });
 
             // Handle Edit Member (placeholder)
@@ -383,11 +526,11 @@
 
                 $('#modalMemberName').text(`${memberId} - ${memberName}`);
 
-                // Destroy existing DataTable if it exists
+                // Destroy existing DataTable if it exists and reinitialize
                 if ($.fn.DataTable.isDataTable('#memberPlansModalTable')) {
                     memberPlansModalTable.destroy();
-                    $('#memberPlansModalTable tbody').empty(); // Clear tbody to prevent duplicate rows
                 }
+                $('#memberPlansModalTable tbody').empty(); // Ensure tbody is empty
 
                 // Initialize DataTables for the modal table
                 memberPlansModalTable = $('#memberPlansModalTable').DataTable({
@@ -398,7 +541,7 @@
                         { data: 'type' },
                         { data: 'amount' },
                         { data: 'status', render: function(data, type, row) {
-                            return `<span class="status-badge ${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                            return `<span class="status-badge ${data.toLowerCase()}">${data}</span>`;
                         }},
                         {
                             data: null,
@@ -406,13 +549,15 @@
                             orderable: false
                         }
                     ],
-                    paging: false, // For smaller modal table, might not need pagination
+                    paging: false,
                     searching: false,
                     info: false,
                     responsive: true,
-                    // Auto-width adjustment for DataTables in modals
+                    // Use a small timeout to ensure modal is fully rendered before adjusting columns
                     initComplete: function() {
-                        $($.fn.dataTable.tables(true)).DataTable().columns.adjust().responsive.recalc();
+                        setTimeout(function() {
+                            memberPlansModalTable.columns.adjust().responsive.recalc();
+                        }, 10); // Small delay
                     }
                 });
 
@@ -425,7 +570,7 @@
                 const row = memberPlansModalTable.row($(this).parents('tr'));
                 const planData = row.data();
                 if (confirm(`Are you sure you want to remove plan "${planData.name}" (${planData.id}) from this member?`)) {
-                    alert(`Plan ${planData.id} removed from member. (Demo action)`);
+                    alert(`Plan ${planData.id} removed from member ${$('#modalMemberName').text().split(' ')[0]}. (Demo action)`);
                     row.remove().draw();
                     // In a real application, send AJAX request to unlink the plan from the member
                 }
@@ -434,7 +579,7 @@
             // Handle "Add New Plan" within the modal
             $('#addPlanToMemberBtn').on('click', function() {
                 const currentMemberId = $('#modalMemberName').text().split(' ')[0]; // Extract member ID from modal title
-                alert(`Add New Plan functionality for member ${currentMemberId} would open another selection modal here.`);
+                alert(`Add New Plan functionality for member ${currentMemberId} would open another selection modal here to choose a plan.`);
                 // You would typically open a new modal here with a list of available plans to add.
             });
 
@@ -450,7 +595,8 @@
             loadAllHTMLComponents();
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
+                // For a real application, uncomment the line below to redirect non-admin users
+                // window.location.href = 'index.html';
             }
         });
     </script>
