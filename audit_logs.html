@@ -82,31 +82,6 @@
         .filter-group button.clear-btn:hover {
             background-color: #5a6268;
         }
-
-        /* Export Buttons within filters (as confirmed) */
-        .filter-group .btn-export { /* Use a new class to differentiate from filter buttons */
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        .filter-group .btn-pdf {
-            background-color: #dc3545;
-            color: white;
-        }
-        .filter-group .btn-pdf:hover {
-            background-color: #c82333;
-        }
-        .filter-group .btn-excel {
-            background-color: #28a745;
-            color: white;
-        }
-        .filter-group .btn-excel:hover {
-            background-color: #218838;
-        }
     </style>
 </head>
 <body>
@@ -154,9 +129,12 @@
         <main class="dashboard-content">
             <div class="page-header-controls">
                 <h1>Audit Logs</h1>
-                <button id="advancedSearchToggle" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Advanced Search
-                </button>
+                <div class="header-buttons">
+                    <div class="dt-buttons btn-group flex-wrap me-2"></div>
+                    <button id="advancedSearchToggle" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Advanced Search
+                    </button>
+                </div>
             </div>
 
             <section class="filters-section">
@@ -302,7 +280,7 @@
 
             // Initialize DataTables with export buttons
             var auditTable = $('#auditTable').DataTable({
-                dom: "<'row mb-3'<'col-sm-12 col-md-6'lB><'col-sm-12 col-md-6'f>>" +
+                dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                      "<'row'<'col-sm-12'tr>>" +
                      "<'row pt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 scrollX: true,
@@ -312,22 +290,27 @@
                     {
                         extend: 'collection',
                         text: 'Export',
-                        className: 'btn btn-info dropdown-toggle',
+                        className: 'btn btn-info dropdown-toggle', // Bootstrap styling for dropdown
                         buttons: [
                             {
                                 extend: 'excelHtml5',
-                                text: 'Export to Excel',
+                                text: '<i class="fas fa-file-excel"></i> Export to Excel', // Added icon
                                 className: 'dropdown-item'
                             },
                             {
                                 extend: 'pdfHtml5',
-                                text: 'Export to PDF',
+                                text: '<i class="fas fa-file-pdf"></i> Export to PDF', // Added icon
                                 className: 'dropdown-item'
                             }
                         ]
                     }
                 ]
             });
+
+            // Link DataTables buttons to the specific div
+            new $.fn.dataTable.Buttons(auditTable, {
+                buttons: auditTable.settings()[0].aButtons
+            }).container().appendTo('.dt-buttons');
 
             // Adjust DataTables columns on window resize (including zoom changes)
             $(window).on('resize', function () {
