@@ -6,36 +6,41 @@
     <title>SMTP Settings - Funds Group</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
         .card {
             margin-bottom: 25px; /* Standard margin between cards within their column */
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
+            border-radius: 10px; /* Increased border-radius for softer corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Stronger shadow for depth */
+            border: none; /* Remove default bootstrap border */
             height: 100%; /* Important for side-by-side alignment within rows */
             display: flex;
             flex-direction: column;
         }
         .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            font-weight: bold;
-            color: #343a40;
+            background-color: #e9f5ff; /* Blue background like Account Management */
+            border-bottom: 1px solid #cce5ff; /* Blue border */
+            font-weight: 700; /* Bolder font */
+            color: #0056b3; /* Darker blue text */
             padding: 15px 20px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.15em; /* Larger font size */
         }
         .card-body {
             flex-grow: 1; /* Allows card body to expand */
         }
         .form-label {
-            font-weight: 500;
+            font-weight: 500; /* Standard font weight */
+            color: #333; /* Darker color for better contrast */
         }
         .btn-group-actions {
             margin-top: 20px;
@@ -49,11 +54,17 @@
             align-items: stretch; /* Makes columns stretch to match height in a row */
         }
         /* Remove bottom margin for the last card within its column */
-        .col-lg-10 > .card:last-child, /* Updated for the new main column */
-        .col-lg-6 > .card:last-child,
-        .col-lg-5 > .card:last-child /* Added for potential 5-5-2 or 5-5 split */
-        .col-lg-4 > .card:last-child { /* Still applicable if using col-lg-4 */
+        .col-lg-10 > .card:last-child,
+        .col-lg-5 > .card:last-child {
              margin-bottom: 0;
+        }
+        /* Input focus styles for consistency */
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+        .btn {
+            font-weight: 500; /* Consistent button font weight */
         }
     </style>
 </head>
