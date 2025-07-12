@@ -130,7 +130,6 @@
             <div class="page-header-controls">
                 <h1>Audit Logs</h1>
                 <div class="header-buttons">
-                    <div class="dt-buttons btn-group flex-wrap me-2"></div>
                     <button id="advancedSearchToggle" class="btn btn-primary">
                         <i class="fas fa-search"></i> Advanced Search
                     </button>
@@ -272,7 +271,7 @@
             const filtersContent = document.getElementById('filtersContent');
 
             // Filters start collapsed by default
-            filtersContent.classList.remove('show');
+            filtersContent.classList.remove('show'); // Ensure it starts hidden
 
             advancedSearchToggle.addEventListener('click', () => {
                 filtersContent.classList.toggle('show');
@@ -280,7 +279,7 @@
 
             // Initialize DataTables with export buttons
             var auditTable = $('#auditTable').DataTable({
-                dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'fB>>" + // 'B' (buttons) are now alongside filter 'f'
                      "<'row'<'col-sm-12'tr>>" +
                      "<'row pt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 scrollX: true,
@@ -289,17 +288,23 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export',
+                        text: '<i class="fas fa-file-export"></i>', // Icon only for the main button
+                        titleAttr: 'Export Data', // Tooltip for the icon
                         className: 'btn btn-info dropdown-toggle', // Bootstrap styling for dropdown
                         buttons: [
                             {
                                 extend: 'excelHtml5',
-                                text: '<i class="fas fa-file-excel"></i> Export to Excel', // Added icon
+                                text: '<i class="fas fa-file-excel"></i> Export to Excel', // Excel with icon
                                 className: 'dropdown-item'
                             },
                             {
                                 extend: 'pdfHtml5',
-                                text: '<i class="fas fa-file-pdf"></i> Export to PDF', // Added icon
+                                text: '<i class="fas fa-file-pdf"></i> Export to PDF', // PDF with icon
+                                className: 'dropdown-item'
+                            },
+                            {
+                                extend: 'csvHtml5', // CSV export option
+                                text: '<i class="fas fa-file-csv"></i> Export to CSV', // CSV with icon
                                 className: 'dropdown-item'
                             }
                         ]
@@ -307,10 +312,7 @@
                 ]
             });
 
-            // Link DataTables buttons to the specific div
-            new $.fn.dataTable.Buttons(auditTable, {
-                buttons: auditTable.settings()[0].aButtons
-            }).container().appendTo('.dt-buttons');
+            // No need for new $.fn.dataTable.Buttons()... anymore; 'B' in dom handles placement.
 
             // Adjust DataTables columns on window resize (including zoom changes)
             $(window).on('resize', function () {
