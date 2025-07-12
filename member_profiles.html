@@ -40,6 +40,10 @@
             color: #fff;
             background-color: #6c757d; /* Bootstrap gray */
         }
+        .status-badge.banned {
+            color: #fff;
+            background-color: #343a40; /* Dark gray for banned */
+        }
     </style>
 </head>
 <body>
@@ -57,7 +61,7 @@
                         Advanced Search <i class="fas fa-search"></i>
                     </button>
                     <button id="addNewMemberBtn" class="btn btn-success">
-                        <i class="fas fa-plus"></i> Add New Member
+                        <i class="fas fa-user-plus"></i> Add New Member
                     </button>
                 </div>
             </div>
@@ -66,26 +70,25 @@
                 <div class="filters-content" id="filtersContent">
                     <div class="row g-3">
                         <div class="col-md-4 col-sm-6">
-                            <label for="filterMember" class="form-label">Member (ID / Name)</label>
-                            <select class="form-select" id="filterMember">
-                                <option value="">Select Member</option>
-                                <option value="M001_Alice Johnson">M001 - Alice Johnson</option>
-                                <option value="M002_Bob Williams">M002 - Bob Williams</option>
-                                <option value="M003_Charlie Brown">M003 - Charlie Brown</option>
-                                <option value="M004_Diana Prince">M004 - Diana Prince</option>
-                            </select>
+                            <label for="filterMemberId" class="form-label">Member ID</label>
+                            <input type="text" class="form-control" id="filterMemberId" placeholder="Enter Member ID">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterFullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="filterFullName" placeholder="Enter full name">
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <label for="filterEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="filterEmail" placeholder="Enter email">
                         </div>
                         <div class="col-md-4 col-sm-6">
-                            <label for="filterStatus" class="form-label">Membership Status</label>
+                            <label for="filterStatus" class="form-label">Status</label>
                             <select class="form-select" id="filterStatus">
                                 <option value="">Select Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                                 <option value="suspended">Suspended</option>
+                                <option value="banned">Banned</option>
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-6">
@@ -101,74 +104,73 @@
             </section>
 
             <section class="data-table-container">
-                <table id="memberProfilesTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                <table id="membersTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
                             <th>Member ID</th>
+                            <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Associated Plans</th>
                             <th>Join Date</th>
                             <th>Status</th>
-                            <th>Personnel</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>M001</td>
+                            <td>Alice Johnson</td>
                             <td>alice@example.com</td>
                             <td>+1-123-456-7890</td>
-                            <td><a href="manage_member_plans.html?memberId=M001">2</a></td>
                             <td>2024-01-10</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Alice Johnson</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M001"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M001" data-member-name="Alice Johnson"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M001"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
                             <td>M002</td>
+                            <td>Bob Williams</td>
                             <td>bob@example.com</td>
                             <td>+1-987-654-3210</td>
-                            <td><a href="manage_member_plans.html?memberId=M002">1</a></td>
                             <td>2023-07-20</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Bob Williams</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M002"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M002" data-member-name="Bob Williams"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M002"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
                             <td>M003</td>
+                            <td>Charlie Brown</td>
                             <td>charlie@example.com</td>
                             <td>+1-555-111-2222</td>
-                            <td><a href="manage_member_plans.html?memberId=M003">0</a></td>
                             <td>2024-03-05</td>
                             <td><span class="status-badge inactive">Inactive</span></td>
-                            <td>Charlie Brown</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M003"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M003" data-member-name="Charlie Brown"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M003"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
                             <td>M004</td>
+                            <td>Diana Prince</td>
                             <td>diana@example.com</td>
                             <td>+1-777-333-4444</td>
-                            <td><a href="manage_member_plans.html?memberId=M004">3</a></td>
                             <td>2025-01-15</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Diana Prince</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M004"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-primary view-details-btn"><i class="fas fa-info-circle"></i> Details</button>
+                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-warning manage-plans-btn" data-member-id="M004" data-member-name="Diana Prince"><i class="fas fa-clipboard-list"></i> Manage Plans</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M004"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                     </tbody>
@@ -176,6 +178,43 @@
             </section>
         </main>
     </div>
+
+    <div class="modal fade" id="managePlansModal" tabindex="-1" aria-labelledby="managePlansModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title" id="managePlansModalLabel">Manage Plans for <span id="modalMemberName"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6>Current Plans:</h6>
+                        <button id="addPlanToMemberBtn" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-circle"></i> Add New Plan
+                        </button>
+                    </div>
+                    <table id="memberPlansModalTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Plan ID</th>
+                                <th>Plan Name</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -185,12 +224,68 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
-        function setActiveSidebarLink() { /* ... same as before ... */ }
-        async function loadAllHTMLComponents() { /* ... same as before ... */ }
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+                return true;
+            } catch (e) {
+                console.error(`Failed to load ${filePath}:`, e);
+                return false;
+            }
+        }
+
+        function setActiveSidebarLink() {
+            const currentPathname = window.location.pathname;
+            const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                    let parentSubmenu = link.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        let parentToggle = parentSubmenu.previousElementSibling;
+                        if (parentToggle && parentToggle.classList.contains('toggle-submenu')) {
+                            parentToggle.querySelector('.submenu-icon').classList.remove('fa-chevron-down');
+                            parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
+                        }
+                    }
+                });
+            } else {
+                console.error("One or more core HTML components failed to load.");
+            }
+        }
+
+        // Dummy data for member plans (simulating data from an API)
+        const dummyMemberPlansData = {
+            'M001': [
+                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' },
+                { id: 'P005', name: 'Fixed Deposit Account', type: 'Investment', amount: '$1000.00', status: 'active' }
+            ],
+            'M002': [
+                { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' },
+                { id: 'P003', name: 'Emergency Loan Pool', type: 'Loan', amount: '$50.00', status: 'inactive' }
+            ],
+            'M003': [
+                // No plans for inactive member
+            ],
+            'M004': [
+                { id: 'P002', name: 'Growth Investment Plan', type: 'Investment', amount: '$500.00', status: 'active' },
+                { id: 'P004', name: 'Holiday Kitty', type: 'Kitty', amount: '$20.00', status: 'active' },
+                { id: 'P006', name: 'Emergency Cash Access', type: 'Loan', amount: '$500.00', status: 'active' }
+            ]
+        };
+
+        let memberPlansModalTable; // Global variable to hold the DataTables instance for the modal
 
         $(document).ready(function() {
-            var memberProfilesTable = $('#memberProfilesTable').DataTable({
+            var membersTable = $('#membersTable').DataTable({
                 paging: true,
                 searching: true,
                 ordering: true,
@@ -201,7 +296,7 @@
                 dom: 'lfrtip',
             });
 
-            new $.fn.dataTable.Buttons(memberProfilesTable, {
+            new $.fn.dataTable.Buttons(membersTable, {
                 buttons: [
                     {
                         extend: 'collection',
@@ -216,7 +311,7 @@
                     }
                 ]
             });
-            memberProfilesTable.buttons().container().prependTo($('.header-buttons'));
+            membersTable.buttons().container().prependTo($('.header-buttons'));
 
             const advancedSearchToggle = document.getElementById('advancedSearchToggle');
             const filtersContent = document.getElementById('filtersContent');
@@ -238,29 +333,116 @@
             });
 
             $('.filter-submit-btn').on('click', function() {
-                console.log("Submit Filters clicked for Member Profiles.");
-                memberProfilesTable.draw();
+                console.log("Submit Filters clicked for Members.");
+                membersTable.draw();
             });
 
             $('.clear-btn').on('click', function() {
-                $('#filterMember').val('');
+                $('#filterMemberId').val('');
+                $('#filterFullName').val('');
                 $('#filterEmail').val('');
                 $('#filterStatus').val('');
                 $('#filterJoinDate').val('');
 
-                memberProfilesTable.search('').columns().search('').draw();
-                console.log("Filters cleared for Member Profiles.");
+                membersTable.search('').columns().search('').draw();
+                console.log("Filters cleared for Members.");
             });
 
-            // Changed from .edit-btn to .edit-member-btn to differentiate from generic edit if needed elsewhere
-            $(document).on('click', '.edit-member-btn', function() {
-                const memberId = $(this).data('member-id');
+            // Handle Add New Member (placeholder)
+            $('#addNewMemberBtn').on('click', function() {
+                alert('Add New Member functionality would go here.');
+            });
+
+            // Handle View Details (navigate to member_details.html)
+            $(document).on('click', '.view-details-btn', function() {
+                const memberId = $(this).closest('tr').find('td:first').text();
                 window.location.href = `member_details.html?memberId=${memberId}`;
             });
 
+            // Handle Edit Member (placeholder)
+            $(document).on('click', '.edit-btn', function() {
+                const memberId = $(this).closest('tr').find('td:first').text();
+                alert('Edit Member ' + memberId + ' functionality would go here.');
+            });
+
+            // Handle Delete Member (placeholder)
+            $(document).on('click', '.delete-btn', function() {
+                const row = membersTable.row($(this).parents('tr'));
+                const memberId = row.data()[0]; // Get Member ID from the first column
+                if (confirm(`Are you sure you want to delete member ${memberId}? This action is irreversible.`)) {
+                    alert(`Member ${memberId} deleted. (Demo action)`);
+                    row.remove().draw();
+                }
+            });
+
+            // --- Manage Plans Modal Logic ---
             $(document).on('click', '.manage-plans-btn', function() {
                 const memberId = $(this).data('member-id');
-                window.location.href = `manage_member_plans.html?memberId=${memberId}`;
+                const memberName = $(this).data('member-name');
+                const plans = dummyMemberPlansData[memberId] || [];
+
+                $('#modalMemberName').text(`${memberId} - ${memberName}`);
+
+                // Destroy existing DataTable if it exists
+                if ($.fn.DataTable.isDataTable('#memberPlansModalTable')) {
+                    memberPlansModalTable.destroy();
+                    $('#memberPlansModalTable tbody').empty(); // Clear tbody to prevent duplicate rows
+                }
+
+                // Initialize DataTables for the modal table
+                memberPlansModalTable = $('#memberPlansModalTable').DataTable({
+                    data: plans,
+                    columns: [
+                        { data: 'id' },
+                        { data: 'name' },
+                        { data: 'type' },
+                        { data: 'amount' },
+                        { data: 'status', render: function(data, type, row) {
+                            return `<span class="status-badge ${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }},
+                        {
+                            data: null,
+                            defaultContent: '<button class="btn btn-sm btn-danger remove-plan-modal-btn"><i class="fas fa-trash"></i> Remove</button>',
+                            orderable: false
+                        }
+                    ],
+                    paging: false, // For smaller modal table, might not need pagination
+                    searching: false,
+                    info: false,
+                    responsive: true,
+                    // Auto-width adjustment for DataTables in modals
+                    initComplete: function() {
+                        $($.fn.dataTable.tables(true)).DataTable().columns.adjust().responsive.recalc();
+                    }
+                });
+
+                // Show the modal
+                $('#managePlansModal').modal('show');
+            });
+
+            // Handle "Remove Plan" within the modal
+            $(document).on('click', '.remove-plan-modal-btn', function() {
+                const row = memberPlansModalTable.row($(this).parents('tr'));
+                const planData = row.data();
+                if (confirm(`Are you sure you want to remove plan "${planData.name}" (${planData.id}) from this member?`)) {
+                    alert(`Plan ${planData.id} removed from member. (Demo action)`);
+                    row.remove().draw();
+                    // In a real application, send AJAX request to unlink the plan from the member
+                }
+            });
+
+            // Handle "Add New Plan" within the modal
+            $('#addPlanToMemberBtn').on('click', function() {
+                const currentMemberId = $('#modalMemberName').text().split(' ')[0]; // Extract member ID from modal title
+                alert(`Add New Plan functionality for member ${currentMemberId} would open another selection modal here.`);
+                // You would typically open a new modal here with a list of available plans to add.
+            });
+
+            // Adjust DataTables columns on modal shown (important for responsiveness)
+            $('#managePlansModal').on('shown.bs.modal', function() {
+                if (memberPlansModalTable) {
+                    memberPlansModalTable.columns.adjust().responsive.recalc();
+                }
             });
         });
 
