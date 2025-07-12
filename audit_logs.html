@@ -409,27 +409,30 @@
                 dateFormat: "Y-m-d",
             });
 
-            // Dropdown menu toggle for sidebar (Existing functionality - No changes)
-            $('.sidebar .dropdown-toggle').on('click', function(e) {
+            // Dropdown menu toggle for sidebar - Unified Logic (THE FIX)
+            $('.sidebar .has-submenu > .toggle-submenu').on('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
+                // No e.stopPropagation() needed here if we manage classes correctly
+
                 var $this = $(this);
                 var $submenu = $this.next('.submenu');
+                var $icon = $this.find('.submenu-icon'); // Find the icon within the clicked toggle
 
+                // Toggle 'show' class on the clicked submenu
                 $submenu.toggleClass('show');
+                // Rotate the chevron icon
+                $icon.toggleClass('fa-chevron-down fa-chevron-up');
+
+                // Hide other open submenus and reset their icons
                 $('.sidebar .submenu').not($submenu).removeClass('show');
+                $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
             });
 
-            // Close submenus if clicking outside them, but not on their toggles (Existing functionality - No changes)
-            $(document).on('click', function(e) {
-                $('.sidebar .submenu.show').each(function() {
-                    var $submenu = $(this);
-                    if (!$submenu.is(e.target) && $submenu.has(e.target).length === 0 &&
-                        !$submenu.prev('.dropdown-toggle').is(e.target)) {
-                        $submenu.removeClass('show');
-                    }
-                });
-            });
+            // No need for a separate document click handler for closing submenus as
+            // the above logic ensures only one is open at a time, and clicking outside
+            // the sidebar should close the entire sidebar if it's open (handled by mobile menu toggle logic).
+            // If you still want specific submenu closing on outside click, you'd need to re-implement
+            // it carefully without conflicting with the above.
         }); // End of DataTables and Filters Initialization $(document).ready()
 
         // Function to load common HTML parts (from includes/header.html)
