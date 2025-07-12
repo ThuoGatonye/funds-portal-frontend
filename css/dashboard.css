@@ -8,6 +8,7 @@ body {
     min-height: 100vh;
     background: linear-gradient(to right bottom, #3CB371, #2E8B57, #1E7145, #008080); /* Same as login */
     color: #333;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 /* Header Styling */
@@ -24,6 +25,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 header .logo-link {
@@ -81,12 +83,13 @@ header .logout-btn:hover {
     align-items: stretch; /* Ensures children stretch vertically */
     padding-top: 60px; /* NEW: Add padding equal to header height to push content down */
     min-height: calc(100vh - 60px); /* NEW: Ensure it takes full remaining viewport height */
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 /* Sidebar Navigation */
 .sidebar {
     background-color: #ffffff; /* White background for sidebar */
-    width: 280px; /* Adjusted width: Increased to 280px */
+    width: 290px; /* Adjusted width: Increased to 290px */
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -95,8 +98,9 @@ header .logout-btn:hover {
     transition: transform 0.3s ease-out;
     position: sticky; /* Keeps it sticky within .main-content's flow */
     top: 60px; /* Stick from below the header */
-    height: calc(100vh - 60px); /* NEW: Ensure it spans full height from below header */
+    height: calc(100vh - 60px); /* Ensure it spans full height from below header */
     overflow-y: auto; /* Allow scrolling if sidebar content is too long */
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .sidebar h2 {
@@ -129,6 +133,8 @@ header .logout-btn:hover {
     white-space: nowrap; /* Ensures text stays on one line */
     overflow: hidden; /* Hides overflowing content */
     text-overflow: ellipsis; /* Adds "..." for overflowed text */
+    max-width: 100%; /* Important: Constrain link width to its parent */
+    box-sizing: border-box; /* Ensure padding/border is included in width */
 }
 
 .sidebar ul li a i { /* Style for Font Awesome icons within sidebar links */
@@ -150,10 +156,11 @@ header .logout-btn:hover {
 /* Nested menu items for cascading */
 .sidebar ul li ul {
     margin-top: 10px;
-    margin-left: 10px; /* Adjusted: Reduced margin for nested items */
+    margin-left: 10px; /* Adjusted: Keeping a small margin for visual nesting */
     border-left: 2px solid #e6e6e6;
-    padding-left: 5px; /* Adjusted: Reduced padding for nested items */
+    padding-left: 5px; /* Adjusted: Minimal padding for nesting line */
     display: none;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .sidebar ul li ul.show {
@@ -163,10 +170,12 @@ header .logout-btn:hover {
 /* Specific styling for nested links to handle overflow */
 .sidebar ul li ul li a {
     padding: 8px 5px; /* Adjusted: Reduced padding for nested items to maximize text space */
-    font-size: 0.95em; /* Slightly smaller font for nested items */
+    font-size: 0.9em; /* Slightly smaller font for nested items */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%; /* Critical: Ensure nested links also respect parent width */
+    box-sizing: border-box; /* Ensure padding/border is included in width */
 }
 
 
@@ -176,6 +185,7 @@ header .logout-btn:hover {
     padding: 30px;
     background-color: #F0F2F5; /* A light, soft gray */
     overflow-y: auto;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .dashboard-content h1 {
@@ -218,6 +228,7 @@ header .logout-btn:hover {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .card:hover {
@@ -244,6 +255,7 @@ header .logout-btn:hover {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     margin-top: 25px;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 /* Filters Section Styling */
@@ -256,6 +268,7 @@ header .logout-btn:hover {
     transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, box-shadow 0.3s ease-out;
     max-height: 500px;
     overflow: hidden;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .filters-section.collapsed {
@@ -296,6 +309,7 @@ header .logout-btn:hover {
     font-size: 0.95em;
     min-width: 150px;
     flex-grow: 1;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 
 .flatpickr-calendar {
@@ -325,6 +339,7 @@ header .logout-btn:hover {
     font-weight: 500;
     transition: background-color 0.3s ease;
     white-space: nowrap;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 .filter-group button:hover {
     background-color: #45a049;
@@ -342,6 +357,7 @@ header .logout-btn:hover {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 table.dataTable {
     margin-top: 15px;
@@ -352,6 +368,7 @@ table.dataTable tbody td {
     text-align: left;
     border-bottom: 1px solid #eee;
     vertical-align: middle;
+    box-sizing: border-box; /* Ensure consistent box model */
 }
 table.dataTable thead th {
     background-color: #E6EBE6;
