@@ -555,19 +555,39 @@ table.dataTable thead .dt-orderable-desc:after {
 
     /* --- Page Header Controls (H1 and buttons) Adjustments --- */
     .page-header-controls {
-        flex-direction: column; /* Stack title and buttons vertically */
-        align-items: center; /* Center everything */
-        gap: 15px; /* Add spacing between stacked elements */
+        flex-direction: row; /* Keep elements on a single row initially */
+        justify-content: space-between; /* Space out title and button group */
+        align-items: center; /* Vertically align */
+        gap: 10px; /* Reduced gap */
     }
     .page-header-controls h1 {
-        width: 100%; /* Full width for title */
-        text-align: center; /* Center the title */
+        width: auto; /* Auto width */
+        text-align: left; /* Align to left */
+        flex-shrink: 1; /* Allow to shrink */
+        font-size: 1.5em; /* Smaller font for page title on mobile */
+        margin-right: 10px; /* Space between title and buttons */
     }
     .page-header-controls .header-buttons {
-        width: 100%; /* Full width for the button container */
-        justify-content: center; /* Center buttons horizontally */
-        gap: 10px; /* Maintain gap between buttons within the group */
+        width: auto; /* Auto width */
+        justify-content: flex-end; /* Push buttons to the right */
+        flex-wrap: nowrap; /* Try to keep on one line first */
+        gap: 5px; /* Smaller gap between buttons */
+        flex-shrink: 0; /* Don't allow button group to shrink */
     }
+
+    /* Targeting Advanced Search Button specifically */
+    .page-header-controls .header-buttons .btn-primary { /* Assuming Advanced Search has btn-primary */
+        padding: 8px 12px; /* Smaller padding */
+        font-size: 0.9em; /* Smaller font size */
+        white-space: nowrap; /* Prevent wrapping */
+    }
+    
+    /* Specific styling for the main Export button (now part of DataTables, in header-buttons) */
+    .header-buttons .dt-buttons .btn.dropdown-toggle {
+        padding: 8px 12px; /* Smaller padding for export button */
+        font-size: 0.9em; /* Smaller font for export button */
+    }
+
 
     /* --- Filters Section Adjustments --- */
     .filter-group {
@@ -628,18 +648,18 @@ table.dataTable thead .dt-orderable-desc:after {
         overflow-x: auto; /* Enable horizontal scrolling for the table itself */
     }
     table.dataTable {
-        width: 100% !important; /* Ensure table uses 100% of its container, then scroll */
+        min-width: 700px; /* Give it a minimum width to ensure horizontal scroll */
+        width: 100% !important; /* Ensure table takes 100% of its container, then scrolls */
     }
+    /* IMPORTANT: HIDE the DataTables Responsive collapse/expand icons */
     table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
-        /* Adjust DataTables responsive icon position for better visibility on mobile */
-        top: 15px;
-        left: 5px;
-    }
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before,
     table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,
     table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
-        /* Adjust DataTables responsive icon position for better visibility on mobile */
-        top: 15px;
-        left: 5px;
+        display: none !important; /* Absolutely hide these icons */
+    }
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
+        padding-left: 15px !important; /* Restore normal left padding if icon is hidden */
     }
 }
