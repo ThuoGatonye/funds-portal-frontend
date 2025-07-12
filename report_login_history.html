@@ -52,17 +52,7 @@
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             font-size: 1.15em;
-            display: flex; /* For aligning title and buttons */
-            justify-content: space-between; /* For aligning title and buttons */
-            align-items: center; /* Vertically align items */
-        }
-        .card-header .header-title {
-            flex-grow: 1;
-        }
-        .card-header .export-buttons .btn {
-            margin-left: 8px; /* Space between export buttons */
-            padding: 5px 12px; /* Smaller padding for export buttons */
-            font-size: 0.9em;
+            /* Removed flex properties as export buttons are no longer here */
         }
         .card-body {
             flex-grow: 1;
@@ -96,15 +86,6 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: #fff;
-        }
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #218838;
-        }
         .btn-danger {
             background-color: #dc3545;
             border-color: #dc3545;
@@ -123,8 +104,47 @@
             padding-bottom: 10px;
         }
         .table-responsive {
-            margin-top: 20px; /* Adjust as needed, less if header is very compact */
+            margin-top: 0; /* No extra margin needed if DataTables handles its own layout */
         }
+        /* DataTables Custom Styling - Adjustments for top buttons */
+        .dataTables_wrapper .dt-buttons {
+            float: left; /* Align buttons to the left */
+            margin-bottom: 10px; /* Space between buttons and table */
+        }
+        .dataTables_wrapper .dt-buttons .btn {
+            margin-right: 5px; /* Space between each button */
+            padding: .25rem .5rem; /* Smaller padding for default DataTable buttons */
+            font-size: .875rem; /* Smaller font size */
+        }
+        /* Specific button colors for DataTables generated buttons */
+        .buttons-csv {
+            background-color: #28a745 !important; /* Light green for CSV */
+            border-color: #28a745 !important;
+            color: #fff !important;
+        }
+        .buttons-csv:hover {
+            background-color: #218838 !important;
+            border-color: #218838 !important;
+        }
+        .buttons-excel {
+            background-color: #1d6f42 !important; /* Darker green for Excel */
+            border-color: #1d6f42 !important;
+            color: #fff !important;
+        }
+        .buttons-excel:hover {
+            background-color: #175734 !important;
+            border-color: #175734 !important;
+        }
+        .buttons-pdf {
+             background-color: #dc3545 !important; /* Red for PDF */
+             border-color: #dc3545 !important;
+             color: #fff !important;
+        }
+        .buttons-pdf:hover {
+             background-color: #c82333 !important;
+             border-color: #c82333 !important;
+        }
+
         .dataTables_wrapper .row:first-child,
         .dataTables_wrapper .row:last-child {
             padding: 10px 0;
@@ -268,11 +288,7 @@
                 <h2 class="report-section-title">Report Results</h2>
                 <div class="card">
                     <div class="card-header" id="reportResultHeader">
-                        <span class="header-title">Login History Data</span>
-                        <div class="export-buttons">
-                            <button type="button" class="btn btn-success" id="exportExcelBtn"><i class="fas fa-file-excel me-1"></i> Excel</button>
-                            <button type="button" class="btn btn-danger" id="exportPdfBtn"><i class="fas fa-file-pdf me-1"></i> PDF</button>
-                        </div>
+                        Login History Data
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -412,8 +428,7 @@
             });
         }
 
-        // Initialize DataTable variable outside the click function to destroy/recreate
-        let loginHistoryTable;
+        let loginHistoryTable; // Declare DataTable variable globally
 
         $(document).ready(function() {
             initializeFlatpickr('#loginDateRange');
@@ -426,10 +441,8 @@
                 console.log(`Generating Login History Report: Date Range: ${dateRange}, User: ${userFilter}, Status: ${statusFilter}`);
 
                 $('#reportResultsSection').show();
-                // We'll keep the static "Login History Data" as requested,
-                // or you can make it dynamic again if you want details in the header:
-                // $('#reportResultHeader .header-title').text(`Login History Data for ${userFilter ? $('option:selected', $('#loginUser')).text() : 'All Users'}`);
-
+                // Set the static header text as requested
+                $('#reportResultHeader').text('Login History Data'); // Removed span as there's no longer buttons next to it
 
                 // Destroy existing DataTable if it exists
                 if (loginHistoryTable) {
@@ -457,8 +470,10 @@
                 loginHistoryTable = $('#reportTable').DataTable({
                     data: data,
                     columns: columns,
-                    dom: 'Bfrtip', // This still enables the default DataTables buttons
+                    // Use 'Bfrtip' to enable buttons, filter, pagination, etc.
+                    dom: 'Bfrtip',
                     buttons: [
+                        // Buttons in the specified order
                         { extend: 'copy', exportOptions: { columns: ':visible' } },
                         { extend: 'csv', exportOptions: { columns: ':visible' } },
                         { extend: 'excel', exportOptions: { columns: ':visible' } },
@@ -477,27 +492,19 @@
                             "last": "Last",
                             "next": "Next",
                             "previous": "Previous"
+                        },
+                        "buttons": { // Optional: Customize button text if needed
+                            "copy": "Copy",
+                            "csv": "CSV",
+                            "excel": "Excel",
+                            "pdf": "PDF",
+                            "print": "Print"
                         }
                     }
                 });
             });
 
-            // Handle Export button clicks (linking to DataTables internal buttons)
-            $('#exportExcelBtn').on('click', function() {
-                if (loginHistoryTable) {
-                    loginHistoryTable.button('.buttons-excel').trigger();
-                } else {
-                    alert('Please generate the report first.');
-                }
-            });
-
-            $('#exportPdfBtn').on('click', function() {
-                if (loginHistoryTable) {
-                    loginHistoryTable.button('.buttons-pdf').trigger();
-                } else {
-                    alert('Please generate the report first.');
-                }
-            });
+            // Removed explicit click handlers for export buttons as DataTable handles them now
         });
 
         document.addEventListener('DOMContentLoaded', () => {
