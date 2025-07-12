@@ -310,13 +310,13 @@ table.dataTable tbody td {
     vertical-align: middle; /* Ensure content is vertically aligned */
 }
 table.dataTable thead th {
-    background-color: #E6EBE6; /* A slightly darker, very subtle green-tinted grey */
+    background-color: #F8F8F8; /* A very light grey for subtle contrast */
     color: #333; /* Keep text dark for contrast */
     font-weight: 600;
     white-space: nowrap;   /* Prevents header text from wrapping */
     padding-right: 30px;   /* Ensures enough space for sort icons */
     position: relative;    /* Needed for absolute positioning of icons if used */
-    border-bottom: 2px solid #D1D8D1; /* Add a subtle darker border for definition */
+    border-bottom: 2px solid #ddd; /* A more distinct border for definition */
 }
 
 /* Fixes for DataTables visual issues at 100% zoom (continued) */
