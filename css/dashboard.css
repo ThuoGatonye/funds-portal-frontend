@@ -21,10 +21,12 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Ensure header is on top */
 }
-header .logo-link {
+
+header .logo-link { /* New: For clickable logo/title */
     text-decoration: none; /* Remove underline */
     color: inherit; /* Inherit color from parent (header) */
 }
+
 header .logo-text {
     font-size: 1.8em;
     font-weight: 700;
@@ -154,6 +156,14 @@ header .logout-btn:hover {
 .page-header-controls h1 {
     margin: 0; /* Override default h1 margin */
 }
+
+.page-header-controls .header-buttons { /* New rule for button group next to H1 */
+    display: flex;
+    gap: 10px; /* Space between the buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+    align-items: center; /* Vertically align items in the button group */
+}
+
 
 /* Content Cards */
 .card-grid {
@@ -300,12 +310,13 @@ table.dataTable tbody td {
     vertical-align: middle; /* Ensure content is vertically aligned */
 }
 table.dataTable thead th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #E6EBE6; /* A slightly darker, very subtle green-tinted grey */
+    color: #333; /* Keep text dark for contrast */
     font-weight: 600;
     white-space: nowrap;   /* Prevents header text from wrapping */
     padding-right: 30px;   /* Ensures enough space for sort icons */
     position: relative;    /* Needed for absolute positioning of icons if used */
+    border-bottom: 2px solid #D1D8D1; /* Add a subtle darker border for definition */
 }
 
 /* Fixes for DataTables visual issues at 100% zoom (continued) */
@@ -344,11 +355,6 @@ table.dataTable thead .dt-orderable-desc:after {
 .dataTables_wrapper .dataTables_info { float: left; }
 .dataTables_wrapper .dataTables_paginate { float: right; }
 
-/* Styling for the custom Export Dropdown (will be placed inside DataTables toolbar) */
-.dataTables_wrapper .dt-buttons {
-    float: left; /* Position next to length menu */
-    margin-right: 1em;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -407,13 +413,16 @@ table.dataTable thead .dt-orderable-desc:after {
     .page-header-controls {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px; /* Adjust gap for stacked items */
     }
     .page-header-controls h1 {
         width: 100%; /* Full width for title */
         text-align: center;
     }
-    .page-header-controls button {
-        width: 100%; /* Full width for button */
+    .page-header-controls .header-buttons { /* Target the new button wrapper */
+        width: 100%; /* Full width for the button container */
+        justify-content: center; /* Center buttons horizontally */
+        gap: 10px; /* Maintain gap between buttons within the group */
     }
 
 
@@ -438,11 +447,12 @@ table.dataTable thead .dt-orderable-desc:after {
         width: 100%; /* Make search input full width */
     }
 
-    /* DataTables buttons on small screens */
+    /* DataTables buttons on small screens (rendered by our .dt-buttons container) */
     .dataTables_wrapper .dt-buttons {
-        float: none; /* Remove float */
+        float: none; /* Remove float from buttons container */
         text-align: center;
-        margin-right: 0;
-        margin-bottom: 10px;
+        margin-right: 0; /* Remove right margin */
+        width: 100%; /* Ensure it takes full width to allow centering */
+        justify-content: center; /* Center buttons within the container */
     }
 }
