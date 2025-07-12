@@ -113,25 +113,48 @@
 
     <div class="main-content">
         <aside class="sidebar">
-            <h2>Navigation</h2>
+            <h2>Admin Menu</h2>
             <ul>
-                <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
-                <li><a href="#" class="dropdown-toggle"><i class="fas fa-users"></i> Clients</a>
+                <li><a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">
+                        <i class="fas fa-users-cog"></i> User Management <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
                     <ul class="submenu">
-                        <li><a href="add-client.html">Add Client</a></li>
-                        <li><a href="manage-clients.html">Manage Clients</a></li>
+                        <li><a href="roles.html">Roles</a></li>
+                        <li><a href="users.html">Users</a></li>
                     </ul>
                 </li>
-                <li><a href="#" class="dropdown-toggle"><i class="fas fa-cogs"></i> Settings</a>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">
+                        <i class="fas fa-layer-group"></i> Group Management <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
                     <ul class="submenu">
-                        <li><a href="user-profile.html">User Profile</a></li>
-                        <li><a href="system-settings.html">System Settings</a></li>
+                        <li><a href="plans.html">Plans</a></li>
+                        <li><a href="member_profiles.html">Member Profiles</a></li>
                     </ul>
                 </li>
-                <li><a href="reports.html"><i class="fas fa-chart-line"></i> Reports</a></li>
-                <li><a href="audit-logs.html" class="active"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
-                <li><a href="support.html"><i class="fas fa-question-circle"></i> Support</a></li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">
+                        <i class="fas fa-chart-line"></i> Reports <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="report_login_history.html">Login History</a></li>
+                        <li><a href="report_contribution_breakdown.html">Contribution Breakdown</a></li>
+                        <li><a href="report_payout_history.html">Payout History</a></li>
+                        <li><a href="report_kitty_breakdown.html">Kitty Breakdown</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#" class="toggle-submenu">
+                        <i class="fas fa-cogs"></i> Main Settings <i class="fas fa-chevron-down submenu-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="settings_account_management.html">Account Management</a></li>
+                        <li><a href="settings_smtp.html">SMTP Settings</a></li>
+                    </ul>
+                </li>
+                <li><a href="audit_logs.html" class="active"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
             </ul>
         </aside>
 
@@ -322,7 +345,7 @@
                 info: true,
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 responsive: false, // Explicitly set to false to prevent row collapsing
-                scrollX: true,     // Enable horizontal scrolling for the table
+                scrollX: true,       // Enable horizontal scrolling for the table
                 dom: 'lfrtip', // Updated DOM to remove 'B' (buttons) from default DataTables placement
 
                 // Removed buttons config from here as we're injecting them separately
