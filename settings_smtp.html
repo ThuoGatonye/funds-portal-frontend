@@ -15,56 +15,119 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5; /* Light grey background for the whole page */
+        }
+        .main-content {
+            display: flex;
+            min-height: 100vh;
+        }
+        .dashboard-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: #f0f2f5; /* Match body background */
+        }
+        .page-header-controls h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e4e8;
+            padding-bottom: 15px;
         }
         .card {
-            margin-bottom: 25px; /* Standard margin between cards within their column */
-            border-radius: 10px; /* Increased border-radius for softer corners */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Stronger shadow for depth */
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: none; /* Remove default bootstrap border */
-            height: 100%; /* Important for side-by-side alignment within rows */
+            height: 100%;
             display: flex;
             flex-direction: column;
+            background-color: #ffffff; /* White card background */
         }
         .card-header {
-            background-color: #e9f5ff; /* Blue background like Account Management */
-            border-bottom: 1px solid #cce5ff; /* Blue border */
-            font-weight: 700; /* Bolder font */
-            color: #0056b3; /* Darker blue text */
+            background-color: #e9f5ff; /* Light blue header */
+            border-bottom: 1px solid #cce5ff;
+            font-weight: 700;
+            color: #0056b3;
             padding: 15px 20px;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
-            font-size: 1.15em; /* Larger font size */
+            font-size: 1.15em;
         }
         .card-body {
-            flex-grow: 1; /* Allows card body to expand */
+            flex-grow: 1;
+            padding: 20px; /* Consistent padding */
         }
         .form-label {
-            font-weight: 500; /* Standard font weight */
-            color: #333; /* Darker color for better contrast */
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px; /* Slight space below label */
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px; /* More padding for inputs */
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff; /* Primary blue on focus */
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+        .btn {
+            font-weight: 500;
+            border-radius: 5px; /* Consistent button radius */
+            padding: 10px 20px; /* More padding for buttons */
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+        .btn-info {
+            background-color: #17a2b8; /* Bootstrap info blue */
+            border-color: #17a2b8;
+            color: #fff;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #138496;
         }
         .btn-group-actions {
-            margin-top: 20px;
+            margin-top: 25px; /* Increased margin for action buttons */
             text-align: right;
+        }
+        .btn-group-actions .btn {
+            margin-left: 10px; /* Space between action buttons */
         }
         .alert-message {
             margin-top: 15px;
-            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: 500;
         }
         .row {
-            align-items: stretch; /* Makes columns stretch to match height in a row */
+            align-items: stretch;
         }
-        /* Remove bottom margin for the last card within its column */
         .col-lg-10 > .card:last-child,
         .col-lg-5 > .card:last-child {
              margin-bottom: 0;
         }
-        /* Input focus styles for consistency */
-        .form-control:focus, .form-select:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-        }
-        .btn {
-            font-weight: 500; /* Consistent button font weight */
+        .character-count {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 5px;
+            display: block; /* Ensure it takes full width */
         }
     </style>
 </head>
@@ -81,7 +144,8 @@
 
             <section class="settings-section">
                 <div class="row justify-content-center">
-                    <div class="col-lg-10 col-md-12 d-flex"> <div class="card flex-grow-1">
+                    <div class="col-lg-10 col-md-12 d-flex">
+                        <div class="card flex-grow-1">
                             <div class="card-header">
                                 SMTP Server Configuration
                             </div>
@@ -126,7 +190,9 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center mt-5"> <div class="col-lg-5 col-md-6 d-flex"> <div class="card flex-grow-1">
+                <div class="row justify-content-center mt-5">
+                    <div class="col-lg-5 col-md-6 d-flex">
+                        <div class="card flex-grow-1">
                             <div class="card-header">
                                 Sender Information
                             </div>
@@ -149,7 +215,8 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5 col-md-6 d-flex"> <div class="card flex-grow-1">
+                    <div class="col-lg-5 col-md-6 d-flex">
+                        <div class="card flex-grow-1">
                             <div class="card-header">
                                 Test SMTP Configuration
                             </div>
@@ -157,6 +224,11 @@
                                 <div class="mb-3">
                                     <label for="testEmailRecipient" class="form-label">Send Test Email To</label>
                                     <input type="email" class="form-control" id="testEmailRecipient" placeholder="e.g., your_email@example.com" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="testEmailMessage" class="form-label">Test Message Body (Optional)</label>
+                                    <textarea class="form-control" id="testEmailMessage" rows="3" maxlength="50" placeholder="Enter custom message (max 50 chars), or leave blank for default."></textarea>
+                                    <span id="charCount" class="character-count">0 / 50 characters</span>
                                 </div>
                                 <button type="button" class="btn btn-info" id="sendTestEmailBtn"><i class="fas fa-paper-plane"></i> Send Test Email</button>
 
@@ -274,6 +346,19 @@
         }
 
         $(document).ready(function() {
+            // Character counter for textarea
+            const messageTextarea = $('#testEmailMessage');
+            const charCountSpan = $('#charCount');
+            const maxLength = messageTextarea.attr('maxlength');
+
+            function updateCharCount() {
+                const currentLength = messageTextarea.val().length;
+                charCountSpan.text(`${currentLength} / ${maxLength} characters`);
+            }
+
+            messageTextarea.on('input', updateCharCount);
+            updateCharCount(); // Initial count on load
+
             // Form submission handlers (placeholders)
             $('#smtpSettingsForm').on('submit', function(e) {
                 e.preventDefault();
@@ -296,7 +381,9 @@
             // Send Test Email functionality
             $('#sendTestEmailBtn').on('click', function() {
                 const recipientEmail = $('#testEmailRecipient').val();
+                const testMessage = messageTextarea.val().trim(); // Get message from textarea
                 const statusDiv = $('#testEmailStatus');
+
                 if (!recipientEmail) {
                     statusDiv.removeClass().addClass('alert-message alert alert-danger').text('Please enter a recipient email address.').show();
                     return;
@@ -305,11 +392,16 @@
                 statusDiv.removeClass().addClass('alert-message alert alert-info').text('Sending test email...').show();
                 $(this).prop('disabled', true); // Disable button during test
 
+                // Determine the message to send
+                const messageToSend = testMessage === '' ?
+                    `This is a test email from Funds Group SMTP Configuration. Sent on ${new Date().toLocaleString()}.` :
+                    testMessage;
+
                 // Simulate API call delay
                 setTimeout(() => {
                     const success = Math.random() > 0.3; // 70% chance of success
                     if (success) {
-                        statusDiv.removeClass().addClass('alert-message alert alert-success').text(`Test email sent successfully to ${recipientEmail}! Please check your inbox.`).show();
+                        statusDiv.removeClass().addClass('alert-message alert alert-success').html(`Test email sent successfully to <strong>${recipientEmail}</strong>!<br>Message: "${messageToSend}"<br>Please check your inbox.`).show();
                     } else {
                         statusDiv.removeClass().addClass('alert-message alert alert-danger').text('Failed to send test email. Please check your SMTP settings and try again.').show();
                     }
