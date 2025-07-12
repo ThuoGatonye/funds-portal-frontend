@@ -20,11 +20,15 @@ header {
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Ensure header is on top */
+    position: fixed; /* Make header fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
-header .logo-link { /* New: For clickable logo/title */
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Inherit color from parent (header) */
+header .logo-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 header .logo-text {
@@ -34,10 +38,10 @@ header .logo-text {
     color: white;
 }
 
-.header-right { /* New rule to align user info and logout button */
+.header-right {
     display: flex;
-    align-items: center; /* Vertically align user info and logout button */
-    gap: 20px; /* Space between user info and logout button */
+    align-items: center;
+    gap: 20px;
 }
 
 header .user-info {
@@ -45,7 +49,7 @@ header .user-info {
 }
 
 header .logout-btn {
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
     padding: 8px 18px;
     border: none;
@@ -57,12 +61,11 @@ header .logout-btn {
 }
 
 header .logout-btn:hover {
-    background-color: #d32f2f; /* Darker red */
+    background-color: #d32f2f;
 }
 
-/* New: Mobile menu toggle button (hidden on desktop) */
 .mobile-menu-toggle {
-    display: none; /* Hidden by default on desktop */
+    display: none;
     background: none;
     border: none;
     color: white;
@@ -75,8 +78,9 @@ header .logout-btn:hover {
 .main-content {
     display: flex;
     flex: 1; /* Takes remaining vertical space */
-    /* Ensure children (sidebar, dashboard-content) stretch to full height */
-    align-items: stretch; /* ADDED: This is crucial for sidebar height */
+    align-items: stretch; /* Ensures children stretch vertically */
+    padding-top: 60px; /* NEW: Add padding equal to header height to push content down */
+    min-height: calc(100vh - 60px); /* NEW: Ensure it takes full remaining viewport height */
 }
 
 /* Sidebar Navigation */
@@ -89,17 +93,10 @@ header .logout-btn:hover {
     flex-direction: column;
     z-index: 900;
     transition: transform 0.3s ease-out;
-
-    /* ADDED/MODIFIED: Ensure sidebar fills height on desktop */
-    /* If header is fixed, sidebar should also be fixed or adjust its top offset */
-    position: sticky; /* Make it stick within its parent container */
-    top: 0; /* Align to the top of its sticky container */
-    /* For fixed header, you might want to use fixed and calc height: */
-    /* position: fixed;
-    top: 60px; /* Assuming header height is around 60px */
-    /* height: calc(100vh - 60px); */
-    /* However, for typical flex layouts, `position: sticky` is often better
-       as it works with scrollable content */
+    position: sticky; /* Keeps it sticky within .main-content's flow */
+    top: 60px; /* Stick from below the header */
+    height: calc(100vh - 60px); /* NEW: Ensure it spans full height from below header */
+    overflow-y: auto; /* Allow scrolling if sidebar content is too long */
 }
 
 .sidebar h2 {
@@ -135,7 +132,7 @@ header .logout-btn:hover {
     color: #2E8B57;
 }
 
-.sidebar ul li a.active { /* For active page indication */
+.sidebar ul li a.active {
     background-color: #4CAF50; /* Primary green for active */
     color: white;
     box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
@@ -144,22 +141,22 @@ header .logout-btn:hover {
 /* Nested menu items for cascading */
 .sidebar ul li ul {
     margin-top: 10px;
-    margin-left: 15px; /* Indent sub-items */
-    border-left: 2px solid #e6e6e6; /* Subtle line for visual hierarchy */
+    margin-left: 15px;
+    border-left: 2px solid #e6e6e6;
     padding-left: 5px;
-    display: none; /* Hidden by default */
+    display: none;
 }
 
 .sidebar ul li ul.show {
-    display: block; /* Show when active */
+    display: block;
 }
 
 /* Dashboard Content Area */
 .dashboard-content {
-    flex: 1; /* Takes remaining horizontal space */
+    flex: 1;
     padding: 30px;
     background-color: #F0F2F5; /* A light, soft gray */
-    overflow-y: auto; /* Enable scrolling for content if needed */
+    overflow-y: auto;
 }
 
 .dashboard-content h1 {
@@ -169,26 +166,25 @@ header .logout-btn:hover {
     font-size: 2.5em;
 }
 
-/* Page Header Controls (for title and advanced search button) */
+/* Page Header Controls */
 .page-header-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap;
     gap: 15px;
 }
 .page-header-controls h1 {
-    margin: 0; /* Override default h1 margin */
+    margin: 0;
 }
 
-.page-header-controls .header-buttons { /* New rule for button group next to H1 */
-    display: flex; /* Make it a flex container */
-    gap: 10px; /* Space between the buttons */
-    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
-    align-items: center; /* Vertically align items in the button group */
+.page-header-controls .header-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
 }
-
 
 /* Content Cards */
 .card-grid {
@@ -228,7 +224,7 @@ header .logout-btn:hover {
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    margin-top: 25px; /* Space from cards above */
+    margin-top: 25px;
 }
 
 /* Filters Section Styling */
@@ -252,7 +248,6 @@ header .logout-btn:hover {
     box-shadow: none;
 }
 
-/* Filters content is displayed/hidden by JS, but this ensures parent hides completely */
 .filters-content {
     display: block;
     padding-top: 10px;
@@ -274,7 +269,6 @@ header .logout-btn:hover {
     color: #555;
     white-space: nowrap;
 }
-/* Unified styling for inputs and selects within filter group */
 .filter-group input[type="text"],
 .filter-group select {
     padding: 10px 12px;
@@ -285,7 +279,6 @@ header .logout-btn:hover {
     flex-grow: 1;
 }
 
-/* Specific adjustment for Flatpickr's calendar icon if it overlaps */
 .flatpickr-calendar {
     font-family: 'Roboto', sans-serif;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -301,7 +294,6 @@ header .logout-btn:hover {
 .flatpickr-day.today {
     border-color: #2E8B57;
 }
-
 
 .filter-group button {
     padding: 10px 20px;
@@ -332,7 +324,6 @@ header .logout-btn:hover {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-/* Override DataTables default table styling for better fit with dashboard.css */
 table.dataTable {
     margin-top: 15px;
 }
@@ -353,7 +344,6 @@ table.dataTable thead th {
     border-bottom: 2px solid #D1D8D1;
 }
 
-/* Fixes for DataTables visual issues at 100% zoom (continued) */
 table.dataTable thead .dt-orderable-asc:before,
 table.dataTable thead .dt-orderable-desc:after {
     vertical-align: middle;
@@ -365,12 +355,10 @@ table.dataTable thead .dt-orderable-desc:after {
     top: 0.8em !important;
 }
 
-/* Ensure the total width of the DataTables container allows for scrolling */
 .dataTables_scrollBody {
     overflow-x: auto;
 }
 
-/* DataTables: Top Row - Length and Filter (Buttons are now handled elsewhere) */
 .dataTables_wrapper .dataTables_length {
     float: left;
     margin-bottom: 10px;
@@ -398,20 +386,17 @@ table.dataTable thead .dt-orderable-desc:after {
     max-width: 200px;
 }
 
-/* DataTables Buttons Styling (now that they are in header-buttons) */
 .header-buttons .dt-buttons {
     display: flex;
     gap: 10px;
     margin-left: 0;
 }
 
-/* Specific styling for the main Export button icon */
 .header-buttons .dt-buttons .btn.dropdown-toggle .fas {
     font-size: 1.2em;
     margin-right: 0;
 }
 
-/* Styling for dropdown items and their icons */
 .dt-buttons .dropdown-menu .dropdown-item {
     display: flex;
     align-items: center;
@@ -433,7 +418,6 @@ table.dataTable thead .dt-orderable-desc:after {
     color: #4CAF50;
 }
 
-/* DataTables: Bottom Row - Info and Pagination */
 .dataTables_wrapper .dataTables_info {
     float: left;
     padding: 10px 0;
@@ -444,7 +428,6 @@ table.dataTable thead .dt-orderable-desc:after {
     padding: 10px 0;
 }
 
-/* Clear floats for DataTables wrapper */
 .dataTables_wrapper:after { content: ""; display: table; clear: both; }
 
 
@@ -453,20 +436,22 @@ table.dataTable thead .dt-orderable-desc:after {
     /* --- General Layout Adjustments --- */
     .main-content {
         flex-direction: column;
-        align-items: stretch; /* Ensure it stays */
+        align-items: stretch;
+        padding-top: 60px; /* Keep for mobile too if header is fixed */
+        min-height: calc(100vh - 60px); /* Ensure it covers full height */
     }
 
-    /* --- Header Adjustments (Optimized for Item 1 & 3 based on HTML change) --- */
+    /* --- Header Adjustments --- */
     header {
-        display: flex;
+        /* On mobile, header is fixed, so keep its full width and positioning */
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        padding: 10px 15px; /* Adjust padding for mobile */
         justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        position: relative;
-        z-index: 1000;
     }
 
-    /* Mobile menu toggle (now first in HTML) */
     .mobile-menu-toggle {
         display: block;
         order: unset;
@@ -481,7 +466,6 @@ table.dataTable thead .dt-orderable-desc:after {
         flex-shrink: 0;
     }
 
-    /* Logo link */
     header .logo-link {
         order: unset;
         flex-grow: 1;
@@ -497,7 +481,6 @@ table.dataTable thead .dt-orderable-desc:after {
         font-size: 1em;
     }
 
-    /* User info & logout button group */
     header .header-right {
         order: unset;
         flex-direction: row;
@@ -524,10 +507,12 @@ table.dataTable thead .dt-orderable-desc:after {
         top: 0;
         left: 0;
         transform: translateX(-100%);
-        padding-top: 70px;
+        padding-top: 70px; /* Adjust padding for mobile header */
         z-index: 999;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         display: block;
+        /* Remove sticky for mobile as fixed is better for overlay */
+        /* Also remove calc height for mobile as 100vh is fine */
     }
 
     .sidebar.show-sidebar {
@@ -577,7 +562,7 @@ table.dataTable thead .dt-orderable-desc:after {
         padding: 20px;
     }
 
-    /* --- Page Header Controls (H1 and buttons) Adjustments (Item 3) --- */
+    /* --- Page Header Controls (H1 and buttons) Adjustments --- */
     .page-header-controls {
         display: flex;
         flex-direction: row;
@@ -621,7 +606,7 @@ table.dataTable thead .dt-orderable-desc:after {
         min-width: unset;
     }
 
-    /* --- DataTables Specific Responsive Adjustments (Item 2) --- */
+    /* --- DataTables Specific Responsive Adjustments --- */
     .dataTables_wrapper .row:first-of-type {
         display: flex;
         flex-wrap: wrap;
