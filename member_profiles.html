@@ -40,22 +40,18 @@
                 <div class="filters-content" id="filtersContent">
                     <div class="row g-3">
                         <div class="col-md-4 col-sm-6">
-                            <label for="filterMemberName" class="form-label">Member Name</label>
-                            <input type="text" class="form-control" id="filterMemberName" placeholder="Enter member name">
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label for="filterMemberId" class="form-label">Member ID</label>
-                            <input type="text" class="form-control" id="filterMemberId" placeholder="Enter member ID">
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label for="filterPlan" class="form-label">Associated Plan</label>
-                            <select class="form-select" id="filterPlan">
-                                <option value="">Select Plan</option>
-                                <option value="Monthly Savings Fund">Monthly Savings Fund</option>
-                                <option value="Growth Investment Plan">Growth Investment Plan</option>
-                                <option value="Emergency Loan Pool">Emergency Loan Pool</option>
-                                <option value="Holiday Kitty">Holiday Kitty</option>
+                            <label for="filterMember" class="form-label">Member (ID / Name)</label>
+                            <select class="form-select" id="filterMember">
+                                <option value="">Select Member</option>
+                                <option value="M001_Alice Johnson">M001 - Alice Johnson</option>
+                                <option value="M002_Bob Williams">M002 - Bob Williams</option>
+                                <option value="M003_Charlie Brown">M003 - Charlie Brown</option>
+                                <option value="M004_Diana Prince">M004 - Diana Prince</option>
                             </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="filterEmail" placeholder="Enter email">
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <label for="filterStatus" class="form-label">Membership Status</label>
@@ -86,8 +82,7 @@
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Associated Plan</th>
-                            <th>Status</th>
+                            <th>Associated Plans</th> <th>Status</th>
                             <th>Join Date</th>
                             <th>Actions</th>
                         </tr>
@@ -98,12 +93,12 @@
                             <td>Alice Johnson</td>
                             <td>alice@example.com</td>
                             <td>+1-123-456-7890</td>
-                            <td>Monthly Savings Fund</td>
-                            <td>Active</td>
+                            <td><a href="manage_member_plans.html?memberId=M001">2 Plans</a></td> <td>Active</td>
                             <td>2024-01-10</td>
                             <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M001"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
@@ -111,12 +106,12 @@
                             <td>Bob Williams</td>
                             <td>bob@example.com</td>
                             <td>+1-987-654-3210</td>
-                            <td>Growth Investment Plan</td>
-                            <td>Active</td>
+                            <td><a href="manage_member_plans.html?memberId=M002">1 Plan</a></td> <td>Active</td>
                             <td>2023-07-20</td>
                             <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M002"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
@@ -124,12 +119,12 @@
                             <td>Charlie Brown</td>
                             <td>charlie@example.com</td>
                             <td>+1-555-111-2222</td>
-                            <td>Emergency Loan Pool</td>
-                            <td>Inactive</td>
+                            <td><a href="manage_member_plans.html?memberId=M003">0 Plans</a></td> <td>Inactive</td>
                             <td>2024-03-05</td>
                             <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M003"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                         <tr>
@@ -137,12 +132,12 @@
                             <td>Diana Prince</td>
                             <td>diana@example.com</td>
                             <td>+1-777-333-4444</td>
-                            <td>Holiday Kitty</td>
-                            <td>Active</td>
+                            <td><a href="manage_member_plans.html?memberId=M004">3 Plans</a></td> <td>Active</td>
                             <td>2025-01-15</td>
                             <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M004"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
                         </tr>
                     </tbody>
@@ -332,15 +327,20 @@
 
             $('.clear-btn').on('click', function() {
                 // Clear all filter inputs
-                $('#filterMemberName').val('');
-                $('#filterMemberId').val('');
-                $('#filterPlan').val('');
+                $('#filterMember').val(''); // Clear the new merged dropdown
+                $('#filterEmail').val('');
                 $('#filterStatus').val('');
                 $('#filterJoinDate').val(''); // Clear flatpickr input
 
                 // Clear DataTables search and redraw
                 memberProfilesTable.search('').columns().search('').draw();
                 console.log("Filters cleared for Member Profiles.");
+            });
+
+            // Handle "Manage Plans" button click
+            $(document).on('click', '.manage-plans-btn', function() {
+                const memberId = $(this).data('member-id');
+                window.location.href = `manage_member_plans.html?memberId=${memberId}`;
             });
         });
 
