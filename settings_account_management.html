@@ -25,6 +25,7 @@
             height: 150px;
             border-radius: 50%; /* Make it a perfect circle */
             object-fit: cover;
+            aspect-ratio: 1/1; /* Crucial for maintaining aspect ratio and perfect circle */
             border: 4px solid #007bff; /* Slightly thicker, more prominent border */
             box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* More pronounced shadow */
         }
@@ -78,8 +79,7 @@
 
             <section class="settings-section">
                 <div class="row">
-                    <div class="col-lg-4 col-md-5">
-                        <div class="card">
+                    <div class="col-lg-3 col-md-4"> <div class="card">
                             <div class="card-body">
                                 <div class="profile-picture-container">
                                     <img src="images/default_profile.png" alt="Profile Picture" class="profile-picture" id="profileImage">
@@ -96,8 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-7">
-                        <div class="card">
+                    <div class="col-lg-9 col-md-8"> <div class="card">
                             <div class="card-header">
                                 Personal Information
                             </div>
@@ -348,11 +347,7 @@
 
             // Cancel button functionality
             $('.cancel-btn').on('click', function() {
-                // In a real application, you might reload the original data or simply close a modal
                 alert('Changes cancelled. (Demo)');
-                // A more robust cancel would reload initial values, not just reset the form
-                // For demonstration purposes, resetting is fine.
-                // You might need to store initial values on page load to revert accurately.
             });
 
             // 2FA Toggle and Manage button
@@ -366,7 +361,6 @@
 
             $('#manage2FABtn').on('click', function() {
                 alert('Redirecting to 2FA management page/modal... (Demo)');
-                // In a real application, this would redirect to a dedicated 2FA setup/management page
             });
         });
 
