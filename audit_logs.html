@@ -7,106 +7,11 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
-
     <link rel="stylesheet" href="css/dashboard.css">
-
-    <style>
-        /* Specific styles for the Audit Logs page - adjusted for DataTables (from your "1 hour ago" version) */
-        .filters-section {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
-            /* Added for initial collapsed state control via JS */
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
-            overflow: hidden;
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-        }
-
-        .filters-section.collapsed {
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-        }
-
-        .filters-section:not(.collapsed) {
-            max-height: 300px; /* Adjust as needed to fit content when open */
-            padding-top: 20px;
-            padding-bottom: 20px;
-            opacity: 1;
-        }
-
-        .filters-content {
-            display: none; /* Collapsed by default */
-            padding-top: 10px;
-        }
-
-        .filters-content.show {
-            display: block; /* Show when expanded */
-        }
-
-        .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            align-items: flex-end;
-        }
-        .filter-group label {
-            font-weight: 500;
-            color: #555;
-            white-space: nowrap;
-        }
-        /* Adjusted styles for Flatpickr input */
-        .filter-group input[type="text"].flatpickr-input, /* Flatpickr uses type="text" */
-        .filter-group select {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.95em;
-            min-width: 150px;
-            flex-grow: 1;
-        }
-        .filter-group button {
-            padding: 10px 20px;
-            /* Background color set by Bootstrap classes in HTML, or custom if not using Bootstrap defaults */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            white-space: nowrap;
-        }
-        /* Custom button styles for 'Submit' and 'Clear' from desired version */
-        .filter-group .btn-success {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .filter-group .btn-success:hover {
-            background-color: #45a049;
-        }
-        .filter-group .btn-secondary.clear-btn {
-            background-color: #6c757d;
-            color: white;
-        }
-        .filter-group .btn-secondary.clear-btn:hover {
-            background-color: #5a6268;
-        }
-    </style>
 </head>
 <body>
     <div id="header-placeholder"></div>
@@ -122,47 +27,48 @@
                     <button id="advancedSearchToggle" class="btn btn-primary">
                         Advanced Search <i class="fas fa-search"></i>
                     </button>
-                </div>
+                    </div>
             </div>
 
             <section class="filters-section">
                 <div class="filters-content" id="filtersContent">
-                    <div class="filter-group">
-                        <div>
-                            <label for="startDate">From:</label>
-                            <input type="text" id="startDate" placeholder="Select Start Date">
-                        </div>
-                        <div>
-                            <label for="endDate">To:</label>
-                            <input type="text" id="endDate" placeholder="Select End Date">
-                        </div>
-                        <div>
-                            <label for="eventType">Event Type:</label>
-                            <select id="eventType">
-                                <option value="">All</option>
+                    <div class="row g-3">
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterActionType" class="form-label">Action Type</label>
+                            <select class="form-select" id="filterActionType">
+                                <option value="">All Types</option>
                                 <option value="login">Login</option>
                                 <option value="logout">Logout</option>
-                                <option value="create_user">Create User</option>
-                                <option value="update_profile">Update Profile</option>
-                                <option value="contribution_record">Contribution Record</option>
-                                <option value="payout_request">Payout Request</option>
-                                <option value="system_setting">System Setting Change</option>
+                                <option value="create">Create</option>
+                                <option value="update">Update</option>
+                                <option value="delete">Delete</option>
+                                <option value="view">View</option>
                             </select>
                         </div>
-                        <div>
-                            <label for="userName">User:</label>
-                            <select id="userName">
-                                <option value="">All Users</option>
-                                <option value="admin">admin</option>
-                                <option value="treasurer_jane">treasurer_jane</option>
-                                <option value="user_mike">user_mike</option>
-                                <option value="user_sara">user_sara</option>
-                                <option value="user_john">user_john</option>
-                                <option value="system">system</option>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterUser" class="form-label">User</label>
+                            <input type="text" class="form-control" id="filterUser" placeholder="Enter username or ID">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterIpAddress" class="form-label">IP Address</label>
+                            <input type="text" class="form-control" id="filterIpAddress" placeholder="Enter IP address">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterDateRange" class="form-label">Date Range</label>
+                            <input type="text" class="form-control" id="filterDateRange" placeholder="Select date range">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="">All Statuses</option>
+                                <option value="success">Success</option>
+                                <option value="failure">Failure</option>
                             </select>
                         </div>
-                        <button class="btn btn-success">Submit</button>
-                        <button class="btn btn-secondary clear-btn">Clear</button>
+                    </div>
+                    <div class="filter-actions mt-3">
+                        <button class="btn btn-primary filter-submit-btn"><i class="fas fa-filter"></i> Submit</button>
+                        <button class="btn btn-secondary clear-btn"><i class="fas fa-undo"></i> Clear</button>
                     </div>
                 </div>
             </section>
@@ -174,107 +80,63 @@
                             <th>ID</th>
                             <th>Timestamp</th>
                             <th>User</th>
-                            <th>Action</th>
-                            <th>Details</th>
+                            <th>Action Type</th>
+                            <th>Module</th>
+                            <th>Description</th>
                             <th>IP Address</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>2025-07-11 10:00:00</td>
-                            <td>John Doe</td>
+                            <td>2025-07-12 10:30:00</td>
+                            <td>admin.user</td>
                             <td>Login</td>
+                            <td>Authentication</td>
                             <td>Successful login</td>
-                            <td>192.168.1.1</td>
+                            <td>192.168.1.10</td>
+                            <td>Success</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>2025-07-11 10:05:30</td>
-                            <td>Jane Smith</td>
-                            <td>Create Client</td>
-                            <td>New client 'Acme Corp' added</td>
-                            <td>192.168.1.2</td>
+                            <td>2025-07-12 10:29:30</td>
+                            <td>john.doe</td>
+                            <td>Update</td>
+                            <td>User Management</td>
+                            <td>Updated user profile for Jane Smith</td>
+                            <td>192.168.1.15</td>
+                            <td>Success</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>2025-07-11 10:15:45</td>
-                            <td>Admin User</td>
-                            <td>Update Client</td>
-                            <td>Client 'Acme Corp' details updated</td>
-                            <td>192.168.1.3</td>
+                            <td>2025-07-12 10:25:00</td>
+                            <td>jane.smith</td>
+                            <td>Login</td>
+                            <td>Authentication</td>
+                            <td>Failed login attempt (wrong password)</td>
+                            <td>192.168.1.20</td>
+                            <td>Failure</td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>2025-07-11 11:00:00</td>
-                            <td>John Doe</td>
-                            <td>Process Transaction</td>
-                            <td>Transaction ID: 54321, Amount: $1,500</td>
-                            <td>192.168.1.1</td>
+                            <td>2025-07-11 15:00:00</td>
+                            <td>treasurer.bob</td>
+                            <td>Create</td>
+                            <td>Plans</td>
+                            <td>Created new plan: "Retirement Fund"</td>
+                            <td>192.168.1.25</td>
+                            <td>Success</td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>2025-07-11 11:30:10</td>
-                            <td>Jane Smith</td>
-                            <td>Logout</td>
-                            <td>User logged out</td>
-                            <td>192.168.1.2</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>2025-07-11 12:00:00</td>
-                            <td>Admin User</td>
-                            <td>System Settings Change</td>
-                            <td>Updated security protocols</td>
-                            <td>192.168.1.3</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>2025-07-11 13:00:00</td>
-                            <td>John Doe</td>
-                            <td>View Report</td>
-                            <td>Accessed financial summary report</td>
-                            <td>192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>2025-07-10 09:30:00</td>
-                            <td>System Bot</td>
-                            <td>Automated Backup</td>
-                            <td>Database backup completed successfully</td>
-                            <td>10.0.0.5</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>2025-07-10 14:45:00</td>
-                            <td>Sarah Connor</td>
-                            <td>Password Reset</td>
-                            <td>Password for 'Sarah Connor' reset</td>
-                            <td>192.168.1.4</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>2025-07-10 16:00:00</td>
-                            <td>Michael Blue</td>
-                            <td>Delete Client</td>
-                            <td>Client 'Old Corp' removed</td>
-                            <td>192.168.1.5</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td>2025-07-09 08:00:00</td>
-                            <td>John Doe</td>
-                            <td>Login Failed</td>
-                            <td>Incorrect password entered</td>
-                            <td>192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td>2025-07-09 08:05:00</td>
-                            <td>John Doe</td>
-                            <td>Login</td>
-                            <td>Successful login after retry</td>
-                            <td>192.168.1.1</td>
+                            <td>2025-07-11 14:30:00</td>
+                            <td>member.alice</td>
+                            <td>View</td>
+                            <td>Member Profile</td>
+                            <td>Viewed own profile</td>
+                            <td>192.168.1.30</td>
+                            <td>Success</td>
                         </tr>
                     </tbody>
                 </table>
@@ -285,121 +147,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
-    
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        // Function to set the active link in the sidebar
-        function setActiveSidebarLink() {
-            const currentPath = window.location.pathname.split('/').pop();
-            $('.sidebar a').each(function() {
-                const linkPath = $(this).attr('href');
-                if (linkPath === currentPath) {
-                    $(this).addClass('active');
-                    // Also expand parent submenu if it's a sub-item
-                    $(this).closest('.submenu').addClass('show');
-                    $(this).closest('.has-submenu').find('.toggle-submenu .submenu-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            console.log('Document ready. Initializing DataTables...');
-            var auditLogsTable = $('#auditLogsTable').DataTable({
-                paging: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: false, // Explicitly set to false to prevent row collapsing
-                scrollX: true,       // Enable horizontal scrolling for the table
-                dom: 'lfrtip', // Updated DOM to remove 'B' (buttons) from default DataTables placement
-
-                // Removed buttons config from here as we're injecting them separately
-            });
-            console.log('DataTables initialization attempt complete.');
-
-            // Initialize and place DataTables Export Buttons (No changes here from your shared version)
-            new $.fn.dataTable.Buttons(auditLogsTable, {
-                buttons: [
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-file-export"></i>', // **Icon only for main button**
-                        titleAttr: 'Export Data',
-                        className: 'btn btn-info dropdown-toggle', // **Updated class**
-                        buttons: [
-                            { 
-                                extend: 'excelHtml5', 
-                                text: '<i class="fas fa-file-excel"></i> Export to Excel', // **Text + Icon for sub-button**
-                                className: 'dropdown-item'  
-                            },
-                            { 
-                                extend: 'pdfHtml5', 
-                                text: '<i class="fas fa-file-pdf"></i> Export to PDF', // **Text + Icon for sub-button**
-                                className: 'dropdown-item'  
-                            },
-                            { 
-                                extend: 'csvHtml5', // CSV export option
-                                text: '<i class="fas fa-file-csv"></i> Export to CSV', // **Text + Icon for sub-button**
-                                className: 'dropdown-item'  
-                            }
-                        ]
-                    }
-                ]
-            });
-            // Append the generated DataTables buttons to our desired div
-            auditLogsTable.buttons().container().prependTo($('.header-buttons'));
-
-
-            // --- Advanced Search Button & Filters Logic (No changes here from your shared version) ---
-            const advancedSearchToggle = document.getElementById('advancedSearchToggle');
-            const filtersContent = document.getElementById('filtersContent');
-            const filtersSection = document.querySelector('.filters-section'); 
-
-            // Ensure filters start collapsed on load (Explicitly added from desired)
-            if (filtersContent) filtersContent.classList.remove('show');
-            if (filtersSection) filtersSection.classList.add('collapsed');
-
-            if (advancedSearchToggle) {
-                advancedSearchToggle.addEventListener('click', () => {
-                    if (filtersContent) filtersContent.classList.toggle('show');
-                    if (filtersSection) filtersSection.classList.toggle('collapsed');
-                    // Removed dynamic text change for Advanced Search button as per desired
-                });
-            }
-
-            // Flatpickr initialization for separate start and end dates (No changes here from your shared version)
-            flatpickr("#startDate", {
-                dateFormat: "Y-m-d",
-            });
-            flatpickr("#endDate", {
-                dateFormat: "Y-m-d",
-            });
-
-            // Dropdown menu toggle for sidebar - Unified Logic (THE FIX)
-            // This will now apply to the dynamically loaded sidebar content
-            $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
-                e.preventDefault();
-
-                var $this = $(this);
-                var $submenu = $this.next('.submenu');
-                var $icon = $this.find('.submenu-icon'); // Find the icon within the clicked toggle
-
-                // Toggle 'show' class on the clicked submenu
-                $submenu.toggleClass('show');
-                // Rotate the chevron icon
-                $icon.toggleClass('fa-chevron-down fa-chevron-up');
-
-                // Hide other open submenus and reset their icons
-                $('.sidebar .submenu').not($submenu).removeClass('show');
-                $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            });
-        }); // End of DataTables and Filters Initialization $(document).ready()
-
-        // Function to load common HTML parts (from includes/header.html and sidebar.html)
+        // Function to load HTML content into a placeholder
         async function loadHTML(elementId, filePath) {
             try {
                 const response = await fetch(filePath);
@@ -408,59 +161,95 @@
                 }
                 const html = await response.text();
                 document.getElementById(elementId).innerHTML = html;
+                return true;
+            } catch (e) {
+                console.error(`Failed to load ${filePath}:`, e);
+                return false;
+            }
+        }
 
-                // --- START OF MOBILE-SPECIFIC JS MOVED HERE --- 🔥
-                // This code runs *AFTER* includes/header.html has been inserted into the DOM.
+        // Function to set the active sidebar link based on the current URL
+        function setActiveSidebarLink() {
+            const currentPathname = window.location.pathname;
+            const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
+
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                    let parentSubmenu = link.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        let parentToggle = parentSubmenu.previousElementSibling;
+                        if (parentToggle && parentToggle.classList.contains('toggle-submenu')) {
+                            parentToggle.querySelector('.submenu-icon').classList.remove('fa-chevron-down');
+                            parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to load all necessary HTML components and then initialize their JS
+        async function loadAllHTMLComponents() {
+            const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
+            const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
+
+            if (headerLoaded && sidebarLoaded) {
+                setActiveSidebarLink(); // Call after sidebar is loaded
+
+                // Mobile Menu Toggle JS
                 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
                 const sidebar = document.querySelector('.sidebar');
-                const mainContent = document.querySelector('.main-content'); // Used to push content aside
+                const mainContent = document.querySelector('.main-content');
 
                 if (mobileMenuToggle && sidebar && mainContent) {
-                    console.log('Mobile menu toggle and sidebar elements found AFTER header load!');
-                    
-                    // Event listener for the hamburger menu click
                     mobileMenuToggle.addEventListener('click', function() {
-                        console.log('Mobile menu toggle clicked!'); // <<< THIS SHOULD NOW APPEAR!
                         sidebar.classList.toggle('show-sidebar');
-                        mainContent.classList.toggle('pushed-aside'); // Apply class to main content
+                        mainContent.classList.toggle('pushed-aside');
                     });
 
-                    // Close sidebar when clicking outside (on main content or backdrop)
                     mainContent.addEventListener('click', function(event) {
-                        // Check if sidebar is open AND if the click was not inside the sidebar itself
-                        // AND not on the toggle button (to prevent immediate re-closing after opening)
                         if (sidebar.classList.contains('show-sidebar') &&
                             !sidebar.contains(event.target) &&
                             !mobileMenuToggle.contains(event.target)) {
                             sidebar.classList.remove('show-sidebar');
-                            mainContent.classList.remove('pushed-aside'); // Remove class from main content
-                            console.log('Clicked outside, sidebar closed.');
+                            mainContent.classList.remove('pushed-aside');
                         }
                     });
 
-                    // Close sidebar if user resizes window to desktop view while open
                     window.addEventListener('resize', function() {
                         if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
                             sidebar.classList.remove('show-sidebar');
-                            mainContent.classList.remove('pushed-aside'); // Remove class from main content
-                            console.log('Resized to desktop, sidebar closed.');
+                            mainContent.classList.remove('pushed-aside');
                         }
                     });
-
-                } else {
-                    console.warn('Elements for mobile menu toggle, sidebar, or main content not found after header load. Debugging details:');
-                    if (!mobileMenuToggle) console.warn(' - .mobile-menu-toggle was null.');
-                    if (!sidebar) console.warn(' - .sidebar was null.');
-                    if (!mainContent) console.warn(' - .main-content was null.');
                 }
-                // --- END OF MOBILE-SPECIFIC JS MOVED HERE --- 🔥
 
-                // After header is loaded, attach user info and logout functionality
+                // Submenu Toggle Logic
+                $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $submenu = $this.next('.submenu');
+                    var $icon = $this.find('.submenu-icon');
+
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('fa-chevron-down fa-chevron-up');
+
+                    $('.sidebar .submenu').not($submenu).removeClass('show');
+                    $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                });
+
+                // User info and logout button listener
                 const username = localStorage.getItem('username');
                 const userRole = localStorage.getItem('userRole');
-                const userInfoElement = document.getElementById('userInfo'); // Get element AFTER loading header
+                const userInfoElement = document.getElementById('userInfo');
                 if (username && userRole && userInfoElement) {
-                    userInfoElement.textContent = `Logged in as ${username} (${userRole})`;
+                    userInfoElement.textContent = `Welcome, ${username} (${userRole})`;
+                } else {
+                     userInfoElement.textContent = `Welcome, Guest`;
                 }
 
                 const logoutBtn = document.querySelector('.logout-btn');
@@ -472,22 +261,90 @@
                     });
                 }
 
-            } catch (e) {
-                console.error(`Failed to load ${filePath}:`, e);
+            } else {
+                console.error("One or more core HTML components failed to load.");
             }
         }
 
-        // DOMContentLoaded for header and sidebar loading and role-based access
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadHTML('header-placeholder', 'includes/header.html'); // Load the header
-            await loadHTML('sidebar-placeholder', 'includes/sidebar.html'); // Load the sidebar
-            setActiveSidebarLink(); // Set active link after sidebar is loaded
+        // Page-specific JavaScript (runs when this page's DOM is ready)
+        $(document).ready(function() {
+            var auditLogsTable = $('#auditLogsTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                responsive: false,
+                scrollX: true,
+                dom: 'lfrtip',
+            });
 
-            // Basic role-based access check - specific for Audit Logs (Admin only)
+            new $.fn.dataTable.Buttons(auditLogsTable, {
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: '<i class="fas fa-file-export"></i>', // Icon only for export button
+                        titleAttr: 'Export Data',
+                        className: 'btn btn-info dropdown-toggle',
+                        buttons: [
+                            { extend: 'excelHtml5', text: '<i class="fas fa-file-excel"></i> Export to Excel', className: 'dropdown-item' },
+                            { extend: 'pdfHtml5', text: '<i class="fas fa-file-pdf"></i> Export to PDF', className: 'dropdown-item' },
+                            { extend: 'csvHtml5', text: '<i class="fas fa-file-csv"></i> Export to CSV', className: 'dropdown-item' }
+                        ]
+                    }
+                ]
+            });
+            auditLogsTable.buttons().container().prependTo($('.header-buttons'));
+
+            // Filters section toggle
+            const advancedSearchToggle = document.getElementById('advancedSearchToggle');
+            const filtersContent = document.getElementById('filtersContent');
+            const filtersSection = document.querySelector('.filters-section'); 
+
+            if (filtersContent) filtersContent.classList.remove('show');
+            if (filtersSection) filtersSection.classList.add('collapsed');
+
+            if (advancedSearchToggle) {
+                advancedSearchToggle.addEventListener('click', () => {
+                    if (filtersContent) filtersContent.classList.toggle('show');
+                    if (filtersSection) filtersSection.classList.toggle('collapsed');
+                });
+            }
+
+            // Flatpickr initialization for date range
+            flatpickr("#filterDateRange", { 
+                mode: "range", 
+                dateFormat: "Y-m-d" 
+            });
+
+            // Filter submission/clear logic
+            $('.filter-submit-btn').on('click', function() {
+                // Implement your filter logic here using DataTables API
+                console.log("Submit Filters clicked for Audit Logs.");
+                auditLogsTable.draw(); // Redraw table with current (or future custom) filters
+            });
+
+            $('.clear-btn').on('click', function() {
+                // Clear all filter inputs
+                $('#filterActionType').val('');
+                $('#filterUser').val('');
+                $('#filterIpAddress').val('');
+                $('#filterDateRange').val(''); // Clear flatpickr input
+                $('#filterStatus').val('');
+
+                // Clear DataTables search and redraw
+                auditLogsTable.search('').columns().search('').draw();
+                console.log("Filters cleared for Audit Logs.");
+            });
+        });
+
+        // Ensure loadAllHTMLComponents runs once the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllHTMLComponents();
+
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // Commenting out for testing purposes if you don't have a login flow
-                // window.location.href = 'index.html';  
+                // window.location.href = 'index.html'; // Uncomment in production for role-based access
             }
         });
     </script>
