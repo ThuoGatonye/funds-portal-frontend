@@ -144,7 +144,7 @@ header .logout-btn:hover {
     font-size: 2.5em;
 }
 
-/* New: Page Header Controls (for title and advanced search button) */
+/* Page Header Controls (for title and advanced search button) */
 .page-header-controls {
     display: flex;
     justify-content: space-between;
@@ -213,37 +213,31 @@ header .logout-btn:hover {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-bottom: 25px;
+    /* Transition for smooth hide/show */
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, box-shadow 0.3s ease-out;
+    max-height: 500px; /* Max height when expanded - adjust if filter content is taller */
+    overflow: hidden; /* Hide overflow during transition */
 }
 
-.filters-header { /* This header is now hidden/removed from HTML, but keep rule for safety */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 15px;
+.filters-section.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+    box-shadow: none;
 }
 
-.filters-header h3 {
-    margin: 0;
-    color: #2E8B57;
-    font-size: 1.5em;
-}
-
-.filter-toggle-icon {
-    font-size: 1.5em;
-    transition: transform 0.3s ease;
-    color: #555;
-}
-
+/* Filters content is displayed/hidden by JS, but this ensures parent hides completely */
 .filters-content {
-    display: none; /* Collapsed by default */
-    padding-top: 10px;
+    display: block; /* Content is always 'block' within the visible section */
+    padding-top: 10px; /* Kept for spacing when content is visible */
 }
 
-.filters-content.show {
-    display: block; /* Show when expanded */
+.filters-content:not(.show) {
+    /* This rule hides the actual content, even if the parent section has a height.
+       The .filters-section.collapsed class handles the parent's collapse. */
+    display: none;
 }
 
 .filter-group {
@@ -300,7 +294,6 @@ header .logout-btn:hover {
 /* Override DataTables default table styling for better fit with dashboard.css */
 table.dataTable { /* Target DataTables table directly */
     margin-top: 15px; /* Add some space if needed below info bar */
-    /* width: 100% !important; -- REMOVED: Let DataTables Responsive manage width */
 }
 table.dataTable thead th,
 table.dataTable tbody td {
@@ -310,13 +303,13 @@ table.dataTable tbody td {
     vertical-align: middle; /* Ensure content is vertically aligned */
 }
 table.dataTable thead th {
-    background-color: #F8F8F8; /* A very light grey for subtle contrast */
+    background-color: #E6EBE6; /* Light, subtle green-grey from previous proposal */
     color: #333; /* Keep text dark for contrast */
     font-weight: 600;
     white-space: nowrap;   /* Prevents header text from wrapping */
     padding-right: 30px;   /* Ensures enough space for sort icons */
     position: relative;    /* Needed for absolute positioning of icons if used */
-    border-bottom: 2px solid #ddd; /* A more distinct border for definition */
+    border-bottom: 2px solid #D1D8D1; /* Add a subtle darker border for definition */
 }
 
 /* Fixes for DataTables visual issues at 100% zoom (continued) */
@@ -337,23 +330,84 @@ table.dataTable thead .dt-orderable-desc:after {
     overflow-x: auto; /* Re-enable horizontal scrolling for the table body */
 }
 
-/* Custom styling for DataTables generated elements to match snippet layout */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-    padding: 10px 0;
-    margin-bottom: 5px;
+/* DataTables: Top Row - Length, Filter, and Buttons */
+.dataTables_wrapper .dataTables_length {
+    float: left; /* Keep length selector on left */
+    margin-bottom: 10px;
 }
 
-/* Ensure search is top-right, info top-left */
-.dataTables_wrapper .dataTables_filter { float: right; margin-bottom: 10px; }
-.dataTables_wrapper .dataTables_length { float: left; margin-bottom: 10px; }
-.dataTables_wrapper:after { content: ""; display: table; clear: both; } /* Clear floats */
+.dataTables_wrapper .dataTables_filter {
+    float: right; /* Keep filter container on right */
+    margin-bottom: 10px;
+    display: flex; /* Make it a flex container */
+    align-items: center; /* Vertically align items */
+    gap: 10px; /* Space between elements within this flex container */
+    justify-content: flex-end; /* Push content to the right */
+}
 
-/* Ensure info bottom-left, pagination bottom-right */
-.dataTables_wrapper .dataTables_info { float: left; }
-.dataTables_wrapper .dataTables_paginate { float: right; }
+.dataTables_wrapper .dataTables_filter label {
+    display: flex; /* Make the label itself a flex container */
+    align-items: center;
+    gap: 5px; /* Space between "Search:" text and input */
+    margin-bottom: 0; /* Remove default margin */
+}
+
+/* Ensure the search input doesn't take full width if not needed */
+.dataTables_wrapper .dataTables_filter input[type="search"] {
+    width: auto; /* Allow input to size based on content */
+    flex-grow: 1; /* Allow search input to grow, but not consume all space */
+    max-width: 200px; /* Set a max width for desktop for aesthetics */
+}
+
+/* DataTables Buttons Styling & Placement */
+.dataTables_wrapper .dt-buttons {
+    margin-left: 10px; /* Add some space from the search input */
+    float: none; /* Remove any previous float rule if present */
+    display: flex; /* Ensure buttons group nicely if multiple */
+    gap: 5px; /* Space between individual buttons in the group */
+}
+
+/* Specific styling for the main Export button icon */
+.dataTables_wrapper .dt-buttons .btn.dropdown-toggle .fas {
+    font-size: 1.2em; /* Make the main icon slightly larger */
+    margin-right: 0; /* No margin on the main icon */
+}
+
+/* Styling for dropdown items and their icons */
+.dt-buttons .dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fas {
+    margin-right: 8px; /* Space between icon and text in dropdown */
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-excel {
+    color: #28a745; /* Darker green for Excel */
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-pdf {
+    color: #dc3545; /* Red for PDF */
+}
+
+.dt-buttons .dropdown-menu .dropdown-item .fa-file-csv {
+    color: #4CAF50; /* Primary green (lighter) for CSV */
+}
+
+/* DataTables: Bottom Row - Info and Pagination */
+.dataTables_wrapper .dataTables_info {
+    float: left; /* Info on the left */
+    padding: 10px 0; /* Added padding for consistency */
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right; /* **Pagination on the right** */
+    padding: 10px 0; /* Added padding for consistency */
+}
+
+/* Clear floats for DataTables wrapper */
+.dataTables_wrapper:after { content: ""; display: table; clear: both; }
 
 
 /* Responsive Design */
@@ -445,14 +499,14 @@ table.dataTable thead .dt-orderable-desc:after {
     }
     .dataTables_wrapper .dataTables_filter input {
         width: 100%; /* Make search input full width */
+        max-width: unset; /* Remove max-width on mobile */
     }
 
     /* DataTables buttons on small screens (rendered by our .dt-buttons container) */
     .dataTables_wrapper .dt-buttons {
-        float: none; /* Remove float from buttons container */
-        text-align: center;
-        margin-right: 0; /* Remove right margin */
+        margin-left: 0;
+        margin-top: 10px; /* Space when stacked */
         width: 100%; /* Ensure it takes full width to allow centering */
-        justify-content: center; /* Center buttons within the container */
+        justify-content: center; /* Center buttons horizontally */
     }
 }
