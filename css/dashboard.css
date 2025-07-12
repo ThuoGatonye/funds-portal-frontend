@@ -86,7 +86,7 @@ header .logout-btn:hover {
 /* Sidebar Navigation */
 .sidebar {
     background-color: #ffffff; /* White background for sidebar */
-    width: 270px; /* Adjusted width: Increased to 270px */
+    width: 280px; /* Adjusted width: Increased to 280px */
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -150,9 +150,9 @@ header .logout-btn:hover {
 /* Nested menu items for cascading */
 .sidebar ul li ul {
     margin-top: 10px;
-    margin-left: 20px; /* Increased margin for nesting */
+    margin-left: 10px; /* Adjusted: Reduced margin for nested items */
     border-left: 2px solid #e6e6e6;
-    padding-left: 10px; /* Increased padding for nesting */
+    padding-left: 5px; /* Adjusted: Reduced padding for nested items */
     display: none;
 }
 
@@ -162,9 +162,8 @@ header .logout-btn:hover {
 
 /* Specific styling for nested links to handle overflow */
 .sidebar ul li ul li a {
-    padding: 8px 10px; /* Slightly less padding for nested items */
+    padding: 8px 5px; /* Adjusted: Reduced padding for nested items to maximize text space */
     font-size: 0.95em; /* Slightly smaller font for nested items */
-    /* Ensure these inherit or explicitly have overflow properties */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -819,7 +818,7 @@ header .header-right {
 @media (max-width: 768px) {
     /* Adjust notification badge position for smaller screens if needed */
     .notification-badge {
-        top: -5px; 
+        top: -5px;
         right: -5px;
     }
 
