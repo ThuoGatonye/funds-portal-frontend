@@ -110,7 +110,8 @@
                             <th>Associated Plans</th>
                             <th>Join Date</th>
                             <th>Status</th>
-                            <th>Personnel</th> <th>Actions</th>
+                            <th>Personnel</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,9 +119,11 @@
                             <td>M001</td>
                             <td>alice@example.com</td>
                             <td>+1-123-456-7890</td>
-                            <td><a href="manage_member_plans.html?memberId=M001">2</a></td> <td>2024-01-10</td>
+                            <td><a href="manage_member_plans.html?memberId=M001">2</a></td>
+                            <td>2024-01-10</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Alice Johnson</td> <td>
+                            <td>Alice Johnson</td>
+                            <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M001"><i class="fas fa-tasks"></i> Manage Plans</button>
@@ -130,9 +133,11 @@
                             <td>M002</td>
                             <td>bob@example.com</td>
                             <td>+1-987-654-3210</td>
-                            <td><a href="manage_member_plans.html?memberId=M002">1</a></td> <td>2023-07-20</td>
+                            <td><a href="manage_member_plans.html?memberId=M002">1</a></td>
+                            <td>2023-07-20</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Bob Williams</td> <td>
+                            <td>Bob Williams</td>
+                            <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M002"><i class="fas fa-tasks"></i> Manage Plans</button>
@@ -142,9 +147,11 @@
                             <td>M003</td>
                             <td>charlie@example.com</td>
                             <td>+1-555-111-2222</td>
-                            <td><a href="manage_member_plans.html?memberId=M003">0</a></td> <td>2024-03-05</td>
+                            <td><a href="manage_member_plans.html?memberId=M003">0</a></td>
+                            <td>2024-03-05</td>
                             <td><span class="status-badge inactive">Inactive</span></td>
-                            <td>Charlie Brown</td> <td>
+                            <td>Charlie Brown</td>
+                            <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M003"><i class="fas fa-tasks"></i> Manage Plans</button>
@@ -154,9 +161,11 @@
                             <td>M004</td>
                             <td>diana@example.com</td>
                             <td>+1-777-333-4444</td>
-                            <td><a href="manage_member_plans.html?memberId=M004">3</a></td> <td>2025-01-15</td>
+                            <td><a href="manage_member_plans.html?memberId=M004">3</a></td>
+                            <td>2025-01-15</td>
                             <td><span class="status-badge active">Active</span></td>
-                            <td>Diana Prince</td> <td>
+                            <td>Diana Prince</td>
+                            <td>
                                 <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M004"><i class="fas fa-tasks"></i> Manage Plans</button>
@@ -176,9 +185,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        async function loadHTML(elementId, filePath) { /* ... same as above ... */ return true; }
-        function setActiveSidebarLink() { /* ... same as above ... */ }
-        async function loadAllHTMLComponents() { /* ... same as above ... */ }
+        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
+        function setActiveSidebarLink() { /* ... same as before ... */ }
+        async function loadAllHTMLComponents() { /* ... same as before ... */ }
 
         $(document).ready(function() {
             var memberProfilesTable = $('#memberProfilesTable').DataTable({
