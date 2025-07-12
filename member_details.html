@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Details - Funds Group</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Status styling */
+        .status-badge {
+            padding: .35em .65em;
+            border-radius: .25rem;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            display: inline-block;
+        }
+
+        .status-badge.active {
+            color: #fff;
+            background-color: #28a745; /* Bootstrap green */
+        }
+
+        .status-badge.inactive {
+            color: #fff;
+            background-color: #dc3545; /* Bootstrap red */
+        }
+
+        .status-badge.suspended {
+            color: #fff;
+            background-color: #6c757d; /* Bootstrap gray */
+        }
+        .status-badge.banned {
+            color: #fff;
+            background-color: #343a40; /* Dark gray for banned */
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header h5 {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <aside class="sidebar" id="sidebar-placeholder">
+            </aside>
+
+        <main class="dashboard-content">
+            <div class="page-header-controls">
+                <h1>Member Details: <span id="memberNameDisplay"></span></h1>
+                <div class="header-buttons">
+                    <button id="backToMembersBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Members
+                    </button>
+                    </div>
+            </div>
+
+            <section class="member-details-section mt-4">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Personal Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Member ID:</strong> <span id="memberIdDetail"></span></p>
+                                <p><strong>Full Name:</strong> <span id="memberFullNameDetail"></span></p>
+                                <p><strong>Email:</strong> <span id="memberEmailDetail"></span></p>
+                                <p><strong>Phone:</strong> <span id="memberPhoneDetail"></span></p>
+                                <p><strong>Address:</strong> <span id="memberAddressDetail">N/A</span></p>
+                                <p><strong>Join Date:</strong> <span id="memberJoinDateDetail"></span></p>
+                                <p><strong>Current Status:</strong> <span id="memberStatusDetail" class="status-badge"></span></p>
+                                <div class="mt-3">
+                                    <label for="changeStatus" class="form-label">Change Status:</label>
+                                    <select class="form-select" id="changeStatus">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                        <option value="suspended">Suspended</option>
+                                        <option value="banned">Banned</option>
+                                    </select>
+                                    <button class="btn btn-warning btn-sm mt-2" id="applyStatusChangeBtn">Apply Status Change</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">Associated Groups</h5>
+                                </div>
+                            <div class="card-body">
+                                <table id="memberGroupsTable" class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Group ID</th>
+                                            <th>Group Name</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm mt-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">Associated Plans</h5>
+                                </div>
+                            <div class="card-body">
+                                <table id="memberPlansTable" class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Plan ID</th>
+                                            <th>Plan Name</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
+        function setActiveSidebarLink() { /* ... same as before ... */ }
+        async function loadAllHTMLComponents() { /* ... same as before ... */ }
+
+        // Dummy data for demonstration purposes
+        const dummyMembersData = {
+            'M001': {
+                fullName: 'Alice Johnson', email: 'alice@example.com', phone: '+1-123-456-7890', address: '123 Main St, Anytown', joinDate: '2024-01-10', status: 'active',
+                groups: [
+                    { id: 'G001', name: 'General Savings Group', status: 'active' },
+                    { id: 'G003', name: 'Emergency Fund Group', status: 'active' }
+                ],
+                plans: [
+                    { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' },
+                    { id: 'P006', name: 'Emergency Cash Access', type: 'Loan', amount: '$500.00', status: 'active' }
+                ]
+            },
+            'M002': {
+                fullName: 'Bob Williams', email: 'bob@example.com', phone: '+1-987-654-3210', address: '456 Oak Ave, Otherville', joinDate: '2023-07-20', status: 'active',
+                groups: [
+                    { id: 'G001', name: 'General Savings Group', status: 'active' }
+                ],
+                plans: [
+                    { id: 'P001', name: 'Monthly Savings Fund', type: 'Savings', amount: '$100.00', status: 'active' }
+                ]
+            },
+            'M003': {
+                fullName: 'Charlie Brown', email: 'charlie@example.com', phone: '+1-555-111-2222', address: '789 Pine Ln, Anycity', joinDate: '2024-03-05', status: 'inactive',
+                groups: [],
+                plans: []
+            },
+            'M004': {
+                fullName: 'Diana Prince', email: 'diana@example.com', phone: '+1-777-333-4444', address: '101 Hero Blvd, Metropolis', joinDate: '2025-01-15', status: 'active',
+                groups: [
+                    { id: 'G002', name: 'High-Yield Investment Group', status: 'active' },
+                    { id: 'G003', name: 'Emergency Fund Group', status: 'active' }
+                ],
+                plans: [
+                    { id: 'P002', name: 'Growth Investment Plan', type: 'Investment', amount: '$500.00', status: 'active' },
+                    { id: 'P003', name: 'Emergency Loan Pool', type: 'Loan', amount: '$50.00', status: 'inactive' },
+                    { id: 'P004', name: 'Holiday Kitty', type: 'Kitty', amount: '$20.00', status: 'active' }
+                ]
+            }
+        };
+
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const memberId = urlParams.get('memberId');
+            const memberData = dummyMembersData[memberId];
+
+            if (memberId && memberData) {
+                $('#memberNameDisplay').text(`${memberId} - ${memberData.fullName}`);
+                $('#memberIdDetail').text(memberId);
+                $('#memberFullNameDetail').text(memberData.fullName);
+                $('#memberEmailDetail').text(memberData.email);
+                $('#memberPhoneDetail').text(memberData.phone);
+                $('#memberAddressDetail').text(memberData.address || 'N/A');
+                $('#memberJoinDateDetail').text(memberData.joinDate);
+
+                // Set initial status and status badge
+                const statusElement = $('#memberStatusDetail');
+                statusElement.text(memberData.status.charAt(0).toUpperCase() + memberData.status.slice(1));
+                statusElement.removeClass().addClass(`status-badge ${memberData.status}`);
+                $('#changeStatus').val(memberData.status);
+
+                // Initialize Group Table
+                var memberGroupsTable = $('#memberGroupsTable').DataTable({
+                    data: memberData.groups,
+                    columns: [
+                        { data: 'id' },
+                        { data: 'name' },
+                        { data: 'status', render: function(data, type, row) {
+                            return `<span class="status-badge ${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }},
+                        { data: null, defaultContent: '<button class="btn btn-sm btn-danger remove-group-from-member-btn"><i class="fas fa-unlink"></i> Remove</button>', orderable: false }
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false, // Ordering might not be necessary for this small table
+                    responsive: true
+                });
+
+                // Initialize Plans Table
+                var memberPlansTable = $('#memberPlansTable').DataTable({
+                    data: memberData.plans,
+                    columns: [
+                        { data: 'id' },
+                        { data: 'name' },
+                        { data: 'type' },
+                        { data: 'amount' },
+                        { data: 'status', render: function(data, type, row) {
+                            return `<span class="status-badge ${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }},
+                        { data: null, defaultContent: '<button class="btn btn-sm btn-danger remove-plan-from-member-btn"><i class="fas fa-minus-circle"></i> Remove</button>', orderable: false }
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false, // Ordering might not be necessary for this small table
+                    responsive: true
+                });
+
+
+                // Back to Member Profiles button
+                $('#backToMembersBtn').on('click', function() {
+                    window.location.href = 'member_profiles.html';
+                });
+
+                // Apply Status Change
+                $('#applyStatusChangeBtn').on('click', function() {
+                    const newStatus = $('#changeStatus').val();
+                    alert(`Member ${memberId} status changed to: ${newStatus}. (Demo action)`);
+                    // In a real app, send AJAX request to update status
+                    // For now, update UI
+                    const statusElement = $('#memberStatusDetail');
+                    statusElement.text(newStatus.charAt(0).toUpperCase() + newStatus.slice(1));
+                    statusElement.removeClass().addClass(`status-badge ${newStatus}`);
+                });
+
+                // Remove Group from Member (Conceptual - remove from group and ALL group-associated plans)
+                $(document).on('click', '.remove-group-from-member-btn', function() {
+                    const row = memberGroupsTable.row($(this).parents('tr'));
+                    const group = row.data();
+                    if (confirm(`Are you sure you want to remove ${memberData.fullName} from group "${group.name}"? This action should also remove them from any plans associated primarily with this group.`)) {
+                        alert(`Member ${memberId} removed from group ${group.id} AND all associated group plans. (Demo action - actual plan removal not implemented in frontend)`);
+                        row.remove().draw();
+                        // In a real application, this would trigger an API call to
+                        // 1. Unlink member from group
+                        // 2. Query all plans linked to this member *via this specific group*
+                        // 3. Unlink those plans from the member
+                        // 4. Then redraw the tables
+                    }
+                });
+
+                // Remove Plan from Member (Conceptual - specific plan only)
+                $(document).on('click', '.remove-plan-from-member-btn', function() {
+                    const row = memberPlansTable.row($(this).parents('tr'));
+                    const plan = row.data();
+                    if (confirm(`Are you sure you want to remove plan "${plan.name}" from ${memberData.fullName}?`)) {
+                        alert(`Plan ${plan.id} removed from member ${memberId}. (Demo action)`);
+                        row.remove().draw();
+                        // In a real application, this would trigger an API call to unlink the plan from the member.
+                    }
+                });
+
+            } else {
+                $('#memberNameDisplay').text('Member Not Found');
+                alert('Member ID not found or invalid.');
+                // Optionally redirect back to member_profiles.html
+                // window.location.href = 'member_profiles.html';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllHTMLComponents();
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
+            }
+        });
+    </script>
+</body>
+</html>
