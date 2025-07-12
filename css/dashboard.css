@@ -71,11 +71,12 @@ header .logout-btn:hover {
     padding: 5px;
 }
 
-
 /* Main Content Area */
 .main-content {
     display: flex;
     flex: 1; /* Takes remaining vertical space */
+    /* Ensure children (sidebar, dashboard-content) stretch to full height */
+    align-items: stretch; /* ADDED: This is crucial for sidebar height */
 }
 
 /* Sidebar Navigation */
@@ -87,8 +88,18 @@ header .logout-btn:hover {
     display: flex;
     flex-direction: column;
     z-index: 900;
-    /* Transition for smooth show/hide */
-    transition: transform 0.3s ease-out; /* For sliding in/out */
+    transition: transform 0.3s ease-out;
+
+    /* ADDED/MODIFIED: Ensure sidebar fills height on desktop */
+    /* If header is fixed, sidebar should also be fixed or adjust its top offset */
+    position: sticky; /* Make it stick within its parent container */
+    top: 0; /* Align to the top of its sticky container */
+    /* For fixed header, you might want to use fixed and calc height: */
+    /* position: fixed;
+    top: 60px; /* Assuming header height is around 60px */
+    /* height: calc(100vh - 60px); */
+    /* However, for typical flex layouts, `position: sticky` is often better
+       as it works with scrollable content */
 }
 
 .sidebar h2 {
@@ -227,10 +238,9 @@ header .logout-btn:hover {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-bottom: 25px;
-    /* Transition for smooth hide/show */
     transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, box-shadow 0.3s ease-out;
-    max-height: 500px; /* Max height when expanded - adjust if filter content is taller */
-    overflow: hidden; /* Hide overflow during transition */
+    max-height: 500px;
+    overflow: hidden;
 }
 
 .filters-section.collapsed {
@@ -244,13 +254,11 @@ header .logout-btn:hover {
 
 /* Filters content is displayed/hidden by JS, but this ensures parent hides completely */
 .filters-content {
-    display: block; /* Content is always 'block' within the visible section */
-    padding-top: 10px; /* Kept for spacing when content is visible */
+    display: block;
+    padding-top: 10px;
 }
 
 .filters-content:not(.show) {
-    /* This rule hides the actual content, even if the parent section has a height.<br>
-        The .filters-section.collapsed class handles the parent's collapse. */
     display: none;
 }
 
@@ -267,7 +275,7 @@ header .logout-btn:hover {
     white-space: nowrap;
 }
 /* Unified styling for inputs and selects within filter group */
-.filter-group input[type="text"], /* Catches Flatpickr inputs which are type="text" */
+.filter-group input[type="text"],
 .filter-group select {
     padding: 10px 12px;
     border: 1px solid #ddd;
@@ -278,22 +286,20 @@ header .logout-btn:hover {
 }
 
 /* Specific adjustment for Flatpickr's calendar icon if it overlaps */
-/* Flatpickr inputs automatically get a calendar icon if `wrap: true` is used in JS config
-    or if it's the default behavior. This ensures it's spaced. */
 .flatpickr-calendar {
-    font-family: 'Roboto', sans-serif; /* Use theme font for calendar */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Slightly stronger shadow */
-    border-radius: 8px; /* Match other elements */
-    border: 1px solid #ddd; /* Subtle border */
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
 .flatpickr-day.selected, .flatpickr-day.selected:hover {
-    background: #4CAF50; /* Primary green for selected date */
+    background: #4CAF50;
     border-color: #4CAF50;
     color: white;
 }
 .flatpickr-day.today {
-    border-color: #2E8B57; /* Darker green for today's date border */
+    border-color: #2E8B57;
 }
 
 
@@ -327,87 +333,82 @@ header .logout-btn:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 /* Override DataTables default table styling for better fit with dashboard.css */
-table.dataTable { /* Target DataTables table directly */
-    margin-top: 15px; /* Add some space if needed below info bar */
+table.dataTable {
+    margin-top: 15px;
 }
 table.dataTable thead th,
 table.dataTable tbody td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
-    vertical-align: middle; /* Ensure content is vertically aligned */
+    vertical-align: middle;
 }
 table.dataTable thead th {
-    background-color: #E6EBE6; /* Light, subtle green-grey from previous proposal */
-    color: #333; /* Keep text dark for contrast */
+    background-color: #E6EBE6;
+    color: #333;
     font-weight: 600;
-    white-space: nowrap;   /* Prevents header text from wrapping */
-    padding-right: 30px;   /* Ensures enough space for sort icons */
-    position: relative;    /* Needed for absolute positioning of icons if used */
-    border-bottom: 2px solid #D1D8D1; /* Add a subtle darker border for definition */
+    white-space: nowrap;
+    padding-right: 30px;
+    position: relative;
+    border-bottom: 2px solid #D1D8D1;
 }
 
 /* Fixes for DataTables visual issues at 100% zoom (continued) */
-/* Adjust position of DataTables Bootstrap 5 sort icons (up/down arrows) */
 table.dataTable thead .dt-orderable-asc:before,
 table.dataTable thead .dt-orderable-desc:after {
-    vertical-align: middle; /* Ensure arrows are middle-aligned with text */
+    vertical-align: middle;
 }
 table.dataTable thead .dt-orderable-asc:before {
-    bottom: 0.8em !important; /* Fine-tune vertical position for asc arrow */
+    bottom: 0.8em !important;
 }
 table.dataTable thead .dt-orderable-desc:after {
-    top: 0.8em !important;     /* Fine-tune vertical position for desc arrow */
+    top: 0.8em !important;
 }
 
 /* Ensure the total width of the DataTables container allows for scrolling */
 .dataTables_scrollBody {
-    overflow-x: auto; /* Re-enable horizontal scrolling for the table body */
+    overflow-x: auto;
 }
 
 /* DataTables: Top Row - Length and Filter (Buttons are now handled elsewhere) */
 .dataTables_wrapper .dataTables_length {
-    float: left; /* Keep length selector on left */
+    float: left;
     margin-bottom: 10px;
 }
 
 .dataTables_wrapper .dataTables_filter {
-    float: right; /* Keep filter container on right */
+    float: right;
     margin-bottom: 10px;
-    display: flex; /* Make it a flex container */
-    align-items: center; /* Vertically align items */
-    gap: 10px; /* Space between elements within this flex container */
-    justify-content: flex-end; /* Push content to the right */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 .dataTables_wrapper .dataTables_filter label {
-    display: flex; /* Make the label itself a flex container */
+    display: flex;
     align-items: center;
-    gap: 5px; /* Space between "Search:" text and input */
-    margin-bottom: 0; /* Remove default margin */
+    gap: 5px;
+    margin-bottom: 0;
 }
 
-/* Ensure the search input doesn't take full width if not needed */
 .dataTables_wrapper .dataTables_filter input[type="search"] {
-    width: auto; /* Allow input to size based on content */
-    flex-grow: 1; /* Allow search input to grow, but not consume all space */
-    max-width: 200px; /* Set a max width for desktop for aesthetics */
+    width: auto;
+    flex-grow: 1;
+    max-width: 200px;
 }
 
 /* DataTables Buttons Styling (now that they are in header-buttons) */
-/* Ensure the button group generated by DataTables is styled correctly when placed in header-buttons */
 .header-buttons .dt-buttons {
-    /* No float needed here, as the parent .header-buttons is already a flex container */
-    display: flex; /* Ensure buttons group nicely if multiple */
-    gap: 10px; /* Space between individual buttons in the group */
-    margin-left: 0; /* Remove any default DataTables margin */
+    display: flex;
+    gap: 10px;
+    margin-left: 0;
 }
-
 
 /* Specific styling for the main Export button icon */
 .header-buttons .dt-buttons .btn.dropdown-toggle .fas {
-    font-size: 1.2em; /* Make the main icon slightly larger */
-    margin-right: 0; /* No margin on the main icon */
+    font-size: 1.2em;
+    margin-right: 0;
 }
 
 /* Styling for dropdown items and their icons */
@@ -417,30 +418,30 @@ table.dataTable thead .dt-orderable-desc:after {
 }
 
 .dt-buttons .dropdown-menu .dropdown-item .fas {
-    margin-right: 8px; /* Space between icon and text in dropdown */
+    margin-right: 8px;
 }
 
 .dt-buttons .dropdown-menu .dropdown-item .fa-file-excel {
-    color: #28a745; /* Darker green for Excel */
+    color: #28a745;
 }
 
 .dt-buttons .dropdown-menu .dropdown-item .fa-file-pdf {
-    color: #dc3545; /* Red for PDF */
+    color: #dc3545;
 }
 
 .dt-buttons .dropdown-menu .dropdown-item .fa-file-csv {
-    color: #4CAF50; /* Primary green (lighter) for CSV */
+    color: #4CAF50;
 }
 
 /* DataTables: Bottom Row - Info and Pagination */
 .dataTables_wrapper .dataTables_info {
-    float: left; /* Info on the left */
-    padding: 10px 0; /* Added padding for consistency */
+    float: left;
+    padding: 10px 0;
 }
 
 .dataTables_wrapper .dataTables_paginate {
-    float: right; /* **Pagination on the right** */
-    padding: 10px 0; /* Added padding for consistency */
+    float: right;
+    padding: 10px 0;
 }
 
 /* Clear floats for DataTables wrapper */
@@ -452,12 +453,13 @@ table.dataTable thead .dt-orderable-desc:after {
     /* --- General Layout Adjustments --- */
     .main-content {
         flex-direction: column;
+        align-items: stretch; /* Ensure it stays */
     }
 
     /* --- Header Adjustments (Optimized for Item 1 & 3 based on HTML change) --- */
     header {
         display: flex;
-        justify-content: space-between; /* Distributes items across the header */
+        justify-content: space-between;
         align-items: center;
         padding: 10px 15px;
         position: relative;
@@ -466,58 +468,58 @@ table.dataTable thead .dt-orderable-desc:after {
 
     /* Mobile menu toggle (now first in HTML) */
     .mobile-menu-toggle {
-        display: block; /* Always visible on mobile */
-        order: unset; /* Remove explicit order, let HTML order define it (first) */
-        z-index: 1001; /* Ensure it's on top */
-        width: 40px; /* Ensure clickable area */
-        height: 40px; /* Ensure clickable area */
-        display: flex; /* Center icon */
+        display: block;
+        order: unset;
+        z-index: 1001;
+        width: 40px;
+        height: 40px;
+        display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0; /* Remove default padding */
-        margin-right: 10px; /* Space from next item (logo) */
-        flex-shrink: 0; /* Prevent it from shrinking */
+        padding: 0;
+        margin-right: 10px;
+        flex-shrink: 0;
     }
 
     /* Logo link */
     header .logo-link {
-        order: unset; /* Remove explicit order, let HTML order define it (second) */
-        flex-grow: 1; /* Allow logo to take available space */
-        text-align: center; /* Center the logo text */
-        font-size: 1.2em; /* Smaller font for FUNDS GROUP text */
-        margin-left: 0; /* Ensure no unwanted margin */
-        margin-right: 10px; /* Space from header-right */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Add ellipsis */
+        order: unset;
+        flex-grow: 1;
+        text-align: center;
+        font-size: 1.2em;
+        margin-left: 0;
+        margin-right: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     header .logo-text {
-        font-size: 1em; /* Further reduce font size of text inside logo-link for better fit */
+        font-size: 1em;
     }
 
     /* User info & logout button group */
     header .header-right {
-        order: unset; /* Remove explicit order, let HTML order define it (third) */
+        order: unset;
         flex-direction: row;
-        gap: 8px; /* Smaller gap */
-        justify-content: flex-end; /* Push to the right */
+        gap: 8px;
+        justify-content: flex-end;
         width: auto;
-        flex-shrink: 0; /* Prevent from shrinking */
+        flex-shrink: 0;
     }
     header .user-info {
-        font-size: 0.8em; /* Even smaller font for user info */
-        white-space: nowrap; /* Prevent wrapping */
+        font-size: 0.8em;
+        white-space: nowrap;
         margin-bottom: 0;
     }
     header .logout-btn {
-        padding: 5px 10px; /* Smaller button */
-        font-size: 0.75em; /* Smaller font for logout button */
+        padding: 5px 10px;
+        font-size: 0.75em;
     }
 
     /* --- Sidebar Adjustments --- */
     .sidebar {
         width: 100%;
-        position: fixed;
+        position: fixed; /* Keep fixed for mobile overlay */
         height: 100vh;
         top: 0;
         left: 0;
@@ -581,7 +583,7 @@ table.dataTable thead .dt-orderable-desc:after {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        gap: 8px; /* Reduced gap */
+        gap: 8px;
         padding: 0 5px;
     }
     .page-header-controls h1 {
