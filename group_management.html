@@ -157,9 +157,100 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
-        function setActiveSidebarLink() { /* ... same as before ... */ }
-        async function loadAllHTMLComponents() { /* ... same as before ... */ }
+        async function loadHTML(elementId, filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                document.getElementById(elementId).innerHTML = html;
+                return true;
+            } catch (e) {
+                console.error(`Failed to load ${filePath}:`, e);
+                return false;
+            }
+        }
+
+        function setActiveSidebarLink() {
+            const currentPathname = window.location.pathname;
+            const currentPage = currentPathname.substring(currentPathname.lastIndexOf('/') + 1);
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                    let parentSubmenu = link.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        let parentToggle = parentSubmenu.previousElementSibling;
+                        if (parentToggle && parentToggle.classList.contains('toggle-submenu')) {
+                            parentToggle.querySelector('.submenu-icon').classList.remove('fa-chevron-down');
+                            parentToggle.querySelector('.submenu-icon').classList.add('fa-chevron-up');
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadAllHTMLComponents() {
+            const headerLoaded = await loadHTML('header-placeholder', 'includes/header.html');
+            const sidebarLoaded = await loadHTML('sidebar-placeholder', 'includes/sidebar.html');
+            if (headerLoaded && sidebarLoaded) {
+                setActiveSidebarLink();
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+                if (mobileMenuToggle && sidebar && mainContent) {
+                    mobileMenuToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('show-sidebar');
+                        mainContent.classList.toggle('pushed-aside');
+                    });
+                    mainContent.addEventListener('click', function(event) {
+                        if (sidebar.classList.contains('show-sidebar') &&
+                            !sidebar.contains(event.target) &&
+                            !mobileMenuToggle.contains(event.target)) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768 && sidebar.classList.contains('show-sidebar')) {
+                            sidebar.classList.remove('show-sidebar');
+                            mainContent.classList.remove('pushed-aside');
+                        }
+                    });
+                }
+                $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $submenu = $this.next('.submenu');
+                    var $icon = $this.find('.submenu-icon');
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('fa-chevron-down fa-chevron-up');
+                    $('.sidebar .submenu').not($submenu).removeClass('show');
+                    $('.sidebar .has-submenu > .toggle-submenu').not($this).find('.submenu-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                });
+                const username = localStorage.getItem('username');
+                const userRole = localStorage.getItem('userRole');
+                const userInfoElement = document.getElementById('userInfo');
+                if (username && userRole && userInfoElement) {
+                    userInfoElement.textContent = `Welcome, ${username} (${userRole})`;
+                } else {
+                     userInfoElement.textContent = `Welcome, Guest`;
+                }
+                const logoutBtn = document.querySelector('.logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                console.error("One or more core HTML components failed to load.");
+            }
+        }
 
         $(document).ready(function() {
             var groupsTable = $('#groupsTable').DataTable({
@@ -241,7 +332,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadAllHTMLComponents();
+            loadAllHTMLComponents(); // THIS LINE WAS MISSING IN THE PREVIOUS CODE
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
                 // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
