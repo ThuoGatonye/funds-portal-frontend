@@ -52,7 +52,6 @@
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             font-size: 1.15em;
-            /* Removed flex properties as export buttons are no longer here */
         }
         .card-body {
             flex-grow: 1;
@@ -104,17 +103,17 @@
             padding-bottom: 10px;
         }
         .table-responsive {
-            margin-top: 0; /* No extra margin needed if DataTables handles its own layout */
+            margin-top: 0;
         }
         /* DataTables Custom Styling - Adjustments for top buttons */
         .dataTables_wrapper .dt-buttons {
-            float: left; /* Align buttons to the left */
-            margin-bottom: 10px; /* Space between buttons and table */
+            float: left;
+            margin-bottom: 10px;
         }
         .dataTables_wrapper .dt-buttons .btn {
-            margin-right: 5px; /* Space between each button */
-            padding: .25rem .5rem; /* Smaller padding for default DataTable buttons */
-            font-size: .875rem; /* Smaller font size */
+            margin-right: 5px;
+            padding: .25rem .5rem;
+            font-size: .875rem;
         }
         /* Specific button colors for DataTables generated buttons */
         .buttons-csv {
@@ -158,12 +157,12 @@
 
         /* --- Custom Styles for Login History Report --- */
         .filter-header {
-            background-image: linear-gradient(to right, #007bff, #0056b3); /* Blue gradient */
+            background-image: linear-gradient(to right, #007bff, #0056b3);
             color: white;
             padding: 25px 30px;
             border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* Stronger shadow */
-            margin-bottom: 30px; /* Space before results */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -198,24 +197,24 @@
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-top: -20px; /* Pull it up slightly over the header */
+            margin-top: -20px;
             position: relative;
-            z-index: 2; /* Ensure it's above the header's shadow */
+            z-index: 2;
         }
         .filter-controls-container .form-label {
-            font-size: 0.9em; /* Smaller labels */
+            font-size: 0.9em;
             margin-bottom: 5px;
         }
         .filter-controls-container .form-control,
         .filter-controls-container .form-select {
-            height: calc(2.25rem + 2px); /* Standard Bootstrap input height */
-            padding: .375rem .75rem; /* Match standard Bootstrap padding */
-            font-size: .875rem; /* Slightly smaller font for inputs */
+            height: calc(2.25rem + 2px);
+            padding: .375rem .75rem;
+            font-size: .875rem;
         }
         .filter-controls-container .btn-primary {
-            width: 100%; /* Full width button in small columns */
+            width: 100%;
         }
-        @media (min-width: 992px) { /* Adjust for larger screens */
+        @media (min-width: 992px) {
             .filter-controls-container .col-lg-3,
             .filter-controls-container .col-lg-2,
             .filter-controls-container .col-lg-4 {
@@ -224,9 +223,8 @@
             }
         }
 
-        /* Adjustment for report results section to move higher */
         .report-results-section {
-            margin-top: 30px !important; /* Reduce gap after the filter container */
+            margin-top: 30px !important;
         }
     </style>
 </head>
@@ -288,7 +286,7 @@
                 <h2 class="report-section-title">Report Results</h2>
                 <div class="card">
                     <div class="card-header" id="reportResultHeader">
-                        Login History Data
+                        Report Results
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -442,7 +440,7 @@
 
                 $('#reportResultsSection').show();
                 // Set the static header text as requested
-                $('#reportResultHeader').text('Login History Data'); // Removed span as there's no longer buttons next to it
+                $('#reportResultHeader').text('Report Results');
 
                 // Destroy existing DataTable if it exists
                 if (loginHistoryTable) {
@@ -470,15 +468,12 @@
                 loginHistoryTable = $('#reportTable').DataTable({
                     data: data,
                     columns: columns,
-                    // Use 'Bfrtip' to enable buttons, filter, pagination, etc.
                     dom: 'Bfrtip',
                     buttons: [
-                        // Buttons in the specified order
-                        { extend: 'copy', exportOptions: { columns: ':visible' } },
+                        // Only CSV, Excel, and PDF as requested
                         { extend: 'csv', exportOptions: { columns: ':visible' } },
                         { extend: 'excel', exportOptions: { columns: ':visible' } },
-                        { extend: 'pdf', exportOptions: { columns: ':visible' } },
-                        { extend: 'print', exportOptions: { columns: ':visible' } }
+                        { extend: 'pdf', exportOptions: { columns: ':visible' } }
                     ],
                     responsive: true,
                     language: {
@@ -493,18 +488,15 @@
                             "next": "Next",
                             "previous": "Previous"
                         },
-                        "buttons": { // Optional: Customize button text if needed
-                            "copy": "Copy",
+                        "buttons": {
                             "csv": "CSV",
                             "excel": "Excel",
-                            "pdf": "PDF",
-                            "print": "Print"
+                            "pdf": "PDF"
+                            // No "copy" or "print" in language customization as they are removed
                         }
                     }
                 });
             });
-
-            // Removed explicit click handlers for export buttons as DataTable handles them now
         });
 
         document.addEventListener('DOMContentLoaded', () => {
