@@ -4,530 +4,333 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit Logs - Funds Group</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.bootstrap5.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.bootstrap5.min.css">
+
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <header>
-        <a href="admin_dashboard.html" class="logo-link">
-            <span class="logo-text">FUNDS GROUP</span>
-        </a>
-        
-        <button class="mobile-menu-toggle">
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
             <i class="fas fa-bars"></i>
         </button>
-
+        <a href="index.html" class="logo-link">
+            <span class="logo-text">FUNDS GROUP</span>
+        </a>
         <div class="header-right">
-            <span id="userInfo" class="user-info"></span>
-            <button class="logout-btn">Logout</button>
+            <div class="user-info">
+                Welcome, John Doe
+            </div>
+            <a href="login.html" class="logout-btn">Logout</a>
         </div>
     </header>
 
     <div class="main-content">
-        <div class="sidebar">
-            <h2>Admin Menu</h2>
+        <aside class="sidebar">
+            <h2>Navigation</h2>
             <ul>
-                <li><a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="fund_requests.html"><i class="fas fa-hand-holding-usd"></i> Fund Requests</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
                 <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
-                <li><a href="user_management.html"><i class="fas fa-users"></i> User Management</a></li>
+                <li><a href="#" class="dropdown-toggle"><i class="fas fa-users"></i> Clients</a>
+                    <ul class="submenu">
+                        <li><a href="add-client.html">Add Client</a></li>
+                        <li><a href="manage-clients.html">Manage Clients</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="dropdown-toggle"><i class="fas fa-cogs"></i> Settings</a>
+                    <ul class="submenu">
+                        <li><a href="user-profile.html">User Profile</a></li>
+                        <li><a href="system-settings.html">System Settings</a></li>
+                    </ul>
+                </li>
                 <li><a href="reports.html"><i class="fas fa-chart-line"></i> Reports</a></li>
-                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a href="audit_logs.html" class="active"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
+                <li><a href="audit-logs.html" class="active"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
+                <li><a href="support.html"><i class="fas fa-question-circle"></i> Support</a></li>
             </ul>
-        </div>
+        </aside>
 
-        <div class="dashboard-content">
+        <main class="dashboard-content">
             <div class="page-header-controls">
                 <h1>Audit Logs</h1>
                 <div class="header-buttons">
-                    <button id="toggleFiltersBtn" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#filtersSection" aria-expanded="true" aria-controls="filtersSection">
-                        <i class="fas fa-search"></i> Advanced Search
-                    </button>
+                    <button id="toggleFiltersBtn" class="btn btn-primary"><i class="fas fa-filter"></i> Advanced Search</button>
                 </div>
             </div>
 
-            <div id="filtersSection" class="filters-section collapse show">
+            <section class="filters-section collapsed">
                 <div class="filters-content">
                     <div class="filter-group">
-                        <label for="startDate">Start Date:</label>
-                        <input type="text" id="startDate" class="form-control date-picker" placeholder="Select Start Date">
+                        <label for="filterUser">User:</label>
+                        <input type="text" id="filterUser" placeholder="e.g., John Doe">
                     </div>
                     <div class="filter-group">
-                        <label for="endDate">End Date:</label>
-                        <input type="text" id="endDate" class="form-control date-picker" placeholder="Select End Date">
-                    </div>
-                    <div class="filter-group">
-                        <label for="eventType">Event Type:</label>
-                        <select id="eventType" class="form-select">
-                            <option value="">All</option>
+                        <label for="filterAction">Action:</label>
+                        <select id="filterAction">
+                            <option value="">All Actions</option>
                             <option value="Login">Login</option>
                             <option value="Logout">Logout</option>
-                            <option value="Fund Request">Fund Request</option>
-                            <option value="User Create">User Create</option>
-                            <option value="User Update">User Update</option>
-                            <option value="Password Change">Password Change</option>
-                            <option value="Report Generation">Report Generation</option>
-                            <option value="System Setting Update">System Setting Update</option>
+                            <option value="Create Client">Create Client</option>
+                            <option value="Update Client">Update Client</option>
+                            <option value="Delete Client">Delete Client</option>
+                            <option value="Process Transaction">Process Transaction</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" class="form-control" placeholder="Enter username">
+                        <label for="filterDateRange">Date Range:</label>
+                        <input type="text" id="filterDateRange" placeholder="Select Date Range">
                     </div>
                     <div class="filter-group">
-                        <label for="ipAddress">IP Address:</label>
-                        <input type="text" id="ipAddress" class="form-control" placeholder="Enter IP Address">
+                        <label for="filterIPAddress">IP Address:</label>
+                        <input type="text" id="filterIPAddress" placeholder="e.g., 192.168.1.1">
                     </div>
                     <div class="filter-group">
-                        <button id="applyFiltersBtn" class="btn btn-primary"><i class="fas fa-filter"></i> Apply Filters</button>
-                        <button id="clearFiltersBtn" class="btn btn-secondary clear-btn"><i class="fas fa-times-circle"></i> Clear Filters</button>
+                        <button id="applyFiltersBtn" class="btn btn-primary"><i class="fas fa-check"></i> Apply Filters</button>
+                        <button id="clearFiltersBtn" class="btn btn-secondary clear-btn"><i class="fas fa-times"></i> Clear Filters</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="data-table-container">
-                <table id="auditLogsTable" class="table table-striped table-hover">
+            <section class="data-table-container">
+                <table id="auditLogsTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Timestamp</th>
-                            <th>Username</th>
-                            <th>Event Type</th>
-                            <th>Description</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Details</th>
                             <th>IP Address</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>2024-07-10 10:30:00</td>
-                            <td>admin</td>
-                            <td>Login</td>
-                            <td>Successful login from dashboard</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 10:35:15</td>
-                            <td>jdoe</td>
-                            <td>Fund Request</td>
-                            <td>Requested $5000 for project X</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 11:00:00</td>
-                            <td>admin</td>
-                            <td>User Create</td>
-                            <td>Created new user: Jane Smith</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 11:45:30</td>
-                            <td>jdoe</td>
-                            <td>Logout</td>
-                            <td>User logged out</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 12:00:00</td>
-                            <td>system</td>
-                            <td>Report Generation</td>
-                            <td>Monthly financial report generated</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 13:10:05</td>
-                            <td>mdoe</td>
-                            <td>Login</td>
-                            <td>Successful login from mobile app</td>
-                            <td>10.0.0.50</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 14:00:00</td>
-                            <td>admin</td>
-                            <td>System Setting Update</td>
-                            <td>Updated email notification settings</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 15:20:00</td>
-                            <td>jdoe</td>
-                            <td>Password Change</td>
-                            <td>User changed password</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 16:30:00</td>
-                            <td>system</td>
-                            <td>Fund Request</td>
-                            <td>Auto-approved small fund request</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-10 17:00:00</td>
-                            <td>admin</td>
-                            <td>Login</td>
-                            <td>Failed login attempt by admin (wrong password)</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 09:15:00</td>
-                            <td>ssmith</td>
-                            <td>Fund Request</td>
-                            <td>Requested $2000 for office supplies</td>
-                            <td>192.168.1.102</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 10:00:00</td>
-                            <td>admin</td>
-                            <td>User Update</td>
-                            <td>Updated permissions for ssmith</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 11:05:00</td>
-                            <td>jdoe</td>
-                            <td>Report Generation</td>
-                            <td>Quarterly budget report generated</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 13:40:00</td>
-                            <td>mdoe</td>
-                            <td>Fund Request</td>
-                            <td>Approved $1500 for marketing campaign</td>
-                            <td>10.0.0.50</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 14:55:00</td>
-                            <td>admin</td>
-                            <td>Login</td>
-                            <td>Successful login from new device</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 15:30:00</td>
-                            <td>jdoe</td>
-                            <td>Logout</td>
-                            <td>Session timed out</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 16:10:00</td>
-                            <td>system</td>
-                            <td>User Create</td>
-                            <td>New user registered via API: apiuser</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-09 17:20:00</td>
-                            <td>apiuser</td>
-                            <td>Fund Request</td>
-                            <td>Automated fund request for integration</td>
-                            <td>172.16.0.1</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-08 08:00:00</td>
-                            <td>admin</td>
+                            <td>1</td>
+                            <td>2025-07-11 10:00:00</td>
+                            <td>John Doe</td>
                             <td>Login</td>
                             <td>Successful login</td>
-                            <td>192.168.1.100</td>
+                            <td>192.168.1.1</td>
                         </tr>
                         <tr>
-                            <td>2024-07-08 09:00:00</td>
-                            <td>jdoe</td>
-                            <td>Fund Request</td>
-                            <td>Rejected $1000 request (insufficient funds)</td>
-                            <td>192.168.1.101</td>
+                            <td>2</td>
+                            <td>2025-07-11 10:05:30</td>
+                            <td>Jane Smith</td>
+                            <td>Create Client</td>
+                            <td>New client 'Acme Corp' added</td>
+                            <td>192.168.1.2</td>
                         </tr>
                         <tr>
-                            <td>2024-07-08 10:00:00</td>
-                            <td>admin</td>
-                            <td>User Management</td>
-                            <td>Deactivated user: ssmith</td>
-                            <td>192.168.1.100</td>
+                            <td>3</td>
+                            <td>2025-07-11 10:15:45</td>
+                            <td>Admin User</td>
+                            <td>Update Client</td>
+                            <td>Client 'Acme Corp' details updated</td>
+                            <td>192.168.1.3</td>
                         </tr>
                         <tr>
-                            <td>2024-07-08 11:00:00</td>
-                            <td>mdoe</td>
+                            <td>4</td>
+                            <td>2025-07-11 11:00:00</td>
+                            <td>John Doe</td>
+                            <td>Process Transaction</td>
+                            <td>Transaction ID: 54321, Amount: $1,500</td>
+                            <td>192.168.1.1</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>2025-07-11 11:30:10</td>
+                            <td>Jane Smith</td>
                             <td>Logout</td>
-                            <td>Forced logout by admin</td>
-                            <td>10.0.0.50</td>
+                            <td>User logged out</td>
+                            <td>192.168.1.2</td>
                         </tr>
                         <tr>
-                            <td>2024-07-08 12:00:00</td>
-                            <td>system</td>
-                            <td>System Setting Update</td>
+                            <td>6</td>
+                            <td>2025-07-11 12:00:00</td>
+                            <td>Admin User</td>
+                            <td>System Settings Change</td>
                             <td>Updated security protocols</td>
-                            <td>N/A</td>
+                            <td>192.168.1.3</td>
                         </tr>
                         <tr>
-                            <td>2024-07-08 13:00:00</td>
-                            <td>jdoe</td>
-                            <td>Password Change</td>
-                            <td>Admin reset password for jdoe</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-08 14:00:00</td>
-                            <td>admin</td>
-                            <td>Report Generation</td>
-                            <td>Daily activity report exported</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-08 15:00:00</td>
-                            <td>apiuser</td>
-                            <td>Login</td>
-                            <td>API key authentication successful</td>
-                            <td>172.16.0.1</td>
+                            <td>7</td>
+                            <td>2025-07-11 13:00:00</td>
+                            <td>John Doe</td>
+                            <td>View Report</td>
+                            <td>Accessed financial summary report</td>
+                            <td>192.168.1.1</td>
                         </tr>
                          <tr>
-                            <td>2024-07-07 09:00:00</td>
-                            <td>admin</td>
+                            <td>8</td>
+                            <td>2025-07-10 09:30:00</td>
+                            <td>System Bot</td>
+                            <td>Automated Backup</td>
+                            <td>Database backup completed successfully</td>
+                            <td>10.0.0.5</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>2025-07-10 14:45:00</td>
+                            <td>Sarah Connor</td>
+                            <td>Password Reset</td>
+                            <td>Password for 'Sarah Connor' reset</td>
+                            <td>192.168.1.4</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>2025-07-10 16:00:00</td>
+                            <td>Michael Blue</td>
+                            <td>Delete Client</td>
+                            <td>Client 'Old Corp' removed</td>
+                            <td>192.168.1.5</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>2025-07-09 08:00:00</td>
+                            <td>John Doe</td>
+                            <td>Login Failed</td>
+                            <td>Incorrect password entered</td>
+                            <td>192.168.1.1</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>2025-07-09 08:05:00</td>
+                            <td>John Doe</td>
                             <td>Login</td>
-                            <td>Successful login</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 09:30:00</td>
-                            <td>jdoe</td>
-                            <td>Fund Request</td>
-                            <td>Submitted new fund request: Project Y Phase 2</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 10:00:00</td>
-                            <td>admin</td>
-                            <td>User Create</td>
-                            <td>Created new user: Bob Johnson</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 11:15:00</td>
-                            <td>mdoe</td>
-                            <td>Logout</td>
-                            <td>Normal user logout</td>
-                            <td>10.0.0.50</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 12:40:00</td>
-                            <td>system</td>
-                            <td>Report Generation</td>
-                            <td>Weekly performance summary generated</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 14:00:00</td>
-                            <td>admin</td>
-                            <td>System Setting Update</td>
-                            <td>Enabled two-factor authentication</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 15:30:00</td>
-                            <td>jdoe</td>
-                            <td>Password Change</td>
-                            <td>User initiated password reset via email</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-07 16:45:00</td>
-                            <td>system</td>
-                            <td>Fund Request</td>
-                            <td>Automatically processed recurring payment</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 08:50:00</td>
-                            <td>admin</td>
-                            <td>Login</td>
-                            <td>Failed login attempt (invalid username)</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 09:00:00</td>
-                            <td>jdoe</td>
-                            <td>Fund Request</td>
-                            <td>Approved $750 for travel expenses</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 10:10:00</td>
-                            <td>admin</td>
-                            <td>User Update</td>
-                            <td>Updated contact info for mdoe</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 11:20:00</td>
-                            <td>mdoe</td>
-                            <td>Report Generation</td>
-                            <td>User accessed ad-hoc report</td>
-                            <td>10.0.0.50</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 13:00:00</td>
-                            <td>admin</td>
-                            <td>Login</td>
-                            <td>Successful login</td>
-                            <td>192.168.1.100</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 14:00:00</td>
-                            <td>jdoe</td>
-                            <td>Logout</td>
-                            <td>User logged out</td>
-                            <td>192.168.1.101</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 15:00:00</td>
-                            <td>system</td>
-                            <td>System Setting Update</td>
-                            <td>Database backup initiated</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>2024-07-06 16:00:00</td>
-                            <td>apiuser</td>
-                            <td>Fund Request</td>
-                            <td>Batch fund request processing</td>
-                            <td>172.16.0.1</td>
+                            <td>Successful login after retry</td>
+                            <td>192.168.1.1</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script type="text/javascript" src="https://cdn.datatables.net/2.0.8/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/js/responsive.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/2.0.8/dataTables.bootstrap5.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/buttons.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.2/buttons.html5.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/responsive.bootstrap5.min.js"></script>
 
     <script>
         // DataTables and Filters Initialization
         $(document).ready(function() {
-            // Initialize Flatpickr for date inputs
-            flatpickr(".date-picker", {
-                dateFormat: "Y-m-d",
-                allowInput: true // Allow manual input
-            });
-
-            // Initialize DataTable
+            console.log('Document ready. Initializing DataTables...'); // Added for debugging
             var auditLogsTable = $('#auditLogsTable').DataTable({
                 paging: true,
                 searching: true,
                 ordering: true,
                 info: true,
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                
-                // IMPORTANT DataTables Configuration for Mobile:
                 responsive: false, // Explicitly set to false to prevent row collapsing
                 scrollX: true,     // Enable horizontal scrolling for the table
-                
-                dom: 'lBfrtip', // 'l' for length, 'B' for buttons, 'f' for filter, 'r' for processing, 't' for table, 'i' for info, 'p' for pagination
+                dom: 'lfrtip', // Updated DOM to remove 'B' (buttons) from default DataTables placement
+
+                // Removed buttons config from here as we're injecting them separately
+            });
+            console.log('DataTables initialization attempt complete.'); // Added for debugging
+
+            // Initialize and place DataTables Export Buttons
+            // This is done separately to place them exactly where we want (in .header-buttons)
+            new $.fn.dataTable.Buttons(auditLogsTable, {
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export <i class="fas fa-file-export"></i>', // Icon next to "Export"
-                        className: 'btn btn-primary dropdown-toggle', // Bootstrap styling for dropdown
+                        text: '<i class="fas fa-file-export"></i> Export',
+                        className: 'btn btn-primary', // Apply Bootstrap button styling
                         buttons: [
-                            {
-                                extend: 'excelHtml5',
-                                text: '<i class="fas fa-file-excel"></i> Excel',
-                                titleAttr: 'Export to Excel'
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                text: '<i class="fas fa-file-pdf"></i> PDF',
-                                titleAttr: 'Export to PDF'
-                            },
-                            {
-                                extend: 'csvHtml5',
-                                text: '<i class="fas fa-file-csv"></i> CSV',
-                                titleAttr: 'Export to CSV'
-                            }
+                            { extend: 'csv', text: '<i class="fas fa-file-csv"></i> CSV' },
+                            { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel' },
+                            { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF' }
                         ]
                     }
                 ]
             });
+            // Append the generated DataTables buttons to our desired div
+            auditLogsTable.buttons().container().appendTo($('.header-buttons'));
 
-            // Populate user info from session storage (if available)
-            const loggedInUser = sessionStorage.getItem('loggedInUser');
-            if (loggedInUser) {
-                $('#userInfo').text(`Logged in as ${loggedInUser}`);
-            }
-
-            // Logout button click handler
-            $('.logout-btn').on('click', function() {
-                sessionStorage.removeItem('loggedInUser');
-                window.location.href = 'index.html'; // Redirect to login page
-            });
-
-            // Toggle Filters (Advanced Search) button functionality
+            // Toggle Advanced Filters
             $('#toggleFiltersBtn').on('click', function() {
-                $('#filtersSection').collapse('toggle'); // Use Bootstrap's collapse method
-                $(this).find('i').toggleClass('fa-search fa-times'); // Change icon
-            });
-
-            // Apply Filters button functionality
-            $('#applyFiltersBtn').on('click', function() {
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
-                var eventType = $('#eventType').val();
-                var username = $('#username').val();
-                var ipAddress = $('#ipAddress').val();
-
-                // Apply filters to DataTable
-                auditLogsTable.columns(0).search(startDate && endDate ? `${startDate}|${endDate}` : '').draw(); // Date range
-                auditLogsTable.columns(2).search(eventType).draw();
-                auditLogsTable.columns(1).search(username).draw();
-                auditLogsTable.columns(4).search(ipAddress).draw();
-
-                // Example of how to filter based on a date range - this would need more sophisticated logic
-                // For now, it's just searching the timestamp column as a string.
-                // You'd typically re-fetch data from a server with these filters.
-                console.log('Applying filters:', { startDate, endDate, eventType, username, ipAddress });
-            });
-
-            // Clear Filters button functionality
-            $('#clearFiltersBtn').on('click', function() {
-                $('#startDate').val('');
-                $('#endDate').val('');
-                $('#eventType').val('');
-                $('#username').val('');
-                $('#ipAddress').val('');
-
-                // Clear all DataTable search filters
-                auditLogsTable.columns().search('').draw();
-                console.log('Filters cleared.');
-            });
-
-            // Mobile menu toggle script (using vanilla JS as requested, and a console.log for debugging)
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const sidebar = document.querySelector('.sidebar');
-
-            if (mobileMenuToggle && sidebar) {
-                console.log('Mobile menu toggle and sidebar elements found.'); // Debugging log
-                mobileMenuToggle.addEventListener('click', function() {
-                    console.log('Mobile menu toggle clicked!'); // Debugging log
-                    sidebar.classList.toggle('show-sidebar');
+                $('.filters-section').toggleClass('collapsed');
+                $('.filters-content').toggleClass('show');
+                $(this).text(function(i, text) {
+                    return text === 'Advanced Search' ? 'Hide Advanced Search' : 'Advanced Search';
                 });
-            } else {
-                console.log('Mobile menu toggle or sidebar element not found.'); // Debugging log
-            }
+            });
+
+            // Mobile menu toggle
+            $('.mobile-menu-toggle').on('click', function() {
+                console.log('Mobile menu toggle clicked'); // Debug log
+                $('.sidebar').toggleClass('show-sidebar');
+            });
+
+            // Optional: Hide sidebar if clicking outside when active (for mobile)
+            $(document).on('click', function(e) {
+                if ($(window).width() <= 768) { // Only apply for mobile screen sizes
+                    // Check if the click was outside the sidebar and the toggle button
+                    if (!$('.sidebar').is(e.target) && $('.sidebar').has(e.target).length === 0 &&
+                        !$('.mobile-menu-toggle').is(e.target) && $('.mobile-menu-toggle').has(e.target).length === 0 &&
+                        $('.sidebar').hasClass('show-sidebar')) {
+                        $('.sidebar').removeClass('show-sidebar');
+                    }
+                }
+            });
+
+            // Flatpickr initialization for date range filters
+            flatpickr("#filterDateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                wrap: true // Enable wrapper for calendar icon
+            });
+        });
+
+        // Dropdown menu toggle for sidebar (Existing functionality)
+        $(document).ready(function() {
+            $('.sidebar .dropdown-toggle').on('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                e.stopPropagation(); // Stop event bubbling to document click
+                var $this = $(this);
+                var $submenu = $this.next('.submenu');
+
+                // Toggle visibility of the next submenu
+                $submenu.toggleClass('show');
+
+                // If this submenu is shown, hide other open submenus at the same level
+                $('.sidebar .submenu').not($submenu).removeClass('show');
+            });
+
+            // Close submenus if clicking outside them, but not on their toggles
+            $(document).on('click', function(e) {
+                $('.sidebar .submenu.show').each(function() {
+                    var $submenu = $(this);
+                    // Check if click is outside the submenu and its direct toggle
+                    if (!$submenu.is(e.target) && $submenu.has(e.target).length === 0 &&
+                        !$submenu.prev('.dropdown-toggle').is(e.target)) {
+                        $submenu.removeClass('show');
+                    }
+                });
+            });
         });
     </script>
 </body>
