@@ -119,7 +119,7 @@ header .logout-btn:hover {
 
 .sidebar ul li a {
     display: block;
-    padding: 12px 15px;
+    padding: 12px 10px; /* Changed from 15px to 10px here */
     text-decoration: none;
     color: #555;
     font-weight: 500;
