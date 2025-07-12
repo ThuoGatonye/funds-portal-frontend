@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Title - Funds Group</title> <!-- REMEMBER TO CHANGE THIS TITLE -->
+    <title>User Management - Funds Group</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
-        /* Add any page-specific styles here if needed */
+        /* Specific styles for User Management page */
     </style>
 </head>
 <body>
@@ -21,51 +21,132 @@
 
     <div class="main-content">
         <aside class="sidebar" id="sidebar-placeholder">
-            <!-- Sidebar content will be loaded here from sidebar.html -->
-        </aside>
+            </aside>
 
         <main class="dashboard-content">
             <div class="page-header-controls">
-                <h1>Page Name</h1> <!-- REMEMBER TO CHANGE THIS H1 -->
+                <h1>User Management</h1>
                 <div class="header-buttons">
-                    <!-- Page-specific buttons (e.g., Add New User, Export) can go here -->
+                    <button id="addNewUserBtn" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add New User
+                    </button>
+                    <button id="advancedSearchToggle" class="btn btn-primary">
+                        Advanced Search <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
 
             <section class="filters-section">
                 <div class="filters-content" id="filtersContent">
-                    <div class="filter-group">
-                        <p>Dummy filter content for this page.</p>
-                        <button class="btn btn-primary">Apply Filters</button>
+                    <div class="row g-3">
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterUserName" class="form-label">User Name</label>
+                            <input type="text" class="form-control" id="filterUserName" placeholder="Enter username">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="filterEmail" placeholder="Enter email">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterRole" class="form-label">Role</label>
+                            <select class="form-select" id="filterRole">
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                                <option value="member">Member</option>
+                                <option value="treasurer">Treasurer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="">Select Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label for="filterJoinedDate" class="form-label">Joined Date Range</label>
+                            <input type="text" class="form-control" id="filterJoinedDate" placeholder="Select date range">
+                        </div>
+                    </div>
+                    <div class="filter-actions mt-3">
+                        <button class="btn btn-primary filter-submit-btn"><i class="fas fa-filter"></i> Apply Filters</button>
+                        <button class="btn btn-secondary clear-btn"><i class="fas fa-undo"></i> Clear Filters</button>
                     </div>
                 </div>
             </section>
 
             <section class="data-table-container">
-                <h2>Dummy Content for This Page</h2>
-                <p>This is placeholder content for the "Page Name" page. You can replace this with tables, forms, charts, or other relevant UI elements later.</p>
-                <!-- Example of a simple table if you need one: -->
-                <!--
-                <table id="myTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                <h2>Users List</h2>
+                <table id="usersTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Column 1</th>
-                            <th>Column 2</th>
+                            <th>ID</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Data 1</td>
-                            <td>Data 2</td>
+                            <td>1</td>
+                            <td>john.doe</td>
+                            <td>john@example.com</td>
+                            <td>Admin</td>
+                            <td>Active</td>
+                            <td>2025-07-12 10:30:00</td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn" title="Edit User"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger delete-btn" title="Delete User"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>jane.smith</td>
+                            <td>jane@example.com</td>
+                            <td>Member</td>
+                            <td>Active</td>
+                            <td>2025-07-11 14:00:00</td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn" title="Edit User"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger delete-btn" title="Delete User"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>admin.user</td>
+                            <td>admin@example.com</td>
+                            <td>Admin</td>
+                            <td>Active</td>
+                            <td>2025-07-12 11:00:00</td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn" title="Edit User"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger delete-btn" title="Delete User"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>4</td>
+                            <td>peter.jones</td>
+                            <td>peter@example.com</td>
+                            <td>Treasurer</td>
+                            <td>Inactive</td>
+                            <td>2025-07-10 09:00:00</td>
+                            <td>
+                                <button class="btn btn-sm btn-info edit-btn" title="Edit User"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger delete-btn" title="Delete User"><i class="fas fa-trash"></i></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                -->
             </section>
         </main>
     </div>
 
-    <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -73,7 +154,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-    <!-- Custom JavaScript for loading components and handling UI interactions -->
     <script>
         // Function to load HTML content into a placeholder
         async function loadHTML(elementId, filePath) {
@@ -152,7 +232,7 @@
                 }
 
                 // Submenu Toggle Logic
-                $('.sidebar .has-submenu > .toggle-submenu').on('click', function(e) {
+                $(document).on('click', '.sidebar .has-submenu > .toggle-submenu', function(e) {
                     e.preventDefault();
                     var $this = $(this);
                     var $submenu = $this.next('.submenu');
@@ -191,9 +271,8 @@
 
         // Page-specific JavaScript (runs when this page's DOM is ready)
         $(document).ready(function() {
-            // Initialize DataTables if this page will have one (uncomment and configure if needed)
-            /*
-            var myTable = $('#myTable').DataTable({
+            // Initialize DataTables
+            var usersTable = $('#usersTable').DataTable({
                 paging: true,
                 searching: true,
                 ordering: true,
@@ -204,11 +283,11 @@
                 dom: 'lfrtip',
             });
 
-            new $.fn.dataTable.Buttons(myTable, {
+            new $.fn.dataTable.Buttons(usersTable, {
                 buttons: [
                     {
                         extend: 'collection',
-                        text: '<i class="fas fa-file-export"></i>',
+                        text: '<i class="fas fa-file-export"></i> Export Data',
                         titleAttr: 'Export Data',
                         className: 'btn btn-info dropdown-toggle',
                         buttons: [
@@ -219,10 +298,9 @@
                     }
                 ]
             });
-            myTable.buttons().container().prependTo($('.header-buttons'));
-            */
+            usersTable.buttons().container().prependTo($('.header-buttons'));
 
-            // Filters section toggle (uncomment and configure if needed)
+            // Filters section toggle
             const advancedSearchToggle = document.getElementById('advancedSearchToggle');
             const filtersContent = document.getElementById('filtersContent');
             const filtersSection = document.querySelector('.filters-section'); 
@@ -237,20 +315,39 @@
                 });
             }
 
-            // Flatpickr initialization (uncomment and configure if needed)
-            // flatpickr("#someDateInput", { dateFormat: "Y-m-d" });
+            // Flatpickr initialization for date range
+            flatpickr("#filterJoinedDate", { 
+                mode: "range", 
+                dateFormat: "Y-m-d" 
+            });
 
-            // Filter submission/clear logic (uncomment and configure if needed)
-            /*
+            // Filter submission/clear logic
             $('.filter-submit-btn').on('click', function() {
-                // Your filter logic here
-                myTable.draw();
+                // Implement your filter logic here based on input values
+                // Example:
+                // usersTable.column(1).search($('#filterUserName').val()).draw();
+                // usersTable.column(2).search($('#filterEmail').val()).draw();
+                // usersTable.column(3).search($('#filterRole').val()).draw();
+                // usersTable.column(4).search($('#filterStatus').val()).draw();
+                
+                // For date range, you'd parse the range and apply custom filtering
+                // For now, this is just a placeholder for future backend integration
+                console.log("Applying filters...");
+                usersTable.draw(); // Redraw table with current (or future custom) filters
             });
+
             $('.clear-btn').on('click', function() {
-                // Clear filter inputs here
-                myTable.search('').columns().search('').draw();
+                // Clear all filter inputs
+                $('#filterUserName').val('');
+                $('#filterEmail').val('');
+                $('#filterRole').val('');
+                $('#filterStatus').val('');
+                $('#filterJoinedDate').val(''); // Clear flatpickr input
+
+                // Clear DataTables search and redraw
+                usersTable.search('').columns().search('').draw();
+                console.log("Filters cleared.");
             });
-            */
         });
 
         // Ensure loadAllHTMLComponents runs once the DOM is fully loaded
@@ -259,7 +356,7 @@
 
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // window.location.href = 'index.html'; // Uncomment in production
+                // window.location.href = 'index.html'; // Uncomment in production for role-based access
             }
         });
     </script>
