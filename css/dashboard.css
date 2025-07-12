@@ -450,6 +450,8 @@ table.dataTable thead .dt-orderable-desc:after {
         flex-direction: column; /* Stack user info and logout button */
         gap: 10px; /* Reduce gap */
         width: 100%; /* Take full width */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
     }
     header .user-info {
         margin-bottom: 5px; /* Reduce margin */
@@ -467,18 +469,22 @@ table.dataTable thead .dt-orderable-desc:after {
         margin-bottom: 15px;
     }
     .sidebar ul {
-        display: flex; /* Still flex, but will now wrap */
-        flex-wrap: wrap; /* Allow items to wrap to next line */
-        justify-content: center; /* Center menu items */
-        gap: 10px; /* Space between menu items */
+        display: flex;
+        flex-direction: column; /* FORCED VERTICAL STACKING for main menu items */
+        align-items: center; /* Center them */
+        padding: 0;
+        margin: 0;
     }
     .sidebar ul li {
-        margin: 0; /* Reset default margin */
+        width: 100%; /* Ensure each list item takes full width */
+        text-align: center; /* Center the text within the list item */
+        margin-bottom: 10px; /* Add some vertical spacing */
     }
     .sidebar ul li a {
+        display: block; /* Ensure the link fills the list item */
         padding: 8px 12px; /* Smaller padding for menu items */
         font-size: 0.9em; /* Slightly smaller font */
-        white-space: nowrap; /* Prevent text wrapping inside buttons */
+        white-space: normal; /* Allow text to wrap if necessary */
     }
     /* Adjust sub-menu for mobile to stack vertically */
     .sidebar ul li ul {
@@ -488,6 +494,7 @@ table.dataTable thead .dt-orderable-desc:after {
         text-align: center;
         flex-direction: column; /* Ensure submenu items stack */
         display: none; /* Keep hidden by default */
+        align-items: center; /* Center sub-menu items */
     }
     .sidebar ul li ul.show {
         display: flex; /* Use flex to ensure items stack */
@@ -532,8 +539,31 @@ table.dataTable thead .dt-orderable-desc:after {
     }
 
     /* --- DataTables Specific Responsive Adjustments --- */
+    /* Ensure DataTables top and bottom sections are properly stacked and centered */
     .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_filter {
+        float: none; /* Remove floats */
+        width: 100%; /* Take full width */
+        margin-bottom: 15px; /* Add some space between them */
+        display: flex; /* Use flexbox for internal alignment */
+        justify-content: center; /* Center content within these containers */
+        align-items: center;
+        flex-direction: column; /* Stack label and input if they are combined by DataTable */
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    .dataTables_wrapper .dataTables_filter label {
+        flex-direction: column; /* Stack "Search:" label and input vertically */
+        align-items: center; /* Center them */
+        width: 100%; /* Make label take full width */
+    }
+
+    .dataTables_wrapper .dataTables_filter input[type="search"] {
+        width: calc(100% - 30px); /* Adjust width to fit better, slightly less than 100% for padding */
+        max-width: 250px; /* Give it a max-width to prevent stretching too wide on tablets */
+        margin-top: 5px; /* Space between label and input */
+    }
+
     .dataTables_wrapper .dataTables_info,
     .dataTables_wrapper .dataTables_paginate {
         float: none; /* Remove floats */
@@ -541,15 +571,7 @@ table.dataTable thead .dt-orderable-desc:after {
         width: 100%; /* Take full width */
         margin-bottom: 15px; /* Add some space between them */
         box-sizing: border-box; /* Include padding in width calculation */
-    }
-
-    /* Adjust the search input inside the filter div */
-    .dataTables_wrapper .dataTables_filter label {
-        justify-content: center; /* Center the "Search:" and input */
-    }
-    .dataTables_wrapper .dataTables_filter input[type="search"] {
-        width: calc(100% - 70px); /* Adjust width to leave space for label */
-        max-width: unset; /* Remove max-width on mobile */
+        display: block; /* Ensure it behaves as a block element */
     }
 
     /* Pagination controls alignment */
