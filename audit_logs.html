@@ -230,7 +230,18 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/3.0.1/js/responsive.bootstrap5.min.js"></script>
 
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+    
+            if (mobileMenuToggle && sidebar) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show-sidebar');
+                });
+            }
+        });
+    </script>
     <script>
         // Function to load common HTML parts (from includes/header.html)
         async function loadHTML(elementId, filePath) {
