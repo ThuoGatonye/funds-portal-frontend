@@ -131,7 +131,7 @@
                 <h1>Audit Logs</h1>
                 <div class="header-buttons">
                     <button id="advancedSearchToggle" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Advanced Search
+                        Advanced Search <i class="fas fa-search"></i>
                     </button>
                 </div>
             </div>
@@ -282,9 +282,10 @@
 
             // Initialize DataTables with export buttons
             var auditTable = $('#auditTable').DataTable({
-                dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'fB>>" + // 'B' (buttons) are now alongside filter 'f'
+                // Remove 'B' from DOM to prevent default button rendering location
+                dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                      "<'row'<'col-sm-12'tr>>" +
-                     "<'row pt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>", // 'p' (pagination) will be right-aligned by CSS
+                     "<'row pt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 scrollX: true,
                 autoWidth: false,
                 responsive: true, // Enable the responsive extension
@@ -314,6 +315,10 @@
                     }
                 ]
             });
+
+            // MANUALLY APPEND DATATABLES BUTTONS TO THE DESIRED LOCATION
+            auditTable.buttons().container().prependTo($('#auditTable_wrapper').closest('.dashboard-content').find('.header-buttons'));
+
 
             // Adjust DataTables columns on window resize (including zoom changes)
             $(window).on('resize', function () {
