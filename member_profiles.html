@@ -124,7 +124,7 @@
                             <td><span class="status-badge active">Active</span></td>
                             <td>Alice Johnson</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M001"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M001"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
@@ -138,7 +138,7 @@
                             <td><span class="status-badge active">Active</span></td>
                             <td>Bob Williams</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M002"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M002"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
@@ -152,7 +152,7 @@
                             <td><span class="status-badge inactive">Inactive</span></td>
                             <td>Charlie Brown</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M003"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M003"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
@@ -166,7 +166,7 @@
                             <td><span class="status-badge active">Active</span></td>
                             <td>Diana Prince</td>
                             <td>
-                                <button class="btn btn-sm btn-info edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-sm btn-info edit-member-btn" data-member-id="M004"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i> Delete</button>
                                 <button class="btn btn-sm btn-primary manage-plans-btn" data-member-id="M004"><i class="fas fa-tasks"></i> Manage Plans</button>
                             </td>
@@ -252,6 +252,12 @@
                 console.log("Filters cleared for Member Profiles.");
             });
 
+            // Changed from .edit-btn to .edit-member-btn to differentiate from generic edit if needed elsewhere
+            $(document).on('click', '.edit-member-btn', function() {
+                const memberId = $(this).data('member-id');
+                window.location.href = `member_details.html?memberId=${memberId}`;
+            });
+
             $(document).on('click', '.manage-plans-btn', function() {
                 const memberId = $(this).data('member-id');
                 window.location.href = `manage_member_plans.html?memberId=${memberId}`;
@@ -262,7 +268,7 @@
             loadAllHTMLComponents();
             const userRole = localStorage.getItem('userRole');
             if (!userRole || userRole !== 'admin') {
-                // window.location.href = 'index.html';
+                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
             }
         });
     </script>
