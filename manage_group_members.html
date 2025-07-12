@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Group Members - Funds Group</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"/>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Status styling */
+        .status-badge {
+            padding: .35em .65em;
+            border-radius: .25rem;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            display: inline-block;
+        }
+
+        .status-badge.active {
+            color: #fff;
+            background-color: #28a745; /* Bootstrap green */
+        }
+
+        .status-badge.inactive {
+            color: #fff;
+            background-color: #dc3545; /* Bootstrap red */
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <aside class="sidebar" id="sidebar-placeholder">
+            </aside>
+
+        <main class="dashboard-content">
+            <div class="page-header-controls">
+                <h1>Members of Group: <span id="groupNameDisplay"></span></h1>
+                <div class="header-buttons">
+                    <button id="addMemberToGroupBtn" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add Member to Group
+                    </button>
+                    <button id="backToGroupsBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Group Management
+                    </button>
+                </div>
+            </div>
+
+            <section class="data-table-container mt-4">
+                <table id="groupMembersTable" class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Join Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.11/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
+        function setActiveSidebarLink() { /* ... same as before ... */ }
+        async function loadAllHTMLComponents() { /* ... same as before ... */ }
+
+        // Dummy data for demonstration purposes
+        const dummyGroupsData = {
+            'G001': {
+                name: 'General Savings Group',
+                members: [
+                    { id: 'M001', fullName: 'Alice Johnson', email: 'alice@example.com', joinDate: '2024-01-10', status: 'active' },
+                    { id: 'M002', fullName: 'Bob Williams', email: 'bob@example.com', joinDate: '2023-07-20', status: 'active' },
+                    { id: 'M005', fullName: 'Emily White', email: 'emily@example.com', joinDate: '2024-02-15', status: 'active' }
+                ]
+            },
+            'G002': {
+                name: 'High-Yield Investment Group',
+                members: [
+                    { id: 'M004', fullName: 'Diana Prince', email: 'diana@example.com', joinDate: '2025-01-15', status: 'active' },
+                    { id: 'M006', fullName: 'Frank Green', email: 'frank@example.com', joinDate: '2023-11-01', status: 'active' }
+                ]
+            },
+            'G003': {
+                name: 'Emergency Fund Group',
+                members: [
+                    { id: 'M001', fullName: 'Alice Johnson', email: 'alice@example.com', joinDate: '2024-01-10', status: 'active' },
+                    { id: 'M004', fullName: 'Diana Prince', email: 'diana@example.com', joinDate: '2025-01-15', status: 'active' }
+                ]
+            }
+        };
+
+        // This would ideally come from your backend, mapping plans to groups
+        // For demo, assume specific plans are linked to specific groups for removal logic
+        const groupAssociatedPlans = {
+            'G001': ['P001'], // General Savings Group primarily uses Monthly Savings Fund
+            'G002': ['P002'], // High-Yield Investment Group primarily uses Growth Investment Plan
+            'G003': ['P003', 'P006'] // Emergency Fund Group uses Loan Pool and Emergency Cash
+        };
+
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const groupId = urlParams.get('groupId');
+            const groupData = dummyGroupsData[groupId];
+
+            var groupMembersTable; // Declare outside to make it accessible for redraw
+
+            if (groupId && groupData) {
+                $('#groupNameDisplay').text(`${groupId} - ${groupData.name}`);
+
+                groupMembersTable = $('#groupMembersTable').DataTable({
+                    data: groupData.members,
+                    columns: [
+                        { data: 'id' },
+                        { data: 'fullName' },
+                        { data: 'email' },
+                        { data: 'joinDate' },
+                        { data: 'status', render: function(data, type, row) {
+                            return `<span class="status-badge ${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }},
+                        { data: null, defaultContent: '<button class="btn btn-sm btn-danger remove-member-from-group-btn"><i class="fas fa-minus-circle"></i> Remove</button>', orderable: false }
+                    ],
+                    paging: true,
+                    searching: true,
+                    info: true,
+                    lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    responsive: true
+                });
+
+                // Back to Group Management button
+                $('#backToGroupsBtn').on('click', function() {
+                    window.location.href = 'group_management.html';
+                });
+
+                // Add Member to Group button (placeholder for modal/form)
+                $('#addMemberToGroupBtn').on('click', function() {
+                    alert('Add Member to Group ' + groupId + ' functionality would go here!');
+                    // You'd typically open a modal to search for and select members not currently in this group.
+                });
+
+                // Remove Member from Group (Conceptual - removes member from group AND associated plans)
+                $(document).on('click', '.remove-member-from-group-btn', function() {
+                    const row = groupMembersTable.row($(this).parents('tr'));
+                    const member = row.data();
+                    
+                    if (confirm(`Are you sure you want to remove ${member.fullName} from this group? This action will also remove them from all plans primarily associated with this group.`)) {
+                        
+                        const plansToRemove = groupAssociatedPlans[groupId] || [];
+                        let planRemovalMessage = "";
+                        if (plansToRemove.length > 0) {
+                            planRemovalMessage = ` (Also removed from plans: ${plansToRemove.join(', ')})`;
+                        }
+
+                        alert(`Member ${member.id} removed from group ${groupId}${planRemovalMessage}. (Demo action - actual plan removal not implemented in frontend)`);
+                        
+                        row.remove().draw();
+                        
+                        // In a real application, this would trigger an API call to:
+                        // 1. Unlink the member from this specific group.
+                        // 2. Based on the group ID, identify plans primarily associated with this group.
+                        // 3. For the specific member being removed, unlink them from *those identified plans*.
+                        // 4. Then redraw the table.
+                    }
+                });
+
+            } else {
+                $('#groupNameDisplay').text('Group Not Found');
+                alert('Group ID not found or invalid.');
+                // Optionally redirect back to group_management.html
+                // window.location.href = 'group_management.html';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllHTMLComponents();
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin') {
+                // window.location.href = 'index.html'; // Redirect if not admin (uncomment in production)
+            }
+        });
+    </script>
+</body>
+</html>
