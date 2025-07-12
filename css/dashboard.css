@@ -86,7 +86,7 @@ header .logout-btn:hover {
 /* Sidebar Navigation */
 .sidebar {
     background-color: #ffffff; /* White background for sidebar */
-    width: 240px; /* Changed from 250px to 240px */
+    width: 270px; /* Adjusted width: Increased to 270px */
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -118,16 +118,22 @@ header .logout-btn:hover {
 }
 
 .sidebar ul li a {
-    display: block;
+    display: flex; /* Changed to flex to align icon and text */
+    align-items: center; /* Vertically align icon and text */
     padding: 12px 15px;
     text-decoration: none;
     color: #555;
     font-weight: 500;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap; /* Ensures text stays on one line */
+    overflow: hidden; /* Hides overflowing content */
+    text-overflow: ellipsis; /* Adds "..." for overflowed text */
+}
+
+.sidebar ul li a i { /* Style for Font Awesome icons within sidebar links */
+    margin-right: 10px; /* Space between icon and text */
+    flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .sidebar ul li a:hover {
@@ -144,15 +150,26 @@ header .logout-btn:hover {
 /* Nested menu items for cascading */
 .sidebar ul li ul {
     margin-top: 10px;
-    margin-left: 15px;
+    margin-left: 20px; /* Increased margin for nesting */
     border-left: 2px solid #e6e6e6;
-    padding-left: 5px;
+    padding-left: 10px; /* Increased padding for nesting */
     display: none;
 }
 
 .sidebar ul li ul.show {
     display: block;
 }
+
+/* Specific styling for nested links to handle overflow */
+.sidebar ul li ul li a {
+    padding: 8px 10px; /* Slightly less padding for nested items */
+    font-size: 0.95em; /* Slightly smaller font for nested items */
+    /* Ensure these inherit or explicitly have overflow properties */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 
 /* Dashboard Content Area */
 .dashboard-content {
