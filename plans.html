@@ -110,7 +110,8 @@
                             <th>Amount</th>
                             <th class="d-none">Start Date</th> <th class="d-none">End Date</th> <th>Members</th>
                             <th>Status</th>
-                            <th>Personnel</th> <th>Actions</th>
+                            <th>Personnel</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,9 +189,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        async function loadHTML(elementId, filePath) { /* ... same as above ... */ return true; }
-        function setActiveSidebarLink() { /* ... same as above ... */ }
-        async function loadAllHTMLComponents() { /* ... same as above ... */ }
+        async function loadHTML(elementId, filePath) { /* ... same as before ... */ return true; }
+        function setActiveSidebarLink() { /* ... same as before ... */ }
+        async function loadAllHTMLComponents() { /* ... same as before ... */ }
 
         $(document).ready(function() {
             var plansTable = $('#plansTable').DataTable({
@@ -252,7 +253,7 @@
                 $('#filterPlanName').val('');
                 $('#filterPlanType').val('');
                 $('#filterStatus').val('');
-                $('#filterPersonnel').val(''); // Updated ID
+                $('#filterPersonnel').val('');
                 $('#filterStartDate').val('');
 
                 plansTable.search('').columns().search('').draw();
