@@ -213,13 +213,17 @@
                 if (response.ok) {
                     console.log('Login successful:', data);
                     localStorage.setItem('token', data.token);
+                    // Store the role as received from the backend, then convert to lowercase for comparison
                     localStorage.setItem('userRole', data.role);
                     localStorage.setItem('userId', data.user_id);
                     localStorage.setItem('username', data.username);
 
-                    if (data.role === 'admin') {
+                    // Convert data.role to lowercase for robust comparison
+                    const userRole = data.role.toLowerCase(); 
+
+                    if (userRole === 'admin') {
                         window.location.href = 'admin_dashboard.html';
-                    } else if (data.role === 'treasurer') {
+                    } else if (userRole === 'treasurer') {
                         window.location.href = 'treasurer_dashboard.html';
                     } else {
                         window.location.href = 'user_dashboard.html';
